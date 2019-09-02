@@ -36,12 +36,12 @@ export class MenuComponent implements OnInit {
     }					
   ];
   
-  private currentPageId: string = 'today';
+  private currentPageId: string;
 
   constructor() { }
 
   ngOnInit() {
-
+    this.setCurrentPageId('today');
   }
 
   setCurrentPageId(pageId: string): void {		
