@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 interface PageModel {
   pageId: string; // now displayed
@@ -12,46 +13,13 @@ interface PageModel {
 })
 export class MenuComponent implements OnInit {
 
-  private pages: Array<PageModel> =
-	[
-    {
-      pageId:"presentation",
-      label:"PRESENTATION"
-    },
-		{
-      pageId:"today",
-      label:"AUJOURD'HUI"
-    },
-		{
-      pageId:"list",
-      label:"RECHERCHER"
-    },
-		{
-      pageId:"advises",
-      label:"CONSEILS"
-    },
-		{
-      pageId:"more",
-      label:"?"
-    }					
-  ];
-  
-  private currentPageId: string;
+  constructor(private router: Router) { }
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
-    this.setCurrentPageId('today');
+  /* Return a class name for url depending on current route.url */
+  getClassForItem(url: string): string {
+    console.log(url, this.router.url);
+    return this.router.url === url ? 'itemEnable' : 'itemDisable';
   }
-
-  setCurrentPageId(pageId: string): void {		
-		this.currentPageId = pageId;
-		// Todo: update router
-	};
-
-	getItemClassNameWithId(itemPageId): string {		
-		if ( this.currentPageId == itemPageId)
-			return "itemEnable";
-		return "itemDisable";
-	};    
 }

@@ -1,12 +1,30 @@
 <div id="header">	
 
-    <a href="./" title="Accueil">
+    <a href="" routerLink="/" title="Accueil">
         <img id="logo" src="../../assets/logo.png" alt="Logo" title="Accueil" />
     </a>
     
     <div id="div_menu" >
         <ul id="menu">
-            <li *ngFor="let item of pages" [class]="getItemClassNameWithId(item.pageId)" (click)="setCurrentPageId(item.pageId)" ><a>{{item.label}}</a></li>
+            <li [class]="getClassForItem('/presentation')">
+                <a href="" routerLink="/presentation">PRESENTATION</a>
+            </li>
+
+            <li [class]="getClassForItem('/today')">
+                <a href="" routerLink="/">AUJOURD'HUI</a>
+            </li>
+
+            <li [class]="getClassForItem('/list')">
+                <a href="" routerLink="/list">LISTE</a>
+            </li>
+
+            <li [class]="getClassForItem('/advises')">
+                <a href="" routerLink="/advises">CONSEILS</a>
+            </li>
+
+            <li [class]="getClassForItem('/more')">
+                <a href="" routerLink="/more">?</a>
+            </li>
         </ul>
     </div>	
 
