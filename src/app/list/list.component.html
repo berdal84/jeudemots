@@ -1,0 +1,34 @@
+<h2>Liste complète des jeu de mots :</h2>
+<p>Voici ci-dessous la liste des {{jokes.length}} jeu de mots du site. Vous pouvez les filtrer en saissant un (seul) mot
+    clé dans le champ de saisie. Enjoy !</p>
+
+<table>
+    <tr style="padding:0px;">
+        <td>
+            <p class="underlined" style="text-align:left;">Catégorie</p>
+        </td>
+        <td>
+            <p class="underlined">Jeu de mot</p>
+        </td>
+        <td>
+            <p class="underlined">Auteur</p>
+        </td>
+        <td>
+            <p class="underlined">Date</p>
+        </td>
+    </tr>
+    <tr *ngFor="let joke of jokes">
+        <td>
+            <p style="text-align:left;">{{ joke.category }}</p>
+        </td>
+        <td>
+            <p class="justified">{{ joke.joke }}</p>
+        </td>
+        <td>
+            <p>{{ joke.author }}</p>
+        </td>
+        <td>
+            <p>{{ joke.date }}</p>
+        </td>
+    </tr>
+</table>
