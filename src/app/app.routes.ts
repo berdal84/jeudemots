@@ -8,10 +8,6 @@ import { Error404Component } from './components/error404/error404.component';
 
 export const ROUTES: Routes = [
     {
-        path: '',
-        component: TodayComponent
-    },
-    {
         path: 'presentation',
         component: HomeComponent
     },
@@ -30,6 +26,11 @@ export const ROUTES: Routes = [
     {
         path: 'more',
         component: MoreComponent
+    },
+    {
+        path: '',
+        redirectTo: '/today',
+        pathMatch: 'full'
     },
     {
         path: '**',
