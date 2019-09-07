@@ -11,20 +11,21 @@ const jokeJsonFileUrl: string = 'assets/jokes.json';
 })
 export class JokeService {
 
-  private jokes = new Observable<Array<Joke>>();
+  private jokes: Observable<Array<Joke>>;
 
   constructor( private httpClient: HttpClient ) {
 
-    this.jokes = this.getJokes();
+    // get JSON once
+    this.jokes = this.httpClient.get<Array<Joke>>(jokeJsonFileUrl).pipe( 
+      retry(3),
+      catchError( this.handleError )
+    );;
 
   }
 
   getJokes(): Observable<Array<Joke>> {
 
-    return this.httpClient.get<Array<Joke>>(jokeJsonFileUrl).pipe( 
-      retry(3),
-      catchError( this.handleError )
-    );
+    return this.jokes;
    
   }
 
