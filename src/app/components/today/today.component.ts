@@ -15,8 +15,8 @@ export class TodayComponent implements OnInit {
   {
     /* Set a default joke in case service hasn't loaded data before page is displayed */
     this.currentJoke = {
-      category: '...loading...',
-      joke:     '...loading...',
+      category: '...',
+      joke:     '...',
       author:   '...',
       date:     '...'
     }
@@ -24,7 +24,7 @@ export class TodayComponent implements OnInit {
 
   ngOnInit() {
 
-    this.jokeService.getJokes().subscribe(
+    this.jokeService.getJokes().then(
         (jokes) => { this.currentJoke = jokes[0] }
       );
 
