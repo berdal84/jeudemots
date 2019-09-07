@@ -9,7 +9,7 @@ import { JokeService } from '../../services/joke.service';
 })
 export class ListComponent implements OnInit {
 
-  private jokes: Array<Joke> = new Array<Joke>();
+  jokes: Array<Joke> = new Array<Joke>();
 
   constructor( private jokeService: JokeService ) { }
 

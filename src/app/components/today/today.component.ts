@@ -9,7 +9,7 @@ import { JokeService } from '../../services/joke.service';
 })
 export class TodayComponent implements OnInit {
 
-  private currentJoke: Joke;
+  currentJoke: Joke;
 
   constructor(private jokeService: JokeService)
   {

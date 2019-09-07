@@ -28,7 +28,7 @@ ul#menu li.itemDisable a:hover
 	color:					#fff;
 	text-shadow: 			1px 1px rgba(0, 0, 0, 0.9);
 	padding: 				14px 20px;
-	moz-transform: 			translate(5px, 5px);
+	transform: 				translate(5px, 5px);
 	transition-duration:	0.1s;
 }
 
@@ -40,7 +40,7 @@ ul#menu li.itemEnable a
 	color:					#b7ffb7;
 	text-shadow: 			1px 1px rgba(0, 0, 0, 0.9);
 	padding: 				14px 20px;
-	moz-transform: 			translate(5px, 5px);
+	transform: 				translate(5px, 5px);
 	transition-duration:	0.1s;
 }
 
