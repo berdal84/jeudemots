@@ -1,7 +1,8 @@
-![logo](https://github.com/berdal84/jeudemots-ng/blob/master/src/assets/logo.png)
+
 # Jeu de mots (Angular 8.x version)
 
 This is the source repository for the website [www.relativementutile.fr/jeudemots](https://www.relativementutile.fr/jeudemots)
+
 
 ![2019_09_08_screenshot.jpg](https://github.com/berdal84/jeudemots-ng/blob/master/src/assets/2019_09_08_screenshot.jpg)
 
