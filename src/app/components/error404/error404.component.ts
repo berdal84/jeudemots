@@ -8,4 +8,8 @@ import { Router } from '@angular/router';
 export class Error404Component {
 
   constructor( private router: Router) {}
+
+  getRouterUrl(): string {
+    return this.router.url;
+  }
 }
