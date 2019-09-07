@@ -1,16 +1,18 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { ROUTES } from './app.routes';
+
 import { AppComponent } from './app.component';
-import { MenuComponent } from './menu/menu.component';
-import { HomeComponent } from './home/home.component';
-import { TodayComponent } from './today/today.component';
-import { ListComponent } from './list/list.component';
-import { CommonModule } from '@angular/common';
-import { AdvisesComponent } from './advises/advises.component';
-import { MoreComponent } from './more/more.component';
+import { MenuComponent } from './components/menu/menu.component';
+import { HomeComponent } from './components/home/home.component';
+import { TodayComponent } from './components/today/today.component';
+import { ListComponent } from './components/list/list.component';
+import { AdvisesComponent } from './components/advises/advises.component';
+import { MoreComponent } from './components/more/more.component';
+
 
 @NgModule({
   declarations: [
@@ -24,6 +26,7 @@ import { MoreComponent } from './more/more.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     RouterModule.forRoot(ROUTES)
   ],
   providers: [],

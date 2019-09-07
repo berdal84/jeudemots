@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Joke } from '../models/joke.model';
-import { JokeService } from '../services/joke.service';
+import { Joke } from '../../models/joke.model';
+import { JokeService } from '../../services/joke.service';
 
 @Component({
   selector: 'app-list',
@@ -9,12 +9,16 @@ import { JokeService } from '../services/joke.service';
 })
 export class ListComponent implements OnInit {
 
-  private jokes: Array<Joke>;
+  private jokes: Array<Joke> = new Array<Joke>();
 
   constructor( private jokeService: JokeService ) { }
 
   ngOnInit() {
-    this.jokes = this.jokeService.getJokes();
+
+    this.jokeService.getJokes().subscribe(
+      (jokes) => { this.jokes = jokes }
+    )
+
   }
 
 }

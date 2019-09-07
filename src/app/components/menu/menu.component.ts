@@ -19,7 +19,8 @@ export class MenuComponent implements OnInit {
 
   /* Return a class name for url depending on current route.url */
   getClassForItem(url: string): string {
-    console.log(url, this.router.url);
+
     return this.router.url === url ? 'itemEnable' : 'itemDisable';
+    
   }
 }

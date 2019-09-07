@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { TodayComponent } from './today/today.component';
-import { ListComponent } from './list/list.component';
-import { AdvisesComponent } from './advises/advises.component';
-import { MoreComponent } from './more/more.component';
+import { HomeComponent } from './components/home/home.component';
+import { TodayComponent } from './components/today/today.component';
+import { ListComponent } from './components/list/list.component';
+import { AdvisesComponent } from './components/advises/advises.component';
+import { MoreComponent } from './components/more/more.component';
 
 export const ROUTES: Routes = [
     {

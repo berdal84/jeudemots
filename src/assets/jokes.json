@@ -1,0 +1,218 @@
+[
+	{
+		"category":     "Sciences",
+		"joke":         "\"[...] l'expérience de Milgram ne vaut pas lourd [...]\" selon un rapport de la CGPM.",
+		"author":       "J. Quintal",
+		"date":         "2019-07-27",
+		"visible":      true
+	},
+	{
+		"category":     "Bon goût",
+		"joke":         "Ta confiture est aussi bonne que maman.",
+		"author":       "M. Subtil",
+		"date":         "2019-07-13",
+		"visible":      true
+	},
+	{
+		"category":     "Super-héros",
+		"joke":         "Le chauve souris.",
+		"author":       "Julien Vall",
+		"date":         "2019-07-12",
+		"visible":      true
+	},
+	{
+		"category":     "Pouvoir d'achat",
+		"joke":         "Homéopathie déremboursée, sucrer son café deviendra bientôt un luxe.",
+		"author":       "M. Boicarré",
+		"date":         "2019-07-12",
+		"visible":      true
+	},
+	{
+		"category":     "Mathématique et Religion",
+		"joke":         "On divise tout par dieu, et hop !",
+		"author":       "Anne",
+		"date":         "2019-07-08",
+		"visible":      true
+	},
+	{
+		"category":		"Emploi",
+		"joke":			"Recrutements massifs pour la mise en service de l'authentification à double facteur sur laposte.net",
+		"author":		"Belache",
+		"date":			"2019-06-28" ,
+		"visible":		true
+	},
+	{
+		"category":		"Agilité",
+		"joke":			"Je ne travaille pas pour une start-up agile mais pour LA start-up à Gilles.",
+		"author":		"Belache",
+		"date":			"2019-06-21" ,
+		"visible":		true
+	},	
+	{
+		"category":		"Faune",
+		"joke":			"Nous n'avons jamais compris ce que les antilopes reprochaient aux lopes.",
+		"author":		"Yolen",
+		"date":			"2019-01-01" ,
+		"visible":		true
+	},
+	{
+		"category":		"Programmation",
+		"joke":			"Pratiquant exclusivement la programmation orientée objet, suis-je fétichiste ?",
+		"author":		"Belache",
+		"date":			"2019-05-29",
+		"visible":		true
+	},
+	{
+		"category":		"Cosmogonie",
+		"joke":			"Les platistes se débrouillent avec les moyens du bord.",
+		"author":		"Belache",
+		"date":			"2019-06-10",
+		"visible":		true
+	},
+	{
+		"category":		"Personnalité",
+		"joke":			"Simone Signoret et par conséquent ne savait rien d'elle-même.",
+		"author":		"Belache",
+		"date":			"2019-05-28",
+		"visible":		true
+	},
+	{
+		"category":		"Musique",
+		"joke":			"Ce site est aussi utile à l'humanité que l'est un bassiste à son groupe.",
+		"author":		"Belache",
+		"date":			"2019-01-01",
+		"visible":		true
+	},
+	{
+		"category":		"Absurde",
+		"joke":			"Moi je suis un mec CONTRE. Vous me dégoûtez tous à être POUR, bande de moutons!",
+		"author":		"Belache",
+		"date":			"2019-01-01",
+		"visible":		true
+	},
+	{
+		"category":		"Écologie",
+		"joke":			"Écologie: Certains tubas contiendraient de l'huile de palme!",
+		"author":		"Belache",
+		"date":			"2019-05-25",
+		"visible":		true
+	},
+	{
+		"category":		"Geek",
+		"joke":			"Avant-gardiste du clic, pour améliorer ma précision j'ai l’œil précurseur.",
+		"author":		"Belache",
+		"date":			"2019-05-19",
+		"visible":		true
+	},
+	{
+		"category":		"Gilet",
+		"joke":			"Les gilets jaunes réfléchissent en bande, sauf dans le noir.",
+		"author":		"Belache",
+		"date":			"2019-05-16",
+		"visible":		true
+	},
+	{
+		"category":		"Personnalité",
+		"joke":			"On aurait vu George Clooney à deux endroits différents simultanément.",
+		"author":		"Belache",
+		"date":			"2019-05-17",
+		"visible":		true
+	},
+	{
+		"category":		"Littérature",
+		"joke":			"50 nuances d'engrais: \"Oh oui! Fais-moi mal avec tes nitrates!\"",
+		"author":		"Belache",
+		"date":			"2019-05-16",
+		"visible":		true
+	},
+	{	
+		"category":		"Burn-out",
+		"joke":			"Ne parvenant plus à joindre les deux bouts, une corde s'est rompue.",
+		"author":		"Belache",
+		"date":			"2019-05-15",
+		"visible":		true
+	},
+	{	
+		"category":		"Littérature",
+		"joke":			"Don Quichotte s'est battu contre des moulins à vent, soit. Et après ?",
+		"author":		"Belache",
+		"date":			"2019-05-14" ,
+		"visible":		true
+	},
+	{
+		"category":		"Météorologie locale",
+		"joke":			"A Montpellier, lorsqu'il pleut à la Mosson, on appelle ça un pléonasme.",
+		"author":		"Belache",
+		"date":			"2019-05-14",
+		"visible":		true
+	},
+	{	
+		"category":		"Sexe",
+		"joke":			"Ne pas savoir s'en servir n'est-il pas un problème de taille?",
+		"author":		"Belache",
+		"date":			"2019-05-03",
+		"visible":		true
+	},
+	{	
+		"category":		"Acteur",
+		"joke":			"Aux dernières nouvelles Jim Carrey essaierait d'arrondir les angles.",
+		"author":		"Belache",
+		"date":			"2019-05-12",
+		"visible":		true
+	},
+	{	"category":		"Logique",
+		"joke":			"Tous les Patrick devraient s'appeler Bastien, puisque Patrick Sébastien.",
+		"author":		"Belache",
+		"date":			"2019-05-12",
+		"visible":		true
+	},
+	{	
+		"category":		"Déni",
+		"joke":			"Souhaitant maquiller une terrible vérité pendant des années, une personne malveillante s'est retrouvée incapable de régler sa note de cosmétiques.",
+		"author":		"Belache",
+		"date":			"2019-05-11",
+		"visible":		true
+	},
+	{	
+		"category":		"Cosmologie",
+		"joke":			"Un Astrolégiste prouve qu'un Alien est mort d'une météorite aigüe.",
+		"author":		"Belache",
+		"date":			"2019-05-10",
+		"visible":		true
+	},
+	{	
+		"category":		"Mathématiques",
+		"joke":			"L'infini, l'autre pas.",
+		"author":		"Belache",
+		"date":			"2019-05-09",
+		"visible":		true
+	},
+	{	
+		"category":		"Biodiversité",
+		"joke":			"Extinctions de masse jamais vues: le kilogramme a même perdu du poids !",
+		"author":		"Belache",
+		"date":			"2019-05-08",
+		"visible":		true
+	},
+	{	
+		"category":		"Chaume",
+		"joke":			"C'est un faîte, j'ai très envie de toit.",
+		"author":		"Belache",
+		"date":			"2019-04-07",
+		"visible":		true
+	},
+	{	
+		"category":		"Gastronomie",
+		"joke":			"Tu m’épates à tartiner.",
+		"author":		"Belache",
+		"date":			"2019-04-06" ,
+		"visible":		true
+	},
+	{	
+		"category":		"Jeu de mot",
+		"joke":			"Recalé à mon entretien d'entrée à la DGSE, me voilà d'humeur maussade...",
+		"author":		"Belache",
+		"date":			"2019-01-01" ,
+		"visible":		true
+	}
+]

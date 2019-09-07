@@ -1,40 +1,46 @@
 import { Injectable } from '@angular/core';
 import { Joke } from '../models/joke.model';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
+
+const jokeJsonFileUrl: string = 'assets/jokes.json';
 
 @Injectable({
   providedIn: 'root'
 })
 export class JokeService {
 
-  private jokes = new Array<Joke>();
+  private jokes = new Observable<Array<Joke>>();
 
-  constructor() {
+  constructor( private httpClient: HttpClient ) {
 
-    /* adding a single Joke for testing purposes */
+    this.jokes = this.getJokes();
 
-    const myJoke1: Joke = {
-      category: 'Catégorie test',
-      joke:     'Jeu de mots test',
-      author:   'Auteur test',
-      date:     'Date test'
+  }
+
+  getJokes(): Observable<Array<Joke>> {
+
+    return this.httpClient.get<Array<Joke>>(jokeJsonFileUrl).pipe( 
+      retry(3),
+      catchError( this.handleError )
+    );
+   
+  }
+
+  private handleError(error: HttpErrorResponse) {
+
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
     }
-    this.jokes.push( myJoke1 );
-
-    const myJoke2: Joke = {
-      category: 'Catégorie test 2',
-      joke:     'Jeu de mots test 2',
-      author:   'Auteur test 2',
-      date:     'Date test'
-    }
-
-    this.jokes.push( myJoke2);
-  }
-
-  getLastestJoke(): Joke {
-    return this.jokes[0];
-  }
-
-  getJokes(): Array<Joke> {
-    return this.jokes;
-  }
+    // return an observable with a user-facing error message
+    return throwError('Something bad happened; please try again later.');
+  };
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Joke } from '../models/joke.model';
-import { JokeService } from '../services/joke.service';
+import { Joke } from '../../models/joke.model';
+import { JokeService } from '../../services/joke.service';
 
 @Component({
   selector: 'app-today',
@@ -11,10 +11,23 @@ export class TodayComponent implements OnInit {
 
   private currentJoke: Joke;
 
-  constructor(private jokeService: JokeService) { }
+  constructor(private jokeService: JokeService)
+  {
+    /* Set a default joke in case service hasn't loaded data before page is displayed */
+    this.currentJoke = {
+      category: '...loading...',
+      joke:     '...loading...',
+      author:   '...',
+      date:     '...'
+    }
+  }
 
   ngOnInit() {
-    this.currentJoke = this.jokeService.getLastestJoke();
+
+    this.jokeService.getJokes().subscribe(
+        (jokes) => { this.currentJoke = jokes[0] }
+      );
+
   }
 
 }
