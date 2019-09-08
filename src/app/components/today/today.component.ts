@@ -10,24 +10,53 @@ import { JokeService } from '../../services/joke.service';
 export class TodayComponent implements OnInit {
 
   currentJoke: Joke;
+  private currentJokeId = 0;
+  private jokes: Joke[] = [];
 
-  constructor(private jokeService: JokeService)
-  {
+  constructor(private jokeService: JokeService) {
     /* Set a default joke in case service hasn't loaded data before page is displayed */
     this.currentJoke = {
       category: '...',
       joke:     '...',
       author:   '...',
       date:     '...'
-    }
+    };
   }
 
   ngOnInit() {
 
     this.jokeService.getJokes().then(
-        (jokes) => { this.currentJoke = jokes[0] }
+        (jokes) => {
+          this.jokes = jokes;
+          this.setCurrentJokeWithId(0);
+        }
       );
 
+  }
+
+  private setCurrentJokeWithId(id: number): void {
+    this.currentJokeId  = id;
+    this.currentJoke    = this.jokes[this.currentJokeId];
+  }
+
+  hasNext(): boolean {
+    return this.currentJokeId < this.jokes.length - 1;
+  }
+
+  hasPrevious(): boolean {
+    return this.currentJokeId > 1;
+  }
+
+  onPreviousButtonClicked(): void {
+    if ( this.hasPrevious() ) {
+      this.setCurrentJokeWithId(this.currentJokeId - 1 );
+    }
+  }
+
+  onNextButtonClicked(): void {
+    if ( this.hasNext() ) {
+      this.setCurrentJokeWithId(this.currentJokeId + 1 );
+    }
   }
 
 }

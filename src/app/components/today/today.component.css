@@ -1,0 +1,69 @@
+
+/* fix height to ensure next and prev buttons will not change position when a new joke is displayed */
+#jokeIntroductionDiv {
+    height: 2em;
+}
+
+#jokeBrowserDiv {
+    display: flex;
+    justify-content: space-around;
+    flex-flow: row;
+    align-items: center;
+    top:0px;
+    height: 300px;  
+}
+
+.border {
+    flex-shrink: 1;
+}
+
+.center {
+    flex-grow: 1;
+    margin: 20px;
+}
+
+.joke {
+    text-align: justify;
+    padding: 10px 40px;
+    border-radius: 10px;
+    border: 1px solid #fff;
+    font-size: 1.5em;
+    box-shadow: 0px 0px 20px 20px rgba(255, 255, 255, 0.3);
+}
+
+.note {
+    text-align: right;
+    font-size: 0.5em;
+    opacity: 0.5;
+}
+
+a.enable,
+a.disable {
+    padding: 10px 20px;
+    background-color: #EEE;
+    border-radius: 5px;
+    border: 1px solid #999;
+    margin: 2px;
+    margin-left: 1px;
+    background: linear-gradient(#fff, #ddd);
+    box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition-duration: 0.5s;
+}
+
+a.disable:hover {
+    border: 1px solid rgb(255, 85, 85);
+    background: linear-gradient(rgb(238, 148, 148), rgb(141, 0, 0));
+    cursor: default;
+    transition-duration: 2s;
+}
+
+a.enable:hover {
+    background: linear-gradient(#bbb, #888);
+    border: 1px solid #fff;
+    color: #fff;
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.9);
+    padding: 14px 20px;
+    transform: translate(5px, 5px);
+    transition-duration: 0.1s;
+}
