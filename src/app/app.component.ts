@@ -7,13 +7,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'jeudemots-ng';
+  title = 'Jeu de mots';
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
   }
-  
+
   getCurrentYear(): number {
     const now = new Date();
     return now.getFullYear();
