@@ -10,14 +10,15 @@ import { JokeService } from '../../services/joke.service';
 export class ListComponent implements OnInit {
 
   jokes: Array<Joke> = new Array<Joke>();
+  filterInput: string = '';
 
   constructor( private jokeService: JokeService ) { }
 
   ngOnInit() {
 
     this.jokeService.getJokes().then(
-      (jokes) => { this.jokes = jokes }
-    )
+      (jokes) => { this.jokes = jokes; }
+    );
 
   }
 

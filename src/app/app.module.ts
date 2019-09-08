@@ -14,6 +14,8 @@ import { AdvisesComponent } from './components/advises/advises.component';
 import { MoreComponent } from './components/more/more.component';
 import { Error404Component } from './components/error404/error404.component';
 
+import { JokeFilterPipe } from './pipes/jokefilter.pipe';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,10 +26,12 @@ import { Error404Component } from './components/error404/error404.component';
     ListComponent,
     AdvisesComponent,
     MoreComponent,
-    Error404Component
+    Error404Component,
+    JokeFilterPipe
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     HttpClientModule,
     RouterModule.forRoot(ROUTES)
   ],
