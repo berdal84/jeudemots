@@ -6,7 +6,7 @@
 <div id="jokeBrowserDiv">
 
     <div class="border">
-        <a [class]="hasPrevious() ? 'enable' : 'disable'" (click)="onPreviousButtonClicked()" [title]="hasPrevious() ? 'précédent' : 'plus rien par ici...'" ><</a>
+        <img src="assets/arrow-left.svg" [class]="hasPrevious() ? 'arrow enable' : 'arrow disable'" (click)="onPreviousButtonClicked()" [title]="hasPrevious() ? 'précédent' : 'plus rien par ici...'"/>
     </div>
 
     <div class="center">
@@ -17,7 +17,7 @@
     </div>
 
     <div class="border">
-        <a [class]="hasNext() ? 'enable' : 'disable'"(click)="onNextButtonClicked()" [title]="hasNext() ? 'suivant' : 'plus rien par là...'">></a>
+        <img src="assets/arrow-right.svg" [class]="hasNext() ? 'arrow enable' : 'arrow disable'"(click)="onNextButtonClicked()" [title]="hasNext() ? 'suivant' : 'plus rien par là...'" />
     </div>
 
 </div>
