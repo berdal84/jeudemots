@@ -44,7 +44,7 @@ export class TodayComponent implements OnInit {
   }
 
   hasPrevious(): boolean {
-    return this.currentJokeId > 1;
+    return this.currentJokeId > 0;
   }
 
   onPreviousButtonClicked(): void {
