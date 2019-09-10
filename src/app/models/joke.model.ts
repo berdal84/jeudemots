@@ -1,6 +1,6 @@
 export interface Joke {
     category:   string;
-    joke:       string;
+    text:       string;
     author:     string;
     date:       string;
 }

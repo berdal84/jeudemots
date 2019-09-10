@@ -22,7 +22,7 @@ export class JokeFilterPipe implements PipeTransform {
           matches = matches &&
                     (
                       eachJoke.category.toLowerCase().indexOf( word ) !== -1 ||
-                      eachJoke.joke.toLowerCase().indexOf( word ) !== -1 ||
+                      eachJoke.text.toLowerCase().indexOf( word ) !== -1 ||
                       eachJoke.author.toLowerCase().indexOf( word ) !== -1 ||
                       eachJoke.date.toLowerCase().indexOf( word ) !== -1
                     );

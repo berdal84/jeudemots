@@ -17,7 +17,7 @@ export class TodayComponent implements OnInit {
     /* Set a default joke in case service hasn't loaded data before page is displayed */
     this.currentJoke = {
       category: '...',
-      joke:     '...',
+      text:     '...',
       author:   '...',
       date:     '...'
     };
