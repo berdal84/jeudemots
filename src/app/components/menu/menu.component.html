@@ -1,31 +1,32 @@
-<div id="header">	
+<div id="header">
 
-    <a href="" routerLink="/" title="Accueil">
-        <img id="logo" src="assets/logo.png" alt="Logo" title="Accueil" />
-    </a>
-    
-    <div id="div_menu" >
-        <ul id="menu">
-            <li [class]="getClassForItem('/presentation')">
-                <a href="" routerLink="/presentation">PRESENTATION</a>
-            </li>
+    <div id="div_menu">
 
-            <li [class]="getClassForItem('/today')">
-                <a href="" routerLink="/today">AUJOURD'HUI</a>
-            </li>
+            <a href="" routerLink="/" title="Accueil">
+                <img id="logo" src="assets/logo.png" alt="Logo" title="Accueil" />
+            </a>
 
-            <li [class]="getClassForItem('/list')">
-                <a href="" routerLink="/list">LISTE</a>
-            </li>
+            <ul>
+                <li [class]="getClassForItem('/presentation')">
+                    <a href="" routerLink="/presentation">PRESENTATION</a>
+                </li>
 
-            <li [class]="getClassForItem('/advises')">
-                <a href="" routerLink="/advises">CONSEILS</a>
-            </li>
+                <li [class]="getClassForItem('/today')">
+                    <a href="" routerLink="/today">AUJOURD'HUI</a>
+                </li>
 
-            <li [class]="getClassForItem('/more')">
-                <a href="" routerLink="/more">?</a>
-            </li>
-        </ul>
-    </div>	
+                <li [class]="getClassForItem('/list')">
+                    <a href="" routerLink="/list">LISTE</a>
+                </li>
+
+                <li [class]="getClassForItem('/advises')">
+                    <a href="" routerLink="/advises">CONSEILS</a>
+                </li>
+
+                <li [class]="getClassForItem('/more')">
+                    <a href="" routerLink="/more">?</a>
+                </li>
+            </ul>
+    </div>
 
 </div>

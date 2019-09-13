@@ -1,23 +1,32 @@
+<div id="header">
+    <div id="jokeBrowserDiv">
+        <div class="center">
 
-<div id="jokeIntroductionDiv">
-    <p>Aujourd'hui, classé en catégorie <b>{{ currentJoke.category }}</b>, nous vous présentons en exclusivité :</p>
-</div>
+            <div id="topbar">                
+                <p id="category">{{ currentJoke.category }}</p>
+                
+                <div id="navbar">
+                    <img    src="assets/arrow-left.svg" 
+                            [class]="hasPrevious() ? 'arrow enable' : 'arrow disable'"
+                            (click)="onPreviousButtonClicked()"
+                            [title]="hasPrevious() ? 'précédent' : 'plus rien par ici...'" />
+                            
+                    <div style="width: 10px;"></div>
 
-<div id="jokeBrowserDiv">
+                    <img    src="assets/arrow-right.svg" 
+                            [class]="hasNext() ? 'arrow enable' : 'arrow disable'"
+                            (click)="onNextButtonClicked()" 
+                            [title]="hasNext() ? 'suivant' : 'plus rien par là...'" />
 
-    <div class="border">
-        <img src="assets/arrow-left.svg" [class]="hasPrevious() ? 'arrow enable' : 'arrow disable'" (click)="onPreviousButtonClicked()" [title]="hasPrevious() ? 'précédent' : 'plus rien par ici...'"/>
+                </div>
+
+
+            </div>            
+
+            <div id="joke">
+                <p>{{ currentJoke.text }}</p>
+                <p id="note"><i>par {{ currentJoke.author }}, le {{ currentJoke.date }}</i></p>
+            </div>
+        </div>
     </div>
-
-    <div class="center">
-        <div class="joke" style="flex: auto">
-            <p>{{ currentJoke.text }}</p>
-            <p class="note"><i>par {{ currentJoke.author }}, le {{ currentJoke.date }}</i></p>
-        </div>        
-    </div>
-
-    <div class="border">
-        <img src="assets/arrow-right.svg" [class]="hasNext() ? 'arrow enable' : 'arrow disable'"(click)="onNextButtonClicked()" [title]="hasNext() ? 'suivant' : 'plus rien par là...'" />
-    </div>
-
 </div>
