@@ -6,6 +6,6 @@
 	.st0{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
 </style>
 <g>
-	<polyline class="st0" points="14.8,2.2 6.2,10.7 14.6,19.1 	"/>
+	<polygon class="st0" points="7.3,19.1 15.8,10.7 7.3,2.2 	"/>
 </g>
 </svg>
