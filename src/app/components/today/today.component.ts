@@ -13,12 +13,12 @@ export class TodayComponent implements OnInit {
   private static TimePerJokeTextCharInSeconds   = 0.15;
 
   currentJoke: Joke;
+  isDiaporamaPlaying = false;
 
   private timePerJokeInSeconds = 5;
   private currentJokeId = 0;
   private jokes: Joke[] = [];
   private diaporamaTimer: number;
-  private isDiaporamaPlaying = false;
   private timeElapsedOnCurrentJokeInSeconds = 0;
 
   constructor(private jokeService: JokeService) {
@@ -83,7 +83,7 @@ export class TodayComponent implements OnInit {
 
         this.onNextButtonClicked();
 
-        // We pause the diaporama if there is no next joke
+        // We pause the diaporama if there is no next
         if (!this.hasNext()) {
           this.onPauseButtonClicked();
         }
