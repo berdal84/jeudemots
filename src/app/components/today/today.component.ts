@@ -9,34 +9,43 @@ import { JokeService } from '../../services/joke.service';
 })
 export class TodayComponent implements OnInit {
 
+  private static TimePerJokeIncrementInSeconds  = 1;
+  private static TimePerJokeTextCharInSeconds   = 0.15;
+
   currentJoke: Joke;
+
+  private timePerJokeInSeconds = 5;
   private currentJokeId = 0;
   private jokes: Joke[] = [];
+  private diaporamaTimer: number;
+  private isDiaporamaPlaying = false;
+  private timeElapsedOnCurrentJokeInSeconds = 0;
 
   constructor(private jokeService: JokeService) {
     /* Set a default joke in case service hasn't loaded data before page is displayed */
     this.currentJoke = {
       category: '...',
-      text:     '...',
-      author:   '...',
-      date:     '...'
+      text: '...',
+      author: '...',
+      date: '...'
     };
   }
 
   ngOnInit() {
 
     this.jokeService.getJokes().then(
-        (jokes) => {
-          this.jokes = jokes;
-          this.setCurrentJokeWithId(0);
-        }
-      );
+      (jokes) => {
+        this.jokes = jokes;
+        this.setCurrentJokeWithId(0);
+      }
+    );
 
   }
 
   private setCurrentJokeWithId(id: number): void {
     this.currentJokeId  = id;
     this.currentJoke    = this.jokes[this.currentJokeId];
+    this.resetDiaporamaTime();
   }
 
   hasNext(): boolean {
@@ -47,15 +56,61 @@ export class TodayComponent implements OnInit {
     return this.currentJokeId > 0;
   }
 
+  getDiaporamaTimerText(): string {
+    const timeLeftInSeconds = this.timePerJokeInSeconds - this.timeElapsedOnCurrentJokeInSeconds;
+    const str: string = 'Prochain jeu de mots dans ' + timeLeftInSeconds.toFixed(0) + ' sec.';
+    return str;
+  }
+
+  private resetDiaporamaTime(): void {
+    const jokeLength = this.currentJoke.text.length + this.currentJoke.category.length;
+    this.timePerJokeInSeconds = jokeLength * TodayComponent.TimePerJokeTextCharInSeconds;
+    this.timeElapsedOnCurrentJokeInSeconds = 0;
+  }
+
+  onPlayButtonClicked(): void {
+
+    this.resetDiaporamaTime();
+
+    // set an interval every seconds
+    this.diaporamaTimer = window.setInterval( () => {
+
+      // we increment elapsed time at each interval
+      this.timeElapsedOnCurrentJokeInSeconds += TodayComponent.TimePerJokeIncrementInSeconds;
+
+      const isTimeElapsed = this.timeElapsedOnCurrentJokeInSeconds >= this.timePerJokeInSeconds;
+      if ( isTimeElapsed ) {
+
+        this.onNextButtonClicked();
+
+        // We pause the diaporama if there is no next joke
+        if (!this.hasNext()) {
+          this.onPauseButtonClicked();
+        }
+
+      }
+
+    },
+    TodayComponent.TimePerJokeIncrementInSeconds * 1000 // 1 sec. DO NOT touch !
+    );
+
+    this.isDiaporamaPlaying = true;
+  }
+
+  onPauseButtonClicked(): void {
+    clearInterval(this.diaporamaTimer);
+    this.isDiaporamaPlaying = false;
+  }
+
   onPreviousButtonClicked(): void {
-    if ( this.hasPrevious() ) {
-      this.setCurrentJokeWithId(this.currentJokeId - 1 );
+    if (this.hasPrevious()) {
+      this.setCurrentJokeWithId(this.currentJokeId - 1);
     }
   }
 
   onNextButtonClicked(): void {
-    if ( this.hasNext() ) {
-      this.setCurrentJokeWithId(this.currentJokeId + 1 );
+    if (this.hasNext()) {
+      this.setCurrentJokeWithId(this.currentJokeId + 1);
     }
   }
 
