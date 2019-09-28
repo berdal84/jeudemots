@@ -1,5 +1,12 @@
 [
 	{
+		"category":     "Escalade",
+		"text":         "Un grimpeur tombe de haut en découvrant le concept de lâcher prise.",
+		"author":       "Guy Rocher",
+		"date":         "2019-09-28",
+		"visible":      true
+	},
+	{
 		"category":     "Science",
 		"text":         "Du soleil sur les îles est synonyme de plus d'espace puisque sous l'effet de la chaleur la tôle se dilate.",
 		"author":       "Mr Joule",
