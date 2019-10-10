@@ -2,31 +2,36 @@
     <div id="jokeBrowserDiv">
         <div class="center">
 
-            <div id="topbar">                
-                <p id="category">{{ currentJoke.category }}</p>
-                
-                <div id="navbar">
-                    <img    src="assets/arrow-left.svg" 
-                            [class]="hasPrevious() ? 'arrow enable' : 'arrow disable'"
-                            (click)="onPreviousButtonClicked()"
-                            [title]="hasPrevious() ? 'précédent' : 'plus rien par ici...'" />
-                            
-                    <div style="width: 10px;"></div>
+            <div id="topbar">
 
-                    <img    src="assets/arrow-right.svg" 
-                            [class]="hasNext() ? 'arrow enable' : 'arrow disable'"
-                            (click)="onNextButtonClicked()" 
-                            [title]="hasNext() ? 'suivant' : 'plus rien par là...'" />
+                <p id="jokeCategory">{{ currentJoke.category }}</p>
+
+                <div id="navbar">
+
+                    <img src="assets/arrow-left.svg"
+                        [class]="hasPrevious() ? 'navbar-btn' : 'navbar-btn-disable'"
+                        (click)="onPreviousButtonClicked()"
+                        [title]="hasPrevious() ? 'précédent' : 'plus rien par ici...'" />
+
+                    <img *ngIf="!isDiaporamaPlaying" src="assets/play.svg" class="navbar-btn"
+                        (click)="onPlayButtonClicked()" title="Démarrer le diaporama" />
+
+                    <img *ngIf="isDiaporamaPlaying" src="assets/pause.svg" class="navbar-btn"
+                        (click)="onPauseButtonClicked()" title="Mettre le diaporama en pause" />
+
+                    <img src="assets/arrow-right.svg"
+                        [class]="hasNext() ? 'navbar-btn' : 'navbar-btn-disable'"
+                        (click)="onNextButtonClicked()" [title]="hasNext() ? 'suivant' : 'plus rien par là...'" />
 
                 </div>
-
-
-            </div>            
+            </div>
 
             <div id="joke">
-                <p>{{ currentJoke.text }}</p>
-                <p id="note"><i>par {{ currentJoke.author }}, le {{ currentJoke.date }}</i></p>
+                <p id="jokeText">{{ currentJoke.text }}</p>
+                <p id="jokeNote"><i>par {{ currentJoke.author }}, le {{ currentJoke.date }}</i></p>
             </div>
         </div>
     </div>
+
+    <p id="diaporamaTimer" *ngIf="isDiaporamaPlaying">{{ getDiaporamaTimerText() }}</p>
 </div>

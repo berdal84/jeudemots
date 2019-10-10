@@ -1,5 +1,19 @@
 [
 	{
+		"category":     "Paradoxe",
+		"text":         "L'absence de jeu de maux est un peu sadique...",
+		"author":       "Le Marquis",
+		"date":         "2019-10-10",
+		"visible":      true
+	},
+	{
+		"category":     "Escalade",
+		"text":         "Un grimpeur tombe de haut en découvrant le concept de lâcher prise.",
+		"author":       "Guy Rocher",
+		"date":         "2019-09-28",
+		"visible":      true
+	},
+	{
 		"category":     "Science",
 		"text":         "Du soleil sur les îles est synonyme de plus d'espace puisque sous l'effet de la chaleur la tôle se dilate.",
 		"author":       "Mr Joule",
