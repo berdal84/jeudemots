@@ -1,5 +1,12 @@
 [
 	{
+		"category":     "Paradoxe",
+		"text":         "L'absence de jeu de maux est un peu sadique...",
+		"author":       "Le Marquis",
+		"date":         "2019-10-10",
+		"visible":      true
+	},
+	{
 		"category":     "Escalade",
 		"text":         "Un grimpeur tombe de haut en découvrant le concept de lâcher prise.",
 		"author":       "Guy Rocher",
