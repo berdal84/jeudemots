@@ -12,10 +12,11 @@ import { TodayComponent } from './components/today/today.component';
 import { ListComponent } from './components/list/list.component';
 import { AdvisesComponent } from './components/advises/advises.component';
 import { MoreComponent } from './components/more/more.component';
+import { ContributeComponent } from './components/contribute/contribute.component';
 import { Error404Component } from './components/error404/error404.component';
 
 import { JokeFilterPipe } from './pipes/jokefilter.pipe';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,11 +28,13 @@ import { FormsModule } from '@angular/forms';
     AdvisesComponent,
     MoreComponent,
     Error404Component,
-    JokeFilterPipe
+    JokeFilterPipe,
+    ContributeComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot(ROUTES)
   ],
