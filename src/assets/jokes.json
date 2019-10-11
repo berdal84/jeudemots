@@ -1,5 +1,12 @@
 [
 	{
+		"category":     "Fin du monde",
+		"text":         "La marche pour le climat a été annulée pour cause de mauvais temps",
+		"author":       "A.",
+		"date":         "2019-10-11",
+		"visible":      true
+	},
+	{
 		"category":     "Paradoxe",
 		"text":         "L'absence de jeu de maux est un peu sadique...",
 		"author":       "Le Marquis",
