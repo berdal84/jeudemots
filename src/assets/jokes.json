@@ -1,5 +1,19 @@
 [
 	{
+		"category":     "Personnalité",
+		"text":         "Je vous parlerai volontiers de mon pénis si ce n'était pas une mince affaire",
+		"author":       "Alfred Hugecock",
+		"date":         "2019-10-13",
+		"visible":      true
+	},
+	{
+		"category":     "Fin du monde",
+		"text":         "La marche pour le climat a été annulée pour cause de mauvais temps",
+		"author":       "Jean-Bulbe de Poche Decôtay-Duscac",
+		"date":         "2019-10-11",
+		"visible":      true
+	},
+	{
 		"category":     "Paradoxe",
 		"text":         "L'absence de jeu de maux est un peu sadique...",
 		"author":       "Le Marquis",
