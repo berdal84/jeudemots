@@ -30,8 +30,8 @@
  */
 
 // Get the POST variables
-$from    = $_POST['from'];
-$joke    = filter_var( $_POST['joke'], FILTER_VALIDATE_EMAIL );
+$from    = filter_var( $_POST['from'], FILTER_VALIDATE_EMAIL );
+$joke    = $_POST['joke'];
 
 // Prepare the mail parameters
 $to      = 'contact@dalle-cort.fr';
