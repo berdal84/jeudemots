@@ -27,26 +27,33 @@ $data 		= json_decode($rawData);
 
 // Prepare the mail parameters
 $to      = 'contact@dalle-cort.fr';
-$subject = 'Joke Proposal';
+$subject = 'Proposition de jeu de mots';
 
-$message  = '<html><body>';
+$messageTemplate = "
+    <html>
+        <body>
+            <h1>Nouvelle proposition de jeu de mot !</h1>
+            <h2>Jeu de mot</h2>
+            <p>Catégorie: %s</p>
+            <p>Texte: %s</p>
+            <p>Auteur: %s</p>
+            <p>Date: %s</p>
+        </body>
+    </html>
+    ";
 
-$message .= '<h1>Nouvelle proposition de jeu de mot !</h1>';
+$message  = sprintf( $messageTemplate,  $data->joke->category,
+                                        $data->joke->text,
+                                        $data->joke->author,
+                                        $data->joke->date);
 
-$message .= '<h2>Jeu de mot</h2>';
-$message .= '<p>Catégorie: ' . $data->joke->category . '</p>';
-$message .= '<p>Texte: ' . $data->joke->text . '</p>';
-$message .= '<p>Auteur: ' . $data->joke->author . '</p>';
-$message .= '<p>Date: ' . $data->joke->date . '</p>';
-
-$message .= '</body></html>';
 
 $headers = array(
-	'from'          => $data->from,
+	'From'          => $data->from,
     'X-Mailer'      => 'PHP/' . phpversion(),
     'MIME-Version'  => '1.0',
 	'Content-Type'  => 'text/html',
-	'charset'       => 'utf-8'
+	'Charset'       => 'utf-8'
 );
 
 // set the mail and echo a message in case of success / fail
