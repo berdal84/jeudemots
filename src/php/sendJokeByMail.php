@@ -52,8 +52,7 @@ $headers = array(
 	'From'          => $data->from,
     'X-Mailer'      => 'PHP/' . phpversion(),
     'MIME-Version'  => '1.0',
-	'Content-Type'  => 'text/html',
-	'Charset'       => 'utf-8'
+	'Content-Type'  => 'text/html; charset=utf-8'
 );
 
 // set the mail and echo a message in case of success / fail
