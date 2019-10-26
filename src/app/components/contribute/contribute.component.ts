@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { JokeService } from 'src/app/services/joke.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-contribute',
@@ -11,7 +13,9 @@ export class ContributeComponent implements OnInit {
     contributeForm: FormGroup;
     submitted = false;
 
-    constructor(private formBuilder: FormBuilder) { }
+    constructor(  private jokeService: JokeService) {
+
+    }
 
     ngOnInit() {
 
@@ -55,7 +59,20 @@ export class ContributeComponent implements OnInit {
 
       if ( !this.contributeForm.invalid) {
         const jsonAsString = JSON.stringify(this.contributeForm.value, null, 4);
-        alert('Formulaire envoyé ! \n\n' + jsonAsString);
+
+        const datePipe = new DatePipe('en-US');
+
+        // construct the Joke using form values :
+        const joke = {
+          category: this.contributeForm.get( 'category' ).value,
+          text:     this.contributeForm.get( 'text' ).value,
+          author:   this.contributeForm.get( 'author' ).value,
+          date:     datePipe.transform(new Date(), 'yyyy-MM-dd')
+        };
+
+        const email = this.contributeForm.get( 'email' ).value;
+
+        this.jokeService.sendJokeByMail( email, joke);
       }
     }
 
