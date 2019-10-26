@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Joke } from '../models/joke.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
-const jokeJsonFileUrl: string = 'assets/jokes.json';
+const JOKE_JSON_FILE_URL    = 'assets/jokes.json';
+const SEND_JOKE_BY_MAIL_URL = 'php/sendJokeByMail.php';
 
 @Injectable({
   providedIn: 'root'
@@ -15,18 +16,36 @@ export class JokeService {
 
   constructor( private httpClient: HttpClient ) {
 
-    // get JSON once
-    this.jokes = this.httpClient.get<Array<Joke>>(jokeJsonFileUrl).pipe( 
-      retry(3),
+    this.getJokesFromJSON();
+
+  }
+
+  /**
+   * 
+   * @param from the mail adress of the author.
+   * @param joke a Joke object.
+   */
+  sendJokeByMail( from: string, joke: Joke): void {
+
+    const result = this.httpClient.post(SEND_JOKE_BY_MAIL_URL, { from, joke }).pipe(
       catchError( this.handleError )
     ).toPromise();
+
+    result.then( val => { console.log('Mail send result:', val); });
 
   }
 
   getJokes(): Promise<Array<Joke>> {
 
     return this.jokes;
-   
+
+  }
+
+  private getJokesFromJSON(): void {
+    this.jokes = this.httpClient.get<Array<Joke>>(JOKE_JSON_FILE_URL).pipe(
+      retry(3),
+      catchError( this.handleError )
+    ).toPromise();
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -43,5 +62,5 @@ export class JokeService {
     }
     // return an observable with a user-facing error message
     return throwError('Something bad happened; please try again later.');
-  };
+  }
 }

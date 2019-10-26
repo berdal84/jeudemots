@@ -2,14 +2,11 @@
 
     <div id="div_menu">
 
-            <a href="" routerLink="/" title="Accueil">
+            <a href="" routerLink="/presentation" title="Accueil">
                 <img id="logo" src="assets/logo.png" alt="Logo" title="Accueil" />
             </a>
 
             <ul>
-                <li [class]="getClassForItem('/presentation')">
-                    <a href="" routerLink="/presentation">PRESENTATION</a>
-                </li>
 
                 <li [class]="getClassForItem('/today')">
                     <a href="" routerLink="/today">AUJOURD'HUI</a>
@@ -23,9 +20,14 @@
                     <a href="" routerLink="/advises">CONSEILS</a>
                 </li>
 
+                <li [class]="getClassForItem('/contribute')">
+                    <a href="" routerLink="/contribute">CONTRIBUER</a>
+                </li>
+
                 <li [class]="getClassForItem('/more')">
                     <a href="" routerLink="/more">?</a>
                 </li>
+
             </ul>
     </div>
 

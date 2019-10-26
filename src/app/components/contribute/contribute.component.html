@@ -1,0 +1,101 @@
+<h2>Formulaire de contribution</h2>
+
+<p>
+    Soumettez une proposition de jeu de mots grâce à ce formulaire.
+    Votre jeu de mot sera accepté ou non en fonction de l'avis très subjectif de B.
+</p>
+
+<p>
+    Pour le moment l'ajout n'est pas automatisé et peut nécessiter quelques jours...
+</p>
+
+<br>
+
+<form [formGroup]="contributeForm" (ngSubmit)="onSubmit()">
+
+    <!-- Category -->
+    <div class="flex-row">
+        <label class="flex-left">Catégorie*</label>
+        <div class="flex-right">
+            <input type="text" formControlName="category" maxlength="20" />
+            <div *ngIf="submitted && invalid && controls.category.errors" class="invalid-feedback">
+                <p *ngIf="controls.category.errors.required">Catégorie requise</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Text -->
+    <div class="flex-row">
+        <label class="flex-left">Texte*</label>
+        <div class="flex-right">
+            <textarea class="joke-text-input" type="text" rows="3" maxlength="85"
+                formControlName="text"></textarea>
+            <div *ngIf="submitted && invalid && controls.text.errors" class="invalid-feedback">
+                <p *ngIf="controls.text.errors.required">Texte requis</p>
+                <p *ngIf="controls.text.errors.minlength">5 caractères minimum</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Author -->
+    <div class="flex-row">
+        <label class="flex-left">Auteur*</label>
+        <div class="flex-right">
+            <input type="text" formControlName="author" maxlength="20" />
+            <div *ngIf="submitted && invalid && controls.author.errors" class="invalid-feedback">
+                <p *ngIf="controls.author.errors.required">Auteur requis</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email -->
+    <div class="flex-row">
+        <label class="flex-left">Email</label>
+        <div class="flex-right">
+            <input type="text" formControlName="email" />
+            <div *ngIf="submitted && invalid && controls.email.errors" class="invalid-feedback">
+                <p *ngIf="controls.email.errors">Email incorrect, merci de le corriger. Ce champ est facultatif vous pouvez aussi le laisser vide.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkbox I ACCEPT THE TERMS... -->
+    <div class="flex-row">
+        <label class="flex-left"></label>
+        <div class="flex-right flex-row">
+            <input type="checkbox" formControlName="acceptTerms" id="acceptTerms" />
+            <label for="acceptTerms" class="form-check-label"> En cochant cette case je déclare être l'auteur de ce jeu de mot et donne mon accord pour le publier ici sans aucune contrepartie.*</label>
+        </div>
+
+    </div>
+    <div class="flex-row invalid-feedback" *ngIf="submitted && invalid && controls.acceptTerms.errors">
+        <label class="flex-left"></label>
+        <p class="flex-right flex-row">Pour proposer votre jeu de mots vous devez accepter nos conditions d'utilisation.
+        </p>
+    </div>
+    <div>
+        <p style="font-size: 0.7em">*: requis.</p>
+    </div>
+    <!-- Send/Reset buttons -->
+    <div class="flex-row">
+        <div class="flex-left"></div>
+        <div class="flex-right">
+            <button type="reset" (click)="onReset()">Recommencer</button>
+            <button>Soumettre</button>
+        </div>
+    </div>
+
+    <!-- Global error message (with a joke inside) -->
+    <div class="flex-row" *ngIf="submitted && invalid">
+        <div class="flex-left"></div>
+        <p class="flex-right flex-row invalid-feedback-joke">Oh... la moissonneuse du rire n'a pas pu récolter tous les champs ^^.</p>
+    </div>
+
+    <!-- Global confirmation message (with a joke inside) -->
+    <div class="flex-row" *ngIf="submitted && !invalid">
+        <div class="flex-left"></div>
+        <p class="flex-right flex-row valid-feedback-joke">La moissonneuse du rire a bien récolté tous les champs, le grain a été expédié au
+            moulin...</p>
+    </div>
+
+</form>

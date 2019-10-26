@@ -5,6 +5,7 @@ import { ListComponent } from './components/list/list.component';
 import { AdvisesComponent } from './components/advises/advises.component';
 import { MoreComponent } from './components/more/more.component';
 import { Error404Component } from './components/error404/error404.component';
+import { ContributeComponent } from './components/contribute/contribute.component';
 
 export const ROUTES: Routes = [
     {
@@ -26,6 +27,10 @@ export const ROUTES: Routes = [
     {
         path: 'more',
         component: MoreComponent
+    },
+    {
+        path: 'contribute',
+        component: ContributeComponent
     },
     {
         path: '',
