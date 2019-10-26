@@ -7,40 +7,46 @@
  * Prerequisites:
  * ==============
  * 
- * 1 - the JSON object should be a POST variable named 'joke':
- * -----------------------------------------------------------
+ * the body of the request should be a JSON with this form :
  * 
- *  $_POST['joke']
- * 
- * 2 - the joke should be a JSON object matching with this template :
- * ------------------------------------------------------------------
- *  
  * {
- *      category:   string,
- *      text:       string,
- *      author:     string,
- *      date:       string
+ * 		from: 'email@adress.com',
+ * 		joke: {
+ *      	category:   string,
+ *      	text:       string,
+ *      	author:     string,
+ *      	date:       string        // 'yyyy-MM-dd' formatted
+ * 		}
  * }
- * 
- * 3 - the emitter email should be a POST variable named 'from':
- * -------------------------------------------------------------
- * 
- * $_POST['from']
  * 
  */
 
-// Get the POST variables
-$from    = filter_var( $_POST['from'], FILTER_VALIDATE_EMAIL );
-$joke    = $_POST['joke'];
+// Get the JSON from the body of the post request
+$rawData 	= file_get_contents('php://input');                   // Takes raw data from the request
+$data 		= json_decode($rawData);
 
 // Prepare the mail parameters
 $to      = 'contact@dalle-cort.fr';
 $subject = 'Joke Proposal';
-$message = $joke;
+
+$message  = '<html><body>';
+
+$message .= '<h1>Nouvelle proposition de jeu de mot !</h1>';
+
+$message .= '<h2>Jeu de mot</h2>';
+$message .= '<p>Catégorie: ' . $data->joke->category . '</p>';
+$message .= '<p>Texte: ' . $data->joke->text . '</p>';
+$message .= '<p>Auteur: ' . $data->joke->author . '</p>';
+$message .= '<p>Date: ' . $data->joke->date . '</p>';
+
+$message .= '</body></html>';
+
 $headers = array(
-    'From'     => $from,
-    'Reply-To' => $from,
-    'X-Mailer' => 'PHP/' . phpversion()
+	'from'          => $data->from,
+    'X-Mailer'      => 'PHP/' . phpversion(),
+    'MIME-Version'  => '1.0',
+	'Content-Type'  => 'text/html',
+	'charset'       => 'utf-8'
 );
 
 // set the mail and echo a message in case of success / fail
@@ -48,7 +54,7 @@ $headers = array(
 if ( mail($to, $subject, $message, $headers) ) {
     echo "Mail sent !";
 } else {
-    echo "Mail sending failed !";
+    die( "Mail sending failed !" );
 }
 
 ?>
