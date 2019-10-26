@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --prod --base-href /jeudemots/",
+    "build-dev": "ng build --prod --base-href /jeudemots-dev/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
