@@ -30,17 +30,17 @@ $to      = 'contact@dalle-cort.fr';
 $subject = 'Proposition de jeu de mots';
 
 $messageTemplate = "
-    <html>
-        <body>
-            <h1>Nouvelle proposition de jeu de mot !</h1>
-            <h2>Jeu de mot</h2>
-            <p>Catégorie: %s</p>
-            <p>Texte: %s</p>
-            <p>Auteur: %s</p>
-            <p>Date: %s</p>
-        </body>
-    </html>
-    ";
+<html>
+    <body>
+        <h1>Nouvelle proposition de jeu de mot !</h1>
+        <h2>Jeu de mot</h2>
+        <p>Catégorie: %s</p>
+        <p>Texte: %s</p>
+        <p>Auteur: %s</p>
+        <p>Date: %s</p>
+    </body>
+</html>
+";
 
 $message  = sprintf( $messageTemplate,  $data->joke->category,
                                         $data->joke->text,
