@@ -1,5 +1,11 @@
 [
 	{
+		"category":     "Faim de week-end",
+		"text":         "Alain dit: 'Bon week-end !'",
+		"author":       "Rat Mouraï",
+		"date":         "2020-01-27",
+		"visible":      true
+	},{
 		"category":     "Japon féodal",
 		"text":         "A rat qui rit suffit sa peine.",
 		"author":       "Rat Mouraï",
