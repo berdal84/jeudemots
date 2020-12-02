@@ -1,5 +1,5 @@
 
-# Jeu de mots (Angular 8.x version)
+# Jeu de mots (Angular 9 version)
 
 This is the source repository for the website [www.relativementutile.fr/jeudemots](https://www.relativementutile.fr/jeudemots)
 
@@ -7,5 +7,5 @@ This is the source repository for the website [www.relativementutile.fr/jeudemot
 ![2019_09_08_screenshot.jpg](https://github.com/berdal84/jeudemots-ng/blob/master/src/assets/lastest_screenshot.jpg)
 
 # History
-This project was first (old repository is [here](https://www.github.com/berdal84/jeudemots)) developped using AngularJS 1.7.x and has been translated for Angular 8.x.
+This project was first (old repository is [here](https://www.github.com/berdal84/jeudemots)) developped using AngularJS 1.7.x and has been translated for Angular 9.
 
