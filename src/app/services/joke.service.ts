@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
-const JOKE_JSON_FILE_URL    = 'assets/jokes.json';
+const JOKE_JSON_FILE_URL    = 'https://raw.githubusercontent.com/berdal84/jeudemots-ng/master/jokes.json';
 const SEND_JOKE_BY_MAIL_URL = 'php/sendJokeByMail.php';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class JokeService {
   }
 
   /**
-   * 
+   *
    * @param from the mail adress of the author.
    * @param joke a Joke object.
    */
