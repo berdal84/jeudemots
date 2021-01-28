@@ -7,6 +7,7 @@
     "build": "ng build --prod --base-href /jeudemots/",
     "build-dev": "ng build --prod --base-href /jeudemots-dev/",
     "test": "ng test",
+    "test:cov": "ng test --codeCoverage=true --progress=true",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "postinstall": "ngcc"
