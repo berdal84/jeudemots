@@ -1,5 +1,12 @@
 [
-  	{
+  {
+		"category":     "Science",
+		"text":         "Si on arrêtait le SARS-CoV-2, ce serait contre-productif de le mettre en cellule.",
+		"author":       "Jessuie Laugique, PhD",
+		"date":         "2021-01-31",
+		"visible":      true
+	},
+  {
 		"category":     "Succès story",
 		"text":         "J'ai tout investi dans la pierre et j'en ai fait carrière.",
 		"author":       "Jean-Louis Roque",
