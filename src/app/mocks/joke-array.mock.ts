@@ -3,7 +3,7 @@ import { Joke } from "src/app/models/joke.model";
 /**
  * Simple array with two jokes for testing purpose.
  */
-export const JokesArrayMock: Joke[] = [
+export const JOKE_ARRAY_MOCK: Joke[] = [
     {
       category: 'unit test 1',
       text: 'this is a test 1',

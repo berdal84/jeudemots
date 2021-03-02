@@ -3,6 +3,7 @@ import { Joke } from '../models/joke.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ReplaySubject, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import { MailSubmission } from '../models/mail-submission.model';
 
 const JOKE_JSON_FILE_URL    = 'https://raw.githubusercontent.com/berdal84/jeudemots-ng/master/jokes.json';
 const SEND_JOKE_BY_MAIL_URL = 'php/sendJokeByMail.php';
@@ -20,19 +21,17 @@ export class JokeService {
   }
 
   /**
-   *
-   * @param from the mail adress of the author.
-   * @param joke a Joke object.
+   * Send a new joke submission by email.
    */
-  sendJokeByMail( from: string, joke: Joke): void {
+  sendJokeByMail(submission: MailSubmission): void {
 
-    const result = this.httpClient
-    .post(SEND_JOKE_BY_MAIL_URL, { from, joke })
+    this.httpClient
+    .post<MailSubmission>(SEND_JOKE_BY_MAIL_URL, submission)
     .pipe(
+      retry(3),
       catchError( this.handleError )
-    ).toPromise();
-
-    result.then( val => { console.log('Mail send result:', val); });
+    )
+    .subscribe( result => { console.log('Mail sent. Result:', result); });
 
   }
 
