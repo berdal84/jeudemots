@@ -6,7 +6,7 @@ import { Joke } from '../models/joke.model';
 })
 export class JokeFilterPipe implements PipeTransform {
 
-  transform(jokes: Joke[], filter: string): any {
+  transform(jokes: Joke[], filter: string): Joke[] {
 
     if (jokes && filter !== '') {
 
