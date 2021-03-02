@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Joke } from '../../models/joke.model';
 import { JokeService } from '../../services/joke.service';
 
@@ -7,7 +8,7 @@ import { JokeService } from '../../services/joke.service';
   templateUrl: './today.component.html',
   styleUrls: ['./today.component.css']
 })
-export class TodayComponent implements OnInit {
+export class TodayComponent implements OnInit, OnDestroy {
 
   private static TimePerJokeIncrementInSeconds  = 1;
   private static TimePerJokeTextCharInSeconds   = 0.15;
@@ -20,6 +21,7 @@ export class TodayComponent implements OnInit {
   private jokes: Joke[] = [];
   private diaporamaTimer: number;
   private timeElapsedOnCurrentJokeInSeconds = 0;
+  private subscription: Subscription;
 
   constructor(private jokeService: JokeService) {
     /* Set a default joke in case service hasn't loaded data before page is displayed */
@@ -32,14 +34,16 @@ export class TodayComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.jokeService.getJokes().then(
+    this.subscription = this.jokeService.jokes.subscribe(
       (jokes) => {
         this.jokes = jokes;
         this.setCurrentJokeWithId(0);
       }
     );
+  }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   private setCurrentJokeWithId(id: number): void {
