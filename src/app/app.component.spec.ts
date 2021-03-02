@@ -15,7 +15,7 @@ import { MoreComponent } from './components/more/more.component';
 import { TodayComponent } from './components/today/today.component';
 import { JokeFilterPipe } from './pipes/jokefilter.pipe';
 
-fdescribe('AppComponent', () => {
+describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
