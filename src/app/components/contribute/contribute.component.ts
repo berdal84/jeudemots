@@ -106,4 +106,11 @@ export class ContributeComponent implements OnInit {
         this.submitted = false;
         this.contributeForm.reset();
     }
+
+    /**
+     * Shortcut to this.contributeForm.controls
+     */
+    get controls() {
+      return this.contributeForm.controls;
+    }
 }
