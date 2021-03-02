@@ -1,12 +1,44 @@
+import { HttpClientModule } from '@angular/common/http';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
+import { ROUTES } from './app.routes';
+import { AdvisesComponent } from './components/advises/advises.component';
+import { ContributeComponent } from './components/contribute/contribute.component';
+import { Error404Component } from './components/error404/error404.component';
+import { HomeComponent } from './components/home/home.component';
+import { ListComponent } from './components/list/list.component';
+import { MoreComponent } from './components/more/more.component';
+import { TodayComponent } from './components/today/today.component';
+import { JokeFilterPipe } from './pipes/jokefilter.pipe';
 
-describe('AppComponent', () => {
+fdescribe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent,
+        HomeComponent,
+        TodayComponent,
+        ListComponent,
+        ContributeComponent,
+        AdvisesComponent,
+        MoreComponent,
+        Error404Component,
+        JokeFilterPipe
       ],
+      imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        RouterModule.forRoot(ROUTES)
+      ],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+      ]
     }).compileComponents();
   }));
 
@@ -16,16 +48,9 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'jeudemots-ng'`, () => {
+  it(`should have as title 'Jeu de mots'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('jeudemots-ng');
-  });
-
-  it('should render title in a h1 tag', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to jeudemots-ng!');
+    expect(app.title).toEqual('Jeu de mots');
   });
 });
