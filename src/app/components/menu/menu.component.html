@@ -2,33 +2,15 @@
 
     <div id="div_menu">
 
-            <a href="" routerLink="/presentation" title="Accueil">
-                <img id="logo" src="assets/logo.png" alt="Logo" title="Accueil" />
-            </a>
+        <a href="" routerLink="/presentation" title="Accueil">
+            <img id="logo" src="assets/logo.png" alt="Logo" title="Accueil" />
+        </a>
 
-            <ul>
+        <ul>
+            <li *ngFor="let eachLink of links" [class]="getClassFor(eachLink.route)">
+                <a href="" [routerLink]="eachLink.route">{{eachLink.label}}</a>
+            </li>
+        </ul>
 
-                <li [class]="getClassForItem('/today')">
-                    <a href="" routerLink="/today">AUJOURD'HUI</a>
-                </li>
-
-                <li [class]="getClassForItem('/list')">
-                    <a href="" routerLink="/list">LISTE</a>
-                </li>
-
-                <li [class]="getClassForItem('/advises')">
-                    <a href="" routerLink="/advises">CONSEILS</a>
-                </li>
-
-                <li [class]="getClassForItem('/contribute')">
-                    <a href="" routerLink="/contribute">CONTRIBUER</a>
-                </li>
-
-                <li [class]="getClassForItem('/more')">
-                    <a href="" routerLink="/more">?</a>
-                </li>
-
-            </ul>
     </div>
-
 </div>

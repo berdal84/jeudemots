@@ -6,6 +6,11 @@ interface PageModel {
   label: string;
 }
 
+interface Link {
+  label: string;
+  route: string;
+}
+
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
@@ -13,14 +18,39 @@ interface PageModel {
 })
 export class MenuComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  readonly links: Array<Link>;
+
+  constructor(private router: Router) {
+    this.links = [
+      {
+        label: `AUJOURD'HUI`,
+        route: '/today'
+      },
+      {
+        label: `LISTE`,
+        route: '/list'
+      },
+      {
+        label: 'ADVISES',
+        route: '/advises'
+      },
+      {
+        label: 'CONTRIBUER',
+        route: '/contribute'
+      },
+      {
+        label: '?',
+        route: '/more'
+      }
+    ];
+  }
 
   ngOnInit() {}
 
   /* Return a class name for url depending on current route.url */
-  getClassForItem(url: string): string {
+  getClassFor(route: string): string {
 
-    return this.router.url === url ? 'itemEnable' : 'itemDisable';
+    return this.router.url === route ? 'itemEnable' : 'itemDisable';
     
   }
 }
