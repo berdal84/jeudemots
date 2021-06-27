@@ -1,5 +1,5 @@
 
-# Jeu de mots (Angular 9 version)
+# Jeu de mots (Angular 2+ version)
 
 <a href="https://github.com/berdal84/jeudemots-ng/actions?query=workflow Node.js CI" title="ng build">
 <img src="https://github.com/berdal84/jeudemots-ng/workflows/Node.js CI/badge.svg" />
