@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
@@ -16,7 +16,7 @@ import { TodayComponent } from './components/today/today.component';
 import { JokeFilterPipe } from './pipes/jokefilter.pipe';
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
@@ -34,7 +34,7 @@ describe('AppComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
-        RouterModule.forRoot(ROUTES)
+        RouterModule.forRoot(ROUTES, { relativeLinkResolution: 'legacy' })
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA

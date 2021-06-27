@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
@@ -18,7 +18,7 @@ describe('MenuComponent', () => {
   let component: MenuComponent;
   let fixture: ComponentFixture<MenuComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         MenuComponent,
@@ -36,7 +36,7 @@ describe('MenuComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
-        RouterModule.forRoot(ROUTES)
+        RouterModule.forRoot(ROUTES, { relativeLinkResolution: 'legacy' })
       ]
     })
     .compileComponents();

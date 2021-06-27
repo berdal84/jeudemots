@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { JokeServiceMock } from 'src/app/mocks/joke-service.mock';
@@ -10,7 +10,7 @@ describe('ContributeComponent', () => {
   let component: ContributeComponent;
   let fixture: ComponentFixture<ContributeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         ContributeComponent

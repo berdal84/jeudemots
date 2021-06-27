@@ -1,4 +1,4 @@
-import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { JOKE_ARRAY_MOCK } from 'src/app/mocks/joke-array.mock';
 import { JokeServiceMock } from 'src/app/mocks/joke-service.mock';
 import { JokeService } from 'src/app/services/joke.service';
@@ -8,7 +8,7 @@ describe(TodayComponent.name, () => {
   let component: TodayComponent;
   let fixture: ComponentFixture<TodayComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         TodayComponent
