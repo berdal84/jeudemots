@@ -27,4 +27,8 @@ export class UserService {
     this.#currentUser.logged = true;
     return true;
   }
+
+  isLogged(): boolean {
+    return this.#currentUser.logged;
+  }
 }

@@ -20,8 +20,11 @@
             <td>
                 <p class="underlined">Date</p>
             </td>
+            <td *ngIf="canShowActions()">
+                <p class="underlined">Actions</p>
+            </td>
         </tr>
-        <tr *ngFor="let joke of jokes | jokeFilter: filterInput">
+        <tr *ngFor="let joke of jokes | jokeFilter: filterInput" [class]="{hidden: !joke.visible }">
             <td>
                 <p style="text-align:left;">{{ joke.category }}</p>
             </td>
@@ -33,6 +36,14 @@
             </td>
             <td>
                 <p>{{ joke.date }}</p>
+            </td>
+
+            <td *ngIf="canShowActions()">
+                <div class="actions">
+                    <button (click)="toggleVisibility(joke)">{{ joke.visible ? 'masquer' : 'publier'}}</button>
+                    <button (click)="edit(joke)">éditer</button>
+                    <button (click)="delete(joke)">supprimer</button>                    
+                </div>
             </td>
         </tr>
     </table>

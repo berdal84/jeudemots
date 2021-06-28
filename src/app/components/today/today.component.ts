@@ -29,7 +29,8 @@ export class TodayComponent implements OnInit, OnDestroy {
       category: '...',
       text: '...',
       author: '...',
-      date: '...'
+      date: '...',
+      visible: true,
     };
   }
 

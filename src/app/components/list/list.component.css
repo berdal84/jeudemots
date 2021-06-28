@@ -1,0 +1,13 @@
+
+.actions {
+    display: flex;
+    flex-direction: column;
+}
+
+.hidden > td > p {
+    opacity: 0.33;
+}
+
+.actions > button {
+    font-size: 0.75em;
+}

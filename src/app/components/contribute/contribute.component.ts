@@ -92,7 +92,8 @@ export class ContributeComponent implements OnInit {
             category: this.contributeForm.get( 'category' ).value,
             text:     this.contributeForm.get( 'text' ).value,
             author:   this.contributeForm.get( 'author' ).value,
-            date:     datePipe.transform(new Date(), 'yyyy-MM-dd')
+            date:     datePipe.transform(new Date(), 'yyyy-MM-dd'),
+            visible:  false
           }
         };
         this.jokeService.sendJokeByMail(submission);
