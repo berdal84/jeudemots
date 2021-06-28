@@ -1,0 +1,56 @@
+
+.main {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,0.05);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.form-field {
+    margin-top: 5px;
+}
+
+label {
+    margin-left: -25px;
+    display: flex;
+}
+
+label::before {
+    content: '|';
+}
+
+input {
+    margin: 5px;
+    padding: 5px;
+    height: 1.5em;
+    border: 1px solid grey;
+    border-radius: 4px;
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 45px;
+}
+
+.actions > :first-child {
+    flex-grow: 1;
+}
+
+button {
+    flex-grow: 2;
+}
