@@ -31,7 +31,7 @@ export class MenuComponent implements OnInit {
         route: '/list'
       },
       {
-        label: 'ADVISES',
+        label: 'CONSEILS',
         route: '/advises'
       },
       {
