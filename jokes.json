@@ -1,5 +1,11 @@
 [
-   {
+  {
+		"category":     "Informatique et météorologie",
+		"text":         "Il y a metaverse ce soir, alors metaveste et metacapuche mon chéri.",
+		"author":       "Maman",
+		"date":         "2021-12-05",
+		"visible":      true
+	},{
 		"category":     "Reptiles",
 		"text":         "Un serpent peut-il se muer dans le silence ?",
 		"author":       "Andy Yana-Jones",
