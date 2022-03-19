@@ -1,6 +1,12 @@
 [
   {
 		"category":     "Logique",
+		"text":         "Si je m'éloignais d'eux dans la brume, ces neuf cyprès se dix cyprès.",
+		"author":       "Berdal84",
+		"date":         "2022-13-18",
+		"visible":      true
+	},{
+		"category":     "Logique",
 		"text":         "Si un père peut accorder le bénéfice du doute à son fils, ce dernier peut lui accorder le bénépère en retour.",
 		"author":       "Henri Ressiprauk",
 		"date":         "2022-13-16",
