@@ -6,7 +6,7 @@ import { catchError, retry } from 'rxjs/operators';
 import { MailSubmission } from '../models/mail-submission.model';
 
 const JOKE_JSON_FILE_URL    = 'https://raw.githubusercontent.com/berdal84/jeudemots-ng/master/jokes.json';
-const SEND_JOKE_BY_MAIL_URL = 'php/mail.php';
+const SEND_JOKE_BY_MAIL_URL = 'api/mail.php';
 
 @Injectable({
   providedIn: 'root'
