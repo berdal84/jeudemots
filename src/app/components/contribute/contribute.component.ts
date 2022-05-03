@@ -5,6 +5,12 @@ import { DatePipe } from '@angular/common';
 import { MailSubmission } from 'src/app/models/mail-submission.model';
 import { Joke } from 'src/app/models/joke.model';
 
+enum Status {
+  IDLE,
+  ERROR,
+  SUCCESS
+}
+
 @Component({
   selector: 'app-contribute',
   templateUrl: './contribute.component.html',
@@ -12,15 +18,19 @@ import { Joke } from 'src/app/models/joke.model';
 })
 export class ContributeComponent implements OnInit {
 
+    Status = Status; // expose to html
+
+    status: Status;
     /** main form group */
     contributeForm: FormGroup;
-    /** flag to avoid multiple submission */
-    submitted: boolean;
+    /** display form errors */
+    displayErrors: boolean;
 
     constructor( private jokeService: JokeService) {}
 
     ngOnInit() {
-      this.submitted = false;
+      this.displayErrors  = false;
+      this.status         = Status.IDLE;
       this.contributeForm = new FormGroup({});
 
       const categoryControl = new FormControl(
@@ -56,10 +66,6 @@ export class ContributeComponent implements OnInit {
         });
       this.contributeForm.addControl('acceptTerms', acceptTermsControl);
 
-      this.contributeForm.valueChanges.subscribe(val => {
-        this.submitted = false;
-      });
-
     }
 
     /**
@@ -74,6 +80,7 @@ export class ContributeComponent implements OnInit {
      */
     async onSubmit()
     {      
+      this.displayErrors = this.contributeForm.invalid;
       if ( !this.contributeForm.invalid)
       {
         
@@ -90,8 +97,8 @@ export class ContributeComponent implements OnInit {
         const result = await this.jokeService.create(joke);
         if( result ) 
         {
-          console.log(`Joke submited!`);
-          this.submitted = true;
+          this.contributeForm.reset();
+          this.status = Status.SUCCESS;
         }
       }
     }
@@ -100,8 +107,8 @@ export class ContributeComponent implements OnInit {
      * Reset form
      */
     onReset() {
-        this.submitted = false;
-        this.contributeForm.reset();
+      this.status = Status.IDLE;
+      this.contributeForm.reset();
     }
 
     /**

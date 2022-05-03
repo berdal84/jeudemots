@@ -18,7 +18,7 @@
         <label class="flex-left">Catégorie*</label>
         <div class="flex-right">
             <input type="text" formControlName="category" maxlength="20" />
-            <div *ngIf="submitted && invalid && controls.category.errors" class="invalid-feedback">
+            <div *ngIf="displayErrors && invalid && controls.category.errors" class="invalid-feedback">
                 <p *ngIf="controls.category.errors.required">Catégorie requise</p>
             </div>
         </div>
@@ -30,7 +30,7 @@
         <div class="flex-right">
             <textarea class="joke-text-input" type="text" rows="3" maxlength="85"
                 formControlName="text"></textarea>
-            <div *ngIf="submitted && invalid && controls.text.errors" class="invalid-feedback">
+            <div *ngIf="displayErrors && controls.text.errors" class="invalid-feedback">
                 <p *ngIf="controls.text.errors.required">Texte requis</p>
                 <p *ngIf="controls.text.errors.minlength">5 caractères minimum</p>
             </div>
@@ -42,7 +42,7 @@
         <label class="flex-left">Auteur*</label>
         <div class="flex-right">
             <input type="text" formControlName="author" maxlength="20" />
-            <div *ngIf="submitted && invalid && controls.author.errors" class="invalid-feedback">
+            <div *ngIf="displayErrors && controls.author.errors" class="invalid-feedback">
                 <p *ngIf="controls.author.errors.required">Auteur requis</p>
             </div>
         </div>
@@ -57,7 +57,7 @@
         </div>
 
     </div>
-    <div class="flex-row invalid-feedback" *ngIf="submitted && invalid && controls.acceptTerms.errors">
+    <div class="flex-row invalid-feedback" *ngIf="displayErrors && controls.acceptTerms.errors">
         <label class="flex-left"></label>
         <p class="flex-right flex-row">Pour proposer votre jeu de mots vous devez accepter nos conditions d'utilisation.
         </p>
@@ -70,20 +70,20 @@
         <div class="flex-left"></div>
         <div class="flex-right">
             <button type="reset" (click)="onReset()">Recommencer</button>
-            <button [disabled]="submitted" >Soumettre</button>
+            <button *ngIf="status !== Status.SUCCESS" >Soumettre</button>
         </div>
     </div>
 
     <!-- Global error message (with a joke inside) -->
-    <div class="flex-row" *ngIf="submitted && invalid">
+    <div class="flex-row" *ngIf="status === Status.ERROR">
         <div class="flex-left"></div>
         <p class="flex-right flex-row invalid-feedback-joke">Oh... Un problème a eu lieu pendant le transfert.</p>
     </div>
 
     <!-- Global confirmation message (with a joke inside) -->
-    <div class="flex-row" *ngIf="submitted && !invalid">
+    <div class="flex-row" *ngIf="status === Status.SUCCESS">
         <div class="flex-left"></div>
-        <p class="flex-right flex-row valid-feedback-joke">Expédition réussie! Votre blague est en attente de validation.</p>
+        <p class="flex-right flex-row valid-feedback-joke">Expédition réussie! Votre blague est en attente de validation. Merci ;)</p>
     </div>
 
 </form>
