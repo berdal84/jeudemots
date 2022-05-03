@@ -16,7 +16,7 @@ if( empty($id) && !is_numeric($id) )
 }
 
 // get the joke given the id
-$id = intval($id);
+$id   = intval($id);
 $joke = JokeCRUD::read($id);
 if( $joke->is_null )
 {

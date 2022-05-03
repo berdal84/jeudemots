@@ -5,8 +5,10 @@ import { ReplaySubject, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { MailSubmission } from '../models/mail-submission.model';
 
-const JOKE_JSON_FILE_URL    = 'https://raw.githubusercontent.com/berdal84/jeudemots-ng/master/jokes.json';
-const SEND_JOKE_BY_MAIL_URL = 'api/mail.php';
+const JOKE_JSON_FILE_URL = 'https://raw.githubusercontent.com/berdal84/jeudemots-ng/master/jokes.json';
+const API_MAIL    = 'api/mail.php';
+const API_CREATE  = 'api/create.php';
+const API_READ    = 'api/read.php';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +17,26 @@ export class JokeService {
 
   readonly jokes: ReplaySubject<Array<Joke>>;
 
-  constructor( private httpClient: HttpClient ) {
+  constructor( private httpClient: HttpClient )
+  {
     this.jokes = new ReplaySubject<Array<Joke>>();
     this.getJokesFromServer();
   }
+
+   /**
+   * Send a new joke submission by email.
+   */
+     create(joke: Joke): void {
+
+      this.httpClient
+      .post<Joke>(API_CREATE, joke)
+      .pipe(
+        retry(3),
+        catchError( this.handleError )
+      )
+      .subscribe( result => { console.log('Joke created. Result:', result); });
+  
+    }
 
   /**
    * Send a new joke submission by email.
@@ -26,7 +44,7 @@ export class JokeService {
   sendJokeByMail(submission: MailSubmission): void {
 
     this.httpClient
-    .post<MailSubmission>(SEND_JOKE_BY_MAIL_URL, submission)
+    .post<MailSubmission>(API_MAIL, submission)
     .pipe(
       retry(3),
       catchError( this.handleError )

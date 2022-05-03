@@ -96,7 +96,8 @@ export class ContributeComponent implements OnInit {
             visible:  false
           }
         };
-        this.jokeService.sendJokeByMail(submission);
+        //this.jokeService.sendJokeByMail(submission);
+        this.jokeService.create(submission.joke);
       }
     }
 

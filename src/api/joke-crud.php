@@ -7,9 +7,27 @@ class JokeCRUD
 {
     public static function create(Joke $joke): bool
     {
-        printf( "Create %s", $joke->name);
-        // ...
-        return TRUE;
+        $result = false;
+        $mysqli = DB::connect();
+        $query  = "INSERT INTO `jokes` ( `category`, `text`, `author`, `visible`) VALUES ( ?, ?, ?, ?)";
+        
+        if( $stmt = $mysqli->prepare($query) )
+        {
+            $stmt->bind_param("sssi"
+                , $joke->category
+                , $joke->text
+                , $joke->author
+                , $joke->visible);         
+
+            if( $stmt->execute() )
+            {     
+                $joke->id = $stmt->insert_id;
+                $result   = true;
+            }
+        }
+        $mysqli->close();
+
+        return $result;
     }
 
     public static function read(int $id): Joke
