@@ -3,6 +3,7 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { JokeService } from 'src/app/services/joke.service';
 import { DatePipe } from '@angular/common';
 import { MailSubmission } from 'src/app/models/mail-submission.model';
+import { Joke } from 'src/app/models/joke.model';
 
 @Component({
   selector: 'app-contribute',
@@ -47,14 +48,6 @@ export class ContributeComponent implements OnInit {
         });        
       this.contributeForm.addControl('author', authorControl);
 
-      const emailControl = new FormControl(
-        null,
-        {
-          validators: Validators.email,
-          updateOn: 'change'
-        });
-      this.contributeForm.addControl('email', emailControl);
-
       const acceptTermsControl = new FormControl(
         null,
         {
@@ -79,25 +72,27 @@ export class ContributeComponent implements OnInit {
     /**
      * Submit form content only if form is valid
      */
-    onSubmit() {      
-
-      if ( !this.contributeForm.invalid) {
-
-        this.submitted = true;
+    async onSubmit()
+    {      
+      if ( !this.contributeForm.invalid)
+      {
+        
         const datePipe = new DatePipe('en-US');
 
-        const submission: MailSubmission = {
-          from: this.contributeForm.get( 'email' ).value,
-          joke: {
+        const joke: Joke =  {
             category: this.contributeForm.get( 'category' ).value,
             text:     this.contributeForm.get( 'text' ).value,
             author:   this.contributeForm.get( 'author' ).value,
-            date:     datePipe.transform(new Date(), 'yyyy-MM-dd'),
+            date:     datePipe.transform(new Date(), 'yyy-MM-dd'),
             visible:  false
-          }
-        };
-        //this.jokeService.sendJokeByMail(submission);
-        this.jokeService.create(submission.joke);
+          };
+
+        const result = await this.jokeService.create(joke);
+        if( result ) 
+        {
+          console.log(`Joke submited!`);
+          this.submitted = true;
+        }
       }
     }
 

@@ -23,20 +23,19 @@ export class JokeService {
     this.getJokesFromServer();
   }
 
-   /**
+  /**
    * Send a new joke submission by email.
    */
-     create(joke: Joke): void {
+    create(joke: Joke): Promise<Joke> {
 
-      this.httpClient
-      .post<Joke>(API_CREATE, joke)
-      .pipe(
-        retry(3),
-        catchError( this.handleError )
-      )
-      .subscribe( result => { console.log('Joke created. Result:', result); });
-  
-    }
+    return this.httpClient
+    .post<Joke>(API_CREATE, joke)
+    .pipe(
+      retry(3),
+      catchError( this.handleError )
+    ).toPromise();
+
+  }
 
   /**
    * Send a new joke submission by email.
