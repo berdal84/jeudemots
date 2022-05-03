@@ -14,7 +14,7 @@ class Joke {
 
     function __construct()
     {
-        $this->visible   = TRUE;
+        $this->visible   = FALSE;
         $this->id        = -1;
         $this->category  = '';
         $this->text      = '';

@@ -18,6 +18,7 @@ if(!$data)
 
 // try to create the joke
 $joke = Joke::newFromObject($data);
+$joke->visible = FALSE; // needs to be validated by admin
 if( !JokeCRUD::create($joke) )
 {
     die("Unable to create the joke!");
