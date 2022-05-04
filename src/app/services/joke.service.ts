@@ -11,6 +11,7 @@ const API_CREATE         = 'api/create.php';
 const API_READ           = 'api/read.php';
 const API_RESTORE        = 'api/restore.php';
 const API_BACKUP         = 'api/backup.php';
+const API_READ_ALL       =  API_BACKUP; // temporary
 
 @Injectable({
   providedIn: 'root'
@@ -64,24 +65,9 @@ export class JokeService {
       ).toPromise();
   }
 
-  /**
-   * Send a new joke submission by email.
-   */
-  sendJokeByMail(submission: MailSubmission): void {
-
-    this.httpClient
-    .post<MailSubmission>(API_MAIL, submission)
-    .pipe(
-      retry(3),
-      catchError( this.handleError )
-    )
-    .subscribe( result => { console.log('Mail sent. Result:', result); });
-
-  }
-
   private getJokesFromServer(): void {
     this.httpClient
-    .get<Array<Joke>>(JOKE_JSON_FILE_URL)
+    .get<Array<Joke>>(API_READ_ALL)
     .pipe(
       retry(3),
       catchError( this.handleError )
