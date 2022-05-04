@@ -1,9 +1,7 @@
 <h2>Administration</h2>
 
-<br>
-
 <p>
-    Upload/Download de json contenant des blagues.
+    Restauration de la base de données sous forme de fichier <i>*.json</i>.
 </p>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -22,12 +20,30 @@
         </div>
     </div>
 
+    <!-- Agree (database will be erased) -->
+    <div class="flex-row">
+        <label class="flex-left"></label>
+        <div class="flex-right flex-row">
+            <input type="checkbox" formControlName="agree" id="agree" />
+            <label for="agree" class="form-check-label">J'ai conscience que la table sere entièrement vidée avant d'être remplie par le contenu du fichier.</label>
+        </div>
+
+    </div>
+    <div class="flex-row invalid-feedback" *ngIf="displayErrors && controls.agree.errors">
+        <label class="flex-left"></label>
+        <p class="flex-right flex-row">Lisez et cochez.
+        </p>
+    </div>
+    <div>
+        <p style="font-size: 0.7em">*: requis.</p>
+    </div>
+
     <!-- Send/Reset buttons -->
     <div class="flex-row">
         <div class="flex-left"></div>
         <div class="flex-right">
             <button type="reset" (click)="onReset()">Recommencer</button>
-            <button *ngIf="status !== Status.SUCCESS" >Soumettre</button>
+            <button *ngIf="status !== Status.SUCCESS" >Restaurer la base</button>
         </div>
     </div>
 
@@ -40,7 +56,7 @@
     <!-- Global confirmation message (with a joke inside) -->
     <div class="flex-row" *ngIf="status === Status.SUCCESS">
         <div class="flex-left"></div>
-        <p class="flex-right flex-row valid-feedback-joke">Expédition réussie! Votre blague est en attente de validation. Merci ;)</p>
+        <p class="flex-right flex-row valid-feedback-joke">Expédition réussie! La base de donnée a bien été restaurée.</p>
     </div>
 
 </form>

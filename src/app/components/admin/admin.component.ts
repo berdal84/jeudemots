@@ -39,8 +39,16 @@ export class AdminComponent implements OnInit {
           validators: [Validators.required],
           updateOn: 'change'
         });
-      this.form.addControl('file', fileControl);
 
+      const agreeControl = new FormControl(
+        null,
+        {
+          validators: [Validators.required],
+          updateOn: 'change'
+        });
+
+      this.form.addControl('file', fileControl);
+      this.form.addControl('agree', agreeControl);
       this.form.addControl('fileSrc', new FormControl());
 
     }
