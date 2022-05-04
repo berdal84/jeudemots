@@ -16,11 +16,8 @@ import { ContributeComponent } from './components/contribute/contribute.componen
 import { Error404Component } from './components/error404/error404.component';
 import { JokeFilterPipe } from './pipes/jokefilter.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AdminComponent } from './components/admin/admin.component';
-import { LoginComponent } from './components/login/login.component';
-import { AppGuard } from './app.guard';
 import { environment } from 'src/environments/environment';
-
+import { AdminModule } from './components/admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -33,22 +30,20 @@ import { environment } from 'src/environments/environment';
     MoreComponent,
     Error404Component,
     JokeFilterPipe,
-    ContributeComponent,
-    AdminComponent,
-    LoginComponent,
+    ContributeComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    AdminModule,
     RouterModule.forRoot(
       ROUTES, {
         enableTracing: !environment.production,
         useHash: true
       })
   ],
-  providers: [AppGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

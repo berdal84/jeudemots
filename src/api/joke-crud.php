@@ -55,6 +55,33 @@ class JokeCRUD
         $mysqli->close();
         return $joke;
     }
+
+    public static function read_all( &$array_out ): bool
+    {
+        $success = false;
+
+        $mysqli = DB::connect();        
+        $query  = "SELECT * FROM `jokes`";
+        
+        if( $stmt = $mysqli->prepare($query) )
+        {    
+            if( $stmt->execute() )
+            {
+                $result = $stmt->get_result();
+                $rows = $result->fetch_all(MYSQLI_ASSOC);
+                foreach ($rows as $row)
+                {           
+                    $each_joke = Joke::newFromArray($row);                    
+                    array_push($array_out, $each_joke);
+                }
+                $success = true;
+            }
+        }
+        $mysqli->close();
+
+        return $success;
+    }
+
     public static function update(Joke $joke)
     {
         printf( "Update %s", $joke->name);

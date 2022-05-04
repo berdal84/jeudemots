@@ -1,0 +1,21 @@
+<p>
+    Sauvegarde de la base de données sous forme de fichier <i>*.json</i>. Cliquez sur le bouton ci-dessous:
+</p>
+
+<!-- Send/Reset buttons -->
+<div class="flex-row">
+    <button *ngIf="status !== Status.SUCCESS" (click)="onBackup()" >Sauvegarder</button>
+</div>
+
+<!-- Global error message (with a joke inside) -->
+<div class="flex-row" *ngIf="status === Status.ERROR">
+    <p class="flex-row invalid-feedback-joke">Oh... Un problème a eu lieu pendant le transfert.</p>
+</div>
+
+<!-- Global confirmation message (with a joke inside) -->
+<div class="flex-row" *ngIf="status === Status.SUCCESS">
+    <p class="valid-feedback-joke">La base de données a été sauvegardée, téléchargez le fichier
+        <a class="btn btn-clear" [href]="downloadJsonHref" download="backup.json">backup.json</a>
+    </p>
+</div>
+

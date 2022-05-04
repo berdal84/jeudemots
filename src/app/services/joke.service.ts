@@ -10,6 +10,7 @@ const API_MAIL           = 'api/mail.php';
 const API_CREATE         = 'api/create.php';
 const API_READ           = 'api/read.php';
 const API_RESTORE        = 'api/restore.php';
+const API_BACKUP         = 'api/backup.php';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,7 @@ export class JokeService {
    * that json must contain a Joke array.
    * @returns 
    */
-  createArray(formData: FormData): Promise<any>
+  restore(formData: FormData): Promise<any>
   {
     return this.httpClient
       .post(API_RESTORE, formData)
@@ -38,6 +39,16 @@ export class JokeService {
         retry(3),
         catchError( this.handleError )
       ).toPromise();
+  }
+
+  backup(): Promise<any>
+  {
+    return this.httpClient
+    .get(API_BACKUP)
+    .pipe(
+      retry(3),
+      catchError( this.handleError )
+    ).toPromise();
   }
 
   /**

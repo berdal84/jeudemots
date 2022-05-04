@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild, UrlTree } from "@angular/router";
 import { Observable } from "rxjs";
-import { UserService } from "./services/user.service";
+import { UserService } from "../../services/user.service";
 
 @Injectable()
-export class AppGuard implements CanActivate, CanActivateChild {
+export class AdminGuard implements CanActivate, CanActivateChild {
 
   constructor( private userService: UserService ) {}
 
