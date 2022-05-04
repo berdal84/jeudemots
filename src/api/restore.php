@@ -43,5 +43,5 @@ foreach ($data as $each)
     }
 }
 
-echo("{ result: 'ok'}");
+echo('{ "result": "ok"}');
 ?>

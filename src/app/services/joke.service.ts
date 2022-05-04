@@ -30,10 +30,10 @@ export class JokeService {
    * that json must contain a Joke array.
    * @returns 
    */
-  createArray(formData: FormData): Promise<object>
+  createArray(formData: FormData): Promise<any>
   {
     return this.httpClient
-      .post<object>(API_RESTORE, formData)
+      .post(API_RESTORE, formData)
       .pipe(
         retry(3),
         catchError( this.handleError )

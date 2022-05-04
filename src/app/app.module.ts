@@ -42,7 +42,6 @@ import { environment } from 'src/environments/environment';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule.forChild(ROUTES),
     RouterModule.forRoot(
       ROUTES, {
         enableTracing: !environment.production,
