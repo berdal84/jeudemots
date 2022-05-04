@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -14,17 +14,21 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private router: Router ) { }
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.login = '';
+    this.login = ''; 
     this.password = '';
   }
 
-  submit() {
+  async submit() {
     // TODO: add a form, and checks before to send data
-    this.userService.login( this.login, this.password);
-    this.router.navigate(['private']);
+    await this.userService.login( this.login, this.password);
+    if( !await this.router.navigate(['dashboard'], { relativeTo: this.route }) )
+    {
+      console.error('Unable to navigate!');
+    }
   }
 
   cancel() {

@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Joke } from '../models/joke.model';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ReplaySubject, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { MailSubmission } from '../models/mail-submission.model';
 
 const JOKE_JSON_FILE_URL = 'https://raw.githubusercontent.com/berdal84/jeudemots-ng/master/jokes.json';
-const API_MAIL    = 'api/mail.php';
-const API_CREATE  = 'api/create.php';
-const API_READ    = 'api/read.php';
+const API_MAIL           = 'api/mail.php';
+const API_CREATE         = 'api/create.php';
+const API_READ           = 'api/read.php';
+const API_RESTORE        = 'api/restore.php';
 
 @Injectable({
   providedIn: 'root'
@@ -24,17 +25,32 @@ export class JokeService {
   }
 
   /**
+   * Create an array of Jokes from a JSON.
+   * @param formData must contain a file field pointing a json file.
+   * that json must contain a Joke array.
+   * @returns 
+   */
+  createArray(formData: FormData): Promise<object>
+  {
+    return this.httpClient
+      .post<object>(API_RESTORE, formData)
+      .pipe(
+        retry(3),
+        catchError( this.handleError )
+      ).toPromise();
+  }
+
+  /**
    * Send a new joke submission by email.
    */
-    create(joke: Joke): Promise<Joke> {
-
+  create(joke: Joke): Promise<Joke>
+  {
     return this.httpClient
-    .post<Joke>(API_CREATE, joke)
-    .pipe(
-      retry(3),
-      catchError( this.handleError )
-    ).toPromise();
-
+      .post<Joke>(API_CREATE, joke)
+      .pipe(
+        retry(3),
+        catchError( this.handleError )
+      ).toPromise();
   }
 
   /**
@@ -73,7 +89,7 @@ export class JokeService {
       // The response body may contain clues as to what went wrong,
       console.error(
         `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
+        `body was: ${error.error.text}`);
     }
     // return an observable with a user-facing error message
     return throwError('Something bad happened; please try again later.');

@@ -16,9 +16,10 @@ import { ContributeComponent } from './components/contribute/contribute.componen
 import { Error404Component } from './components/error404/error404.component';
 import { JokeFilterPipe } from './pipes/jokefilter.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PrivateComponent } from './components/private/private.component';
+import { AdminComponent } from './components/admin/admin.component';
 import { LoginComponent } from './components/login/login.component';
 import { AppGuard } from './app.guard';
+import { environment } from 'src/environments/environment';
 
 
 @NgModule({
@@ -33,15 +34,20 @@ import { AppGuard } from './app.guard';
     Error404Component,
     JokeFilterPipe,
     ContributeComponent,
-    PrivateComponent,
-    LoginComponent
+    AdminComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule.forRoot(ROUTES, { relativeLinkResolution: 'legacy' })
+    RouterModule.forChild(ROUTES),
+    RouterModule.forRoot(
+      ROUTES, {
+        enableTracing: !environment.production,
+        useHash: true
+      })
   ],
   providers: [AppGuard],
   bootstrap: [AppComponent]

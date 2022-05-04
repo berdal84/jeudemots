@@ -1,15 +1,22 @@
 import { Injectable } from "@angular/core";
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild, UrlTree } from "@angular/router";
+import { Observable } from "rxjs";
 import { UserService } from "./services/user.service";
 
 @Injectable()
-export class AppGuard implements CanActivate {
+export class AppGuard implements CanActivate, CanActivateChild {
 
-    constructor( private userService: UserService ) {}
+  constructor( private userService: UserService ) {}
 
-    canActivate(
-      next: ActivatedRouteSnapshot,
-      state: RouterStateSnapshot): boolean {
-        return this.userService.canVisit(next.pathFromRoot);
-    }
+  canActivateChild(
+    childRoute: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+    return this.canActivate(childRoute, state);
   }
+
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): boolean {
+      return this.userService.canVisit(next.pathFromRoot);
+  }
+}

@@ -6,9 +6,9 @@ import { AdvisesComponent } from './components/advises/advises.component';
 import { MoreComponent } from './components/more/more.component';
 import { Error404Component } from './components/error404/error404.component';
 import { ContributeComponent } from './components/contribute/contribute.component';
-import { PrivateComponent } from './components/private/private.component';
+import { AdminComponent } from './components/admin/admin.component';
 import { LoginComponent } from './components/login/login.component';
-import { AppGuard } from './app.guard';
+import { AppGuard as IsAdminGuard } from './app.guard';
 
 export const ROUTES: Routes = [
     {
@@ -36,13 +36,13 @@ export const ROUTES: Routes = [
         component: ContributeComponent
     },
     {
-        path: 'login',
+        path: 'admin',
         component: LoginComponent,
     },
     {
-        path: 'private',
-        component: PrivateComponent,
-        canActivate: [AppGuard]        
+        path: 'admin/dashboard',
+        component: AdminComponent,
+        canActivate: [IsAdminGuard]
     },
     {
         path: '',

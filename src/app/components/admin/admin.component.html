@@ -1,0 +1,46 @@
+<h2>Administration</h2>
+
+<br>
+
+<p>
+    Upload/Download de json contenant des blagues.
+</p>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <!-- File -->
+    <div class="flex-row">
+        <label class="flex-left">Choix du fichier</label>
+        <div class="flex-right">
+            <input
+            type="file"
+            formControlName="file"
+            (change)="onFileChange($event)">
+            <div *ngIf="displayErrors && controls.file.errors" class="invalid-feedback">
+                <p *ngIf="controls.file.errors.required">Fichier requis</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Send/Reset buttons -->
+    <div class="flex-row">
+        <div class="flex-left"></div>
+        <div class="flex-right">
+            <button type="reset" (click)="onReset()">Recommencer</button>
+            <button *ngIf="status !== Status.SUCCESS" >Soumettre</button>
+        </div>
+    </div>
+
+    <!-- Global error message (with a joke inside) -->
+    <div class="flex-row" *ngIf="status === Status.ERROR">
+        <div class="flex-left"></div>
+        <p class="flex-right flex-row invalid-feedback-joke">Oh... Un problème a eu lieu pendant le transfert.</p>
+    </div>
+
+    <!-- Global confirmation message (with a joke inside) -->
+    <div class="flex-row" *ngIf="status === Status.SUCCESS">
+        <div class="flex-left"></div>
+        <p class="flex-right flex-row valid-feedback-joke">Expédition réussie! Votre blague est en attente de validation. Merci ;)</p>
+    </div>
+
+</form>
