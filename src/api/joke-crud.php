@@ -9,14 +9,15 @@ class JokeCRUD
     {
         $result = false;
         $mysqli = DB::connect();
-        $query  = "INSERT INTO `jokes` ( `category`, `text`, `author`, `visible`) VALUES ( ?, ?, ?, ?)";
+        $query  = "INSERT INTO `jokes` (`category`, `text`, `author`, `date`, `visible`) VALUES ( ?, ?, ?, ?, ?)";
         
         if( $stmt = $mysqli->prepare($query) )
         {
-            $stmt->bind_param("sssi"
+            $stmt->bind_param("ssssi"
                 , $joke->category
                 , $joke->text
                 , $joke->author
+                , $joke->date
                 , $joke->visible);         
 
             if( $stmt->execute() )

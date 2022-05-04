@@ -90,8 +90,8 @@ export class ContributeComponent implements OnInit {
             category: this.contributeForm.get( 'category' ).value,
             text:     this.contributeForm.get( 'text' ).value,
             author:   this.contributeForm.get( 'author' ).value,
-            date:     datePipe.transform(new Date(), 'yyy-MM-dd'),
-            visible:  false
+            date:     null,
+            visible:  null
           };
 
         const result = await this.jokeService.create(joke);
