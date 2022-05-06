@@ -10,11 +10,12 @@ enum BACKEND_URL
   JOKE_MAIL      = 'backend/public/joke/mail.php',
   JOKE_CREATE    = 'backend/public/joke/create.php',
   JOKE_READ      = 'backend/public/joke/read.php',
+  JOKE_UPDATE    = 'backend/public/joke/update.php',
+  JOKE_DELETE    = 'backend/public/joke/delete.php',
   JOKE_RESTORE   = 'backend/public/joke/restore.php',
   JOKE_BACKUP    = 'backend/public/joke/backup.php',
   PAGE_READ      = 'backend/public/page/read.php',
   PAGES_READ     = 'backend/public/pages/read.php',
-  JOKE_READ_ALL  =  JOKE_BACKUP,
 }
 
 @Injectable({
@@ -36,10 +37,19 @@ export class JokeService {
         this.pages = pages;
         this.readPage(0, pages.size);
     });
-
-    this.setPageSize(10);
   }
 
+  /**
+   * Refresh completely the data (pages, current page, etc.)
+   */
+  refresh() {
+    this.readPages(10);
+  }
+
+  /**
+   * Set current page
+   * @param id zero-based index of the page, must be < pages count
+   */
   setPage(id: number) {
     this.readPage(id, this.pages.size );
   }
@@ -122,14 +132,39 @@ export class JokeService {
     params = params.append('size', size);
 
     this.httpClient
-    .get<Page>(BACKEND_URL.PAGE_READ, { params })
+      .get<Page>(BACKEND_URL.PAGE_READ, { params })
+      .pipe(
+        retry(3),
+        catchError( this.handleError )
+      ).subscribe( (requestResult: Page) => {
+        this.currentPageSubject.next(requestResult);
+      });
+  } 
+
+  update(joke: Joke) {
+    this.httpClient
+    .put(BACKEND_URL.JOKE_UPDATE, joke )
     .pipe(
       retry(3),
       catchError( this.handleError )
-    ).subscribe( (requestResult: Page) => {
-      this.currentPageSubject.next(requestResult);
+    ).subscribe( () => {
+      // todo
     });
-  } 
+  }
+
+  delete(joke: Joke) {
+    let params = new HttpParams();
+    params = params.append('id', joke.id);
+
+    this.httpClient
+    .delete(BACKEND_URL.JOKE_DELETE, { params })
+    .pipe(
+      retry(3),
+      catchError( this.handleError )
+    ).subscribe( () => {
+      // todo
+    });
+  }
 
   private handleError(error: HttpErrorResponse) {
 

@@ -29,8 +29,7 @@ export class TodayComponent implements OnInit, OnDestroy {
       category: '...',
       text: '...',
       author: '...',
-      date: '...',
-      visible: true,
+      date: '...'
     };
   }
 
@@ -41,6 +40,8 @@ export class TodayComponent implements OnInit, OnDestroy {
         this.setCurrentJokeWithId(0);
       }
     );
+
+    this.jokeService.refresh();
   }
 
   ngOnDestroy() {
@@ -109,13 +110,13 @@ export class TodayComponent implements OnInit, OnDestroy {
 
   onPreviousButtonClicked(): void {
     if (this.hasPrevious()) {
-      this.setCurrentJokeWithId(this.currentJokeId - 1);
+      this.setCurrentJokeWithId(this.currentJokeId - 1); // TODO: use the joke service to decrement
     }
   }
 
   onNextButtonClicked(): void {
     if (this.hasNext()) {
-      this.setCurrentJokeWithId(this.currentJokeId + 1);
+      this.setCurrentJokeWithId(this.currentJokeId + 1); // TODO: use the joke service to increment
     }
   }
 

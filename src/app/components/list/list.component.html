@@ -50,4 +50,4 @@
     </table>
 </div>
 
-<app-pagination [current]="pageId" [count]="10" (pageChange)="setPage($event)"></app-pagination>
+<app-pagination [current]="currentPage" [count]="pageCount" (pageChange)="setPage($event)"></app-pagination>

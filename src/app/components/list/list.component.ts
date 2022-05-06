@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { Joke } from '../../models/joke.model';
@@ -11,28 +11,39 @@ import { JokeService } from '../../services/joke.service';
 })
 export class ListComponent implements OnInit {
 
-  pageId: number = 0;
-  jokes: Array<Joke> = new Array<Joke>();
+  pageCount:   number = 0;
+  currentPage: number = 0;
+  jokes: Array<Joke>  = new Array<Joke>();
   filterInput: string = '';
-  private subscription: Subscription;
+
+  private subscriptions: Subscription;
 
   constructor(
     private jokeService: JokeService,
     private userService: UserService,
+    private changeRef: ChangeDetectorRef
     ) { }
 
   ngOnInit() {
-    this.subscription = this.jokeService
+    this.subscriptions = this.jokeService
       .currentPageSubject.subscribe(
         (page) => {
           this.jokes = page.jokes;
-          this.pageId = page.id;
+          this.currentPage = page.id;
         }
     );
+
+    this.subscriptions.add(
+      this.jokeService.pagesSubject.subscribe( (pages) => {
+        this.pageCount = pages.count;
+        this.changeRef.detectChanges();
+    }));
+    
+    this.jokeService.refresh();
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
   canShowActions(): boolean {
@@ -44,11 +55,12 @@ export class ListComponent implements OnInit {
   }
 
   delete( joke: Joke ) {
-    // TODO
+    this.jokeService.delete(joke);
   }
 
   toggleVisibility( joke: Joke ) {
     joke.visible = !joke.visible;
+    this.jokeService.update(joke);
   }
 
   setPage(id: number) {

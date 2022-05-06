@@ -83,15 +83,10 @@ export class ContributeComponent implements OnInit {
       this.displayErrors = this.contributeForm.invalid;
       if ( !this.contributeForm.invalid)
       {
-        
-        const datePipe = new DatePipe('en-US');
-
         const joke: Joke =  {
             category: this.contributeForm.get( 'category' ).value,
             text:     this.contributeForm.get( 'text' ).value,
-            author:   this.contributeForm.get( 'author' ).value,
-            date:     null,
-            visible:  null
+            author:   this.contributeForm.get( 'author' ).value
           };
 
         const result = await this.jokeService.create(joke);

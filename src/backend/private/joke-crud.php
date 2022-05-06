@@ -5,7 +5,26 @@ require_once 'models/page.php';
 require_once 'db.php';
 
 class JokeCRUD
-{
+{    
+    public static function delete_all(int &$delete_count): bool
+    {
+        $success = false;
+        $mysqli  = DB::connect();
+        $query   = "DELETE FROM `jokes`";
+
+        if( $stmt = $mysqli->prepare($query) )
+        {
+            if( $stmt->execute() )
+            {     
+                $delete_count = $mysqli->affected_rows;
+                $success      = true;
+            }
+        }
+        $mysqli->close();
+
+        return $success;
+    }
+
      /**
      * Get joke pages (size and count).
      */
