@@ -11,6 +11,7 @@ import { JokeService } from '../../services/joke.service';
 })
 export class ListComponent implements OnInit {
 
+  pageId: number = 0;
   jokes: Array<Joke> = new Array<Joke>();
   filterInput: string = '';
   private subscription: Subscription;
@@ -21,10 +22,12 @@ export class ListComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.subscription = this.jokeService.currPage.subscribe(
-      (page) => {
-        this.jokes = page.jokes;
-      }
+    this.subscription = this.jokeService
+      .currentPageSubject.subscribe(
+        (page) => {
+          this.jokes = page.jokes;
+          this.pageId = page.id;
+        }
     );
   }
 
@@ -46,5 +49,9 @@ export class ListComponent implements OnInit {
 
   toggleVisibility( joke: Joke ) {
     joke.visible = !joke.visible;
+  }
+
+  setPage(id: number) {
+    this.jokeService.setPage(id);
   }
 }

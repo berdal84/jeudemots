@@ -1,28 +1,29 @@
 <div>
     <h2>Liste complète des jeu de mots :</h2>
-    <label>Filtre: </label><input title="saisissez ici des mots clés séparés par des espaces" size="50" [(ngModel)]="filterInput">
+    <div class="filter">
+        <label>Filtre: </label>
+        <input title="saisissez ici des mots clés séparés par des espaces" size="50" [(ngModel)]="filterInput">
+    </div>
 </div>
-
-<br>
 
 <div>
     <table>
         <tr style="padding:0px;">
-            <td>
-                <p class="underlined" style="text-align:left;">Catégorie</p>
-            </td>
-            <td>
-                <p class="underlined">Jeu de mot</p>
-            </td>
-            <td>
-                <p class="underlined">Auteur</p>
-            </td>
-            <td>
-                <p class="underlined">Date</p>
-            </td>
-            <td *ngIf="canShowActions()">
-                <p class="underlined">Actions</p>
-            </td>
+            <th>
+                <p>Catégorie</p>
+            </th>
+            <th>
+                <p>Jeu de mot</p>
+            </th>
+            <th>
+                <p>Auteur</p>
+            </th>
+            <th>
+                <p>Date</p>
+            </th>
+            <th *ngIf="canShowActions()">
+                <p >Actions</p>
+            </th>
         </tr>
         <tr *ngFor="let joke of jokes | jokeFilter: filterInput" [class]="{hidden: !joke.visible }">
             <td>
@@ -48,3 +49,5 @@
         </tr>
     </table>
 </div>
+
+<app-pagination [current]="pageId" [count]="10" (pageChange)="setPage($event)"></app-pagination>

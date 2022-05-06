@@ -8,6 +8,14 @@
     opacity: 0.33;
 }
 
+th {
+    text-decoration: underline;
+}
+
 .actions > button {
     font-size: 0.75em;
+}
+
+.filter {
+    margin-bottom: 10px;
 }

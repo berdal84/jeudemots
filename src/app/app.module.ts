@@ -18,6 +18,7 @@ import { JokeFilterPipe } from './pipes/jokefilter.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { AdminModule } from './components/admin/admin.module';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AdminModule } from './components/admin/admin.module';
     MoreComponent,
     Error404Component,
     JokeFilterPipe,
-    ContributeComponent
+    ContributeComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

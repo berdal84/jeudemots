@@ -22,20 +22,26 @@ enum BACKEND_URL
 })
 export class JokeService {
 
-  readonly currPage: ReplaySubject<Page>;
-  readonly pages:    ReplaySubject<Pages>;
+  readonly currentPageSubject: ReplaySubject<Page>;
+  readonly pagesSubject: ReplaySubject<Pages>;
+  private  pages: Pages;
 
   constructor( private httpClient: HttpClient )
   {
-    this.currPage = new ReplaySubject<Page>();
-    this.pages    = new ReplaySubject<Pages>();
+    this.currentPageSubject = new ReplaySubject<Page>();
+    this.pagesSubject       = new ReplaySubject<Pages>();
 
-    this.pages.subscribe( (pages) => {
+    this.pagesSubject.subscribe( (pages) => {
         // When new pages are received, we have to get the first one
-        this.readPage(0, pages.size );
+        this.pages = pages;
+        this.readPage(0, pages.size);
     });
 
     this.setPageSize(10);
+  }
+
+  setPage(id: number) {
+    this.readPage(id, this.pages.size );
   }
 
   setPageSize(size: number) {
@@ -101,7 +107,7 @@ export class JokeService {
       retry(3),
       catchError( this.handleError )
     ).subscribe( (requestResult: Pages) => {
-      this.pages.next(requestResult);
+      this.pagesSubject.next(requestResult);
     });
   } 
 
@@ -121,7 +127,7 @@ export class JokeService {
       retry(3),
       catchError( this.handleError )
     ).subscribe( (requestResult: Page) => {
-      this.currPage.next(requestResult);
+      this.currentPageSubject.next(requestResult);
     });
   } 
 

@@ -1,0 +1,19 @@
+div.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination ul {
+    display: block;
+}
+
+.pagination li {
+    display: inline;
+    margin: 2px;
+}
+
+.pagination li:not(.current) > a  {
+    opacity: 0.75;
+    text-decoration: underline;
+    cursor: pointer;
+}
