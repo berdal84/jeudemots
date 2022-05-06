@@ -57,7 +57,7 @@ class JokeCRUD
     {
         $success = false;
         $mysqli = DB::connect();
-        $query  = "SELECT * FROM `jokes` WHERE `visible` ORDER BY `date`  LIMIT ?, ?";
+        $query  = "SELECT * FROM `jokes` WHERE `visible` ORDER BY `date` DESC  LIMIT ?, ?";
 
         if( $stmt = $mysqli->prepare($query) )
         {
