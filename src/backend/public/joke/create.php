@@ -1,6 +1,6 @@
 <?php
 
-require_once('joke-crud.php');
+require_once('../../private/joke-crud.php');
 
 // get raw data (text)
 $raw_data = file_get_contents('php://input');
@@ -17,7 +17,8 @@ if(!$data)
 }
 
 // try to create the joke
-$joke = Joke::newFromObject($data);
+$joke = new Joke();
+$joke->fromObject($data);
 $joke->visible = FALSE; // needs to be validated by admin
 $date = new DateTime();
 $joke->date = $date->format('Y-m-d');

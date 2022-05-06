@@ -4,7 +4,7 @@
     Backup db to JSON
 */
 
-require_once('joke-crud.php');
+require_once('../../private/joke-crud.php');
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET");

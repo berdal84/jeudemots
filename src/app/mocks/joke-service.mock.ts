@@ -9,10 +9,10 @@ import { JOKE_ARRAY_MOCK } from "./joke-array.mock";
  */
 export class JokeServiceMock implements Pick<JokeService, 'sendJokeByMail' | 'jokes' > {
 
-    jokes = new ReplaySubject<Joke[]>();
+    currPage = new ReplaySubject<Joke[]>();
     
     constructor() {
-        this.jokes.next(JOKE_ARRAY_MOCK);
+        this.currPage.next(JOKE_ARRAY_MOCK);
     }
 
     sendJokeByMail(submission: MailSubmission): void {}    

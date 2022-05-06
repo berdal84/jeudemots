@@ -35,9 +35,9 @@ export class TodayComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.jokeService.jokes.subscribe(
-      (jokes) => {
-        this.jokes = jokes;
+    this.subscription = this.jokeService.currPage.subscribe(
+      (page) => {
+        this.jokes = page.jokes;
         this.setCurrentJokeWithId(0);
       }
     );

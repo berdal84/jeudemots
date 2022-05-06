@@ -4,7 +4,7 @@
     Restore db from a JSON
 */
 
-require_once('joke-crud.php');
+require_once('../../private/joke-crud.php');
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
@@ -33,10 +33,11 @@ if(!is_array($data))
     die("Wrong data type!");
 }
 
-// loop on array to create jokes (we will use this script once, no need to optimize)
+// loop on array to create jokes (we will use this script rarely, no need to optimize)
 foreach ($data as $each)
 {
-    $joke = Joke::newFromObject($each);
+    $joke = new Joke();
+    $joke->fromObject($each);
     if( !JokeCRUD::create($joke) )
     {
         die("Unable to create the joke!");

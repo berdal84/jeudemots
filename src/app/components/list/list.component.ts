@@ -21,9 +21,9 @@ export class ListComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.subscription = this.jokeService.jokes.subscribe(
-      (jokes) => {
-        this.jokes = jokes;
+    this.subscription = this.jokeService.currPage.subscribe(
+      (page) => {
+        this.jokes = page.jokes;
       }
     );
   }
