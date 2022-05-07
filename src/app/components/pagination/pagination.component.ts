@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 interface Data {
   id: number;
@@ -10,7 +10,7 @@ interface Data {
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.css']
 })
-export class PaginationComponent implements OnInit {
+export class PaginationComponent implements OnInit, OnChanges {
 
   @Input()
   count: number = 0;
@@ -25,7 +25,16 @@ export class PaginationComponent implements OnInit {
 
   constructor() { }
 
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    this.refresh();
+  }
+
   ngOnInit(): void {
+    this.refresh();
+  }
+
+  private refresh() {
     this.range = new Array(this.count);
     this.range.fill(null);
     this.range.forEach( (value, index, array) => {
@@ -33,7 +42,7 @@ export class PaginationComponent implements OnInit {
         id: index,
         label: String(index+1)
       };
-    })
+    });
   }
 
   pageClicked( id: number) {
