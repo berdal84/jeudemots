@@ -4,13 +4,13 @@ require_once 'models/joke.php';
 require_once 'models/page.php';
 require_once 'db.php';
 
-class JokeCRUD
-{    
+class JokeCRUD {    
+
     public static function delete_all(int &$delete_count): bool
     {
         $success = false;
         $mysqli  = DB::connect();
-        $query   = "DELETE FROM `jokes`";
+        $query   = "DELETE FROM jokes";
 
         if( $stmt = $mysqli->prepare($query) )
         {
@@ -172,6 +172,60 @@ class JokeCRUD
     {
         printf( "Delete %s", $joke->name);
         // ...
+    }
+
+    public static function uninstall(): bool
+    {
+        $success = false;
+
+        $query = "DROP TABLE jokes";
+
+        //echo("\n".$query."\n");
+        $mysqli = DB::connect();        
+        
+        if( $mysqli->query($query) )
+        {                
+            $success = true;
+        }
+        else
+        {
+            echo("Does table exist?\n");
+        }
+        $mysqli->close();
+        return $success;
+    }
+
+    public static function install(): bool
+    {
+        $success = false;
+
+        $query = <<<SQL
+            CREATE TABLE `jokes` (
+                `id`       int(11)      NOT NULL,
+                `category` varchar(64)  NOT NULL,
+                `text`     text         NOT NULL,
+                `author`   varchar(64)  NOT NULL,
+                `date`     date         DEFAULT NULL,
+                `visible`  tinyint(1)   NOT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+            ALTER TABLE `jokes` ADD PRIMARY KEY (`id`);
+            ALTER TABLE `jokes` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+SQL;
+
+        //echo("\n".$query."\n");
+        $mysqli = DB::connect();        
+        
+        if( $mysqli->multi_query($query) )
+        {                
+            $success = true;
+        }
+        else
+        {
+            echo("First install? If not, uninstall first.\n");
+        }
+        $mysqli->close();
+        return $success;
     }
 }
 

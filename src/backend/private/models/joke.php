@@ -10,7 +10,6 @@ class Joke {
     public $text;
     public $author;
     public $date;
-    public $is_null;    
 
     function __construct()
     {
@@ -19,17 +18,25 @@ class Joke {
         $this->category  = '';
         $this->text      = '';
         $this->author    = '';
-        $this->date      = '';
-        $this->is_null   = FALSE;    
+        $this->date      = ''; 
     }
 
     function fromObject(object $data)
     {
-        $this->visible  = boolval($data->visible);
+        $this->visible  = property_exists($data, "visible") ? boolval($data->visible) : false;
         $this->category = strval($data->category);
         $this->text     = strval($data->text);
         $this->author   = strval($data->author);
-        $this->date     = strval($data->date);
+
+        if( !property_exists($data, "date") )
+        {
+            $date = new DateTime();
+            $this->date = $date->format('Y-m-d');
+        }
+        else
+        {
+            $this->date     = strval($data->date);
+        }        
     }
 
     /* Create a Joke from an array. T

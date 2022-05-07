@@ -20,8 +20,7 @@ if(!$data)
 $joke = new Joke();
 $joke->fromObject($data);
 $joke->visible = FALSE; // needs to be validated by admin
-$date = new DateTime();
-$joke->date = $date->format('Y-m-d');
+
 if( !JokeCRUD::create($joke) )
 {
     die("Unable to create the joke!");
