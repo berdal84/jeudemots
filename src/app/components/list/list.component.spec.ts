@@ -2,9 +2,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { JokeServiceMock } from 'src/app/mocks/joke-service.mock';
+import { BackendServiceMock } from 'src/app/mocks/backend-service.mock';
 import { JokeFilterPipe } from 'src/app/pipes/jokefilter.pipe';
-import { JokeService } from 'src/app/services/joke.service';
+import { BackendService } from 'src/app/services/backend.service';
 
 import { ListComponent } from './list.component';
 
@@ -24,8 +24,8 @@ describe('ListComponent', () => {
       ],
       providers: [
         {
-          provide: JokeService,
-          useClass: JokeServiceMock
+          provide: BackendService,
+          useClass: BackendServiceMock
         }
       ]
     })

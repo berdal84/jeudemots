@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Joke } from '../../models/joke.model';
-import { JokeService } from '../../services/joke.service';
+import { BackendService } from '../../services/backend.service';
 
 @Component({
   selector: 'app-today',
@@ -23,7 +23,7 @@ export class TodayComponent implements OnInit, OnDestroy {
   private timeElapsedOnCurrentJokeInSeconds = 0;
   private subscription: Subscription;
 
-  constructor(private jokeService: JokeService) {
+  constructor(private jokeService: BackendService) {
     /* Set a default joke in case service hasn't loaded data before page is displayed */
     this.currentJoke = {
       category: '...',

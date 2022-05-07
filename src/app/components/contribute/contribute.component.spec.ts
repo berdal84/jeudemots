@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { JokeServiceMock } from 'src/app/mocks/joke-service.mock';
-import { JokeService } from 'src/app/services/joke.service';
+import { BackendServiceMock } from 'src/app/mocks/backend-service.mock';
+import { BackendService } from 'src/app/services/backend.service';
 
 import { ContributeComponent } from './contribute.component';
+import { Status } from '../admin/enums/status.enum';
 
 describe('ContributeComponent', () => {
   let component: ContributeComponent;
@@ -22,8 +23,8 @@ describe('ContributeComponent', () => {
       ],
       providers: [
         {
-          provide: JokeService,
-          useClass: JokeServiceMock
+          provide: BackendService,
+          useClass: BackendServiceMock
         }
       ]
     })
@@ -52,8 +53,8 @@ describe('ContributeComponent', () => {
 
     expect(f.invalid).toBeFalsy();
     
-    expect(component.submitted).toBeFalsy();
+    expect(component.status).not.toBe(Status.SUCCESS);
     component.onSubmit();
-    expect(component.submitted).toBeTruthy();
+    expect(component.status).toBe(Status.SUCCESS);
   });
 });

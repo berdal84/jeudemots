@@ -5,6 +5,8 @@ import { AdminGuard } from "./admin.guard";
 import { BackupComponent } from './backup/backup.component';
 import { RestoreComponent } from './restore/restore.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { InstallComponent } from "./install/install.component";
+import { UninstallComponent } from "./uninstall/uninstall.component";
 
 export const ROUTES: Routes = [
     {
@@ -28,6 +30,14 @@ export const ROUTES: Routes = [
                     {
                         path: 'restore',
                         component: RestoreComponent
+                    },
+                    {
+                        path: 'install',
+                        component: InstallComponent
+                    },
+                    {
+                        path: 'uninstall',
+                        component: UninstallComponent
                     }
                 ]
             }           

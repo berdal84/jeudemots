@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { JokeService } from 'src/app/services/joke.service';
+import { BackendService } from 'src/app/services/backend.service';
 import { DomSanitizer } from '@angular/platform-browser';
-
-enum Status {
-  IDLE,
-  ERROR,
-  SUCCESS
-}
+import { Status } from '../enums/status.enum';
 
 @Component({
   selector: 'app-restore',
@@ -25,7 +20,7 @@ export class RestoreComponent implements OnInit {
     displayErrors: boolean;
 
     constructor(
-      private jokeService: JokeService,
+      private jokeService: BackendService,
       private sanitizer: DomSanitizer) {}
 
     ngOnInit() {
@@ -88,6 +83,10 @@ export class RestoreComponent implements OnInit {
         {
           this.form.reset();
           this.status = Status.SUCCESS;
+        }
+        else
+        {
+          this.status = Status.ERROR;
         }
       }
     }

@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { Joke } from '../../models/joke.model';
-import { JokeService } from '../../services/joke.service';
+import { BackendService } from '../../services/backend.service';
 
 @Component({
   selector: 'app-list',
@@ -19,7 +19,7 @@ export class ListComponent implements OnInit {
   private subscriptions: Subscription;
 
   constructor(
-    private jokeService: JokeService,
+    private jokeService: BackendService,
     private userService: UserService,
     private changeRef: ChangeDetectorRef
     ) { }

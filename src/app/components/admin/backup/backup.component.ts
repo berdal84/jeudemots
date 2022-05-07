@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
-import { JokeService } from 'src/app/services/joke.service';
+import { BackendService } from 'src/app/services/backend.service';
 import { DomSanitizer } from '@angular/platform-browser';
-
-enum Status {
-  IDLE,
-  ERROR,
-  SUCCESS
-}
+import { Status } from '../enums/status.enum';
 
 @Component({
   selector: 'app-backup',
@@ -23,7 +18,7 @@ export class BackupComponent {
   downloadJsonHref;
 
   constructor(
-    private jokeService: JokeService,
+    private jokeService: BackendService,
     private sanitizer: DomSanitizer)
   {
     this.downloadJsonHref = null;

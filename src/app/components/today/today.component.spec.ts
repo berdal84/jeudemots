@@ -1,7 +1,7 @@
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { JOKE_ARRAY_MOCK } from 'src/app/mocks/joke-array.mock';
-import { JokeServiceMock } from 'src/app/mocks/joke-service.mock';
-import { JokeService } from 'src/app/services/joke.service';
+import { PAGE_MOCK } from 'src/app/mocks/page.mock';
+import { BackendServiceMock } from 'src/app/mocks/backend-service.mock';
+import { BackendService } from 'src/app/services/backend.service';
 import { TodayComponent } from './today.component';
 
 describe(TodayComponent.name, () => {
@@ -15,8 +15,8 @@ describe(TodayComponent.name, () => {
       ],
       providers: [
         {
-          provide: JokeService,
-          useClass: JokeServiceMock
+          provide: BackendService,
+          useClass: BackendServiceMock
         }
       ]
     })
@@ -46,7 +46,7 @@ describe(TodayComponent.name, () => {
 
     
     it('should get first joke at init', () => {
-      expect(component.currentJoke).toEqual(JOKE_ARRAY_MOCK[0]);
+      expect(component.currentJoke).toEqual(PAGE_MOCK.jokes[0]);
     });
 
     it('should not be able to go back at init', () => {

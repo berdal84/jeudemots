@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Joke } from '../models/joke.model';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { ReplaySubject, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { ReplaySubject, throwError, Observable, of } from 'rxjs';
+import { catchError, retry, tap } from 'rxjs/operators';
 import { Page, Pages } from '../models/page.model';
 
-enum BACKEND_URL 
+enum URL 
 {
   JOKE_MAIL      = 'backend/public/joke/mail.php',
   JOKE_CREATE    = 'backend/public/joke/create.php',
@@ -16,12 +16,14 @@ enum BACKEND_URL
   JOKE_BACKUP    = 'backend/public/joke/backup.php',
   PAGE_READ      = 'backend/public/page/read.php',
   PAGES_READ     = 'backend/public/pages/read.php',
+  INSTALL        = 'backend/private/install.php',
+  UNINSTALL      = 'backend/private/uninstall.php',
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class JokeService {
+export class BackendService {
 
   readonly currentPageSubject: ReplaySubject<Page>;
   readonly pagesSubject: ReplaySubject<Pages>;
@@ -37,6 +39,24 @@ export class JokeService {
         this.pages = pages;
         this.readPage(0, pages.size);
     });
+  }
+
+  async install(): Promise<any> {
+    return this.httpClient
+    .get(URL.INSTALL)
+    .pipe(
+      catchError( () => of(null) ),
+      retry(3),
+    ).toPromise();
+  }
+
+  async uninstall(): Promise<any> {
+    return this.httpClient
+    .get(URL.UNINSTALL)
+    .pipe(
+      catchError( () => of(null) ),
+      retry(3),
+    ).toPromise();
   }
 
   /**
@@ -67,10 +87,10 @@ export class JokeService {
   restore(formData: FormData): Promise<any>
   {
     return this.httpClient
-      .post(BACKEND_URL.JOKE_RESTORE, formData)
+      .post(URL.JOKE_RESTORE, formData)
       .pipe(
         retry(3),
-        catchError( this.handleError )
+        catchError( () => of(null) )
       ).toPromise();
   }
 
@@ -81,10 +101,10 @@ export class JokeService {
   backup(): Promise<Joke[]>
   {
     return this.httpClient
-    .get<Joke[]>(BACKEND_URL.JOKE_BACKUP)
+    .get<Joke[]>(URL.JOKE_BACKUP)
     .pipe(
+      catchError( () => of(null) ),
       retry(3),
-      catchError( this.handleError )
     ).toPromise();
   }
 
@@ -96,10 +116,10 @@ export class JokeService {
   create(joke: Joke): Promise<Joke>
   {
     return this.httpClient
-      .post<Joke>(BACKEND_URL.JOKE_CREATE, joke)
+      .post<Joke>(URL.JOKE_CREATE, joke)
       .pipe(
+        catchError( () => of(null) ),
         retry(3),
-        catchError( this.handleError )
       ).toPromise();
   }
 
@@ -112,10 +132,10 @@ export class JokeService {
     const params = new HttpParams().append('size', size);
 
     this.httpClient
-    .get<Pages>(BACKEND_URL.PAGES_READ, { params } )
+    .get<Pages>(URL.PAGES_READ, { params } )
     .pipe(
+      catchError( () => of(null) ),
       retry(3),
-      catchError( this.handleError )
     ).subscribe( (requestResult: Pages) => {
       this.pagesSubject.next(requestResult);
     });
@@ -132,10 +152,10 @@ export class JokeService {
     params = params.append('size', size);
 
     this.httpClient
-      .get<Page>(BACKEND_URL.PAGE_READ, { params })
+      .get<Page>(URL.PAGE_READ, { params })
       .pipe(
+        catchError( () => of(null) ),
         retry(3),
-        catchError( this.handleError )
       ).subscribe( (requestResult: Page) => {
         this.currentPageSubject.next(requestResult);
       });
@@ -143,13 +163,11 @@ export class JokeService {
 
   update(joke: Joke) {
     this.httpClient
-    .put(BACKEND_URL.JOKE_UPDATE, joke )
+    .put(URL.JOKE_UPDATE, joke )
     .pipe(
+      catchError( () => of(null) ),
       retry(3),
-      catchError( this.handleError )
-    ).subscribe( () => {
-      // todo
-    });
+    ).toPromise();
   }
 
   delete(joke: Joke) {
@@ -157,28 +175,10 @@ export class JokeService {
     params = params.append('id', joke.id);
 
     this.httpClient
-    .delete(BACKEND_URL.JOKE_DELETE, { params })
+    .delete(URL.JOKE_DELETE, { params })
     .pipe(
-      retry(3),
-      catchError( this.handleError )
-    ).subscribe( () => {
-      // todo
-    });
-  }
-
-  private handleError(error: HttpErrorResponse) {
-
-    if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error.message);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error.text}`);
-    }
-    // return an observable with a user-facing error message
-    return throwError('Something bad happened; please try again later.');
+      catchError( () => of(null) ),
+      retry(3),      
+    ).toPromise();
   }
 }

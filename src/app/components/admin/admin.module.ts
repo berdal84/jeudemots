@@ -10,6 +10,8 @@ import { BackupComponent } from './backup/backup.component';
 import { RestoreComponent } from './restore/restore.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { InstallComponent } from './install/install.component';
+import { UninstallComponent } from './uninstall/uninstall.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     BackupComponent,
     RestoreComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    InstallComponent,
+    UninstallComponent
   ],
   imports: [
     BrowserModule,

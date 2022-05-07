@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientMock } from '../mocks/http-client.mock';
-import { JokeService } from './joke.service';
+import { BackendService } from './backend.service';
 
 describe('JokeService', () => {
   beforeEach(() => TestBed.configureTestingModule({
@@ -14,7 +14,7 @@ describe('JokeService', () => {
   }));
 
   it('should be created', () => {
-    const service: JokeService = TestBed.get(JokeService);
+    const service: BackendService = TestBed.get(BackendService);
     expect(service).toBeTruthy();
   });
 });

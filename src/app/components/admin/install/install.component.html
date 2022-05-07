@@ -1,0 +1,48 @@
+<h3>Installation de la base de données</h3>
+
+<p>
+    Avant de pouvoir ajouter des données à ce site, il est nécessaire de créer les tables nécessaires en base.
+    Cette étape est requise une seule fois, ou bien aprés une désinstallation.
+</p>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <!-- Agree -->
+    <div class="flex-row">
+        <label class="flex-left"></label>
+        <div class="flex-right flex-row">
+            <input type="checkbox" formControlName="agree" id="agree" />
+            <label for="agree" class="form-check-label">Ceci est ma première installation, sinon c'est aue j'ai bien désinstallé auparavant.</label>
+        </div>
+
+    </div>
+    <div class="flex-row invalid-feedback" *ngIf="displayErrors && controls.agree.errors">
+        <label class="flex-left"></label>
+        <p class="flex-right flex-row">Lisez et cochez.
+        </p>
+    </div>
+    <div>
+        <p style="font-size: 0.7em">*: requis.</p>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex-row">
+        <div class="flex-left"></div>
+        <div class="flex-right">
+            <button *ngIf="status !== Status.SUCCESS" >Installer</button>
+        </div>
+    </div>
+
+    <!-- Error -->
+    <div class="flex-row" *ngIf="status === Status.ERROR">
+        <div class="flex-left"></div>
+        <p class="flex-right flex-row invalid-feedback-joke">Oh... Un problème a eu lieu pendant l'installation.</p>
+    </div>
+
+    <!-- Confirmation -->
+    <div class="flex-row" *ngIf="status === Status.SUCCESS">
+        <div class="flex-left"></div>
+        <p class="flex-right flex-row valid-feedback-joke">L'installation s'est bien déroulée.</p>
+    </div>
+
+</form>

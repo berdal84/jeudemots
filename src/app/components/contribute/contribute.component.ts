@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { JokeService } from 'src/app/services/joke.service';
+import { BackendService } from 'src/app/services/backend.service';
 import { DatePipe } from '@angular/common';
 import { MailSubmission } from 'src/app/models/mail-submission.model';
 import { Joke } from 'src/app/models/joke.model';
@@ -26,7 +26,7 @@ export class ContributeComponent implements OnInit {
     /** display form errors */
     displayErrors: boolean;
 
-    constructor( private jokeService: JokeService) {}
+    constructor( private jokeService: BackendService) {}
 
     ngOnInit() {
       this.displayErrors  = false;

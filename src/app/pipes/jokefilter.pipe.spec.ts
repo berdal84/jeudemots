@@ -1,4 +1,4 @@
-import { JOKE_ARRAY_MOCK } from '../mocks/joke-array.mock';
+import { PAGE_MOCK } from '../mocks/page.mock';
 import { JokeFilterPipe } from './jokefilter.pipe';
 
 describe('FilterPipe', () => {
@@ -10,19 +10,19 @@ describe('FilterPipe', () => {
 
   it('should filter using a single word', () => {
     const pipe = new JokeFilterPipe();
-    const filtered = pipe.transform(JOKE_ARRAY_MOCK, 'second');
+    const filtered = pipe.transform(PAGE_MOCK.jokes, 'second');
     expect(filtered.length).toBe(1);
   });
 
   it('should filter using a single year', () => {
     const pipe = new JokeFilterPipe();
-    const filtered = pipe.transform(JOKE_ARRAY_MOCK, '2021');
+    const filtered = pipe.transform(PAGE_MOCK.jokes, '2021');
     expect(filtered.length).toBe(1);
   });
 
   it('should filter using a two words', () => {
     const pipe = new JokeFilterPipe();
-    const filtered = pipe.transform(JOKE_ARRAY_MOCK, 'tester second');
+    const filtered = pipe.transform(PAGE_MOCK.jokes, 'tester second');
     expect(filtered.length).toBe(1);
   });
 });

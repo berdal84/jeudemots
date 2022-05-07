@@ -1,9 +1,12 @@
-import { Joke } from "src/app/models/joke.model";
+import { Page } from "src/app/models/page.model";
 
 /**
  * Simple array with two jokes for testing purpose.
  */
-export const JOKE_ARRAY_MOCK: Joke[] = [
+const PAGE_MOCK: Page = {
+  id: 0,
+  size: 4,
+  jokes: [
     {
       category: 'cat 1',
       text: 'first text',
@@ -28,4 +31,7 @@ export const JOKE_ARRAY_MOCK: Joke[] = [
       author: 'tester 4',
       date: '2021-01-04'
     }
-  ];
+  ]
+};
+
+export { PAGE_MOCK }
