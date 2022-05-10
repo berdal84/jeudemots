@@ -1,6 +1,10 @@
 <?php
-    require_once('joke-crud.php');
-    require_once('models/response.php');
+    require_once('db.php');
+    require_once('response.php');
+    require_once('session.php');
+
+    Session::start();
+    Session::exit_if_not_logged();
 
     if(!JokeCRUD::uninstall())
     {

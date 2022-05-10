@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor( private user: UserService, private route: Router ) { }
 
   ngOnInit(): void {
+  }
+
+  async logout() {
+    const response = await this.user.logout();
+    if( response.status === 'failure' )
+    {
+      console.error('unable to logout!');
+    }
+    this.route.navigate(['/admin']);
   }
 
 }

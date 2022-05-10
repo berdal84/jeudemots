@@ -7,8 +7,8 @@
         </a>
 
         <ul>
-            <li *ngFor="let eachLink of links" [class]="getClassFor(eachLink.route)">
-                <a href="" [routerLink]="eachLink.route">{{eachLink.label}}</a>
+            <li *ngFor="let eachLink of links" [class]="getClassFor(eachLink)">
+                <a href="" [routerLink]="eachLink.url">{{eachLink.label}}</a>
             </li>
         </ul>
 

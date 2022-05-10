@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Status } from 'src/app/services/backend.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -7,35 +9,48 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
-  login: string;
-  password: string;
+  form: FormGroup;
+  submited = false;
 
   constructor(
     private userService: UserService,
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute) {
+      this.form = new FormGroup({
+        username: new FormControl('', [Validators.required]),
+        password: new FormControl('', [Validators.required]),
+      });
 
-  ngOnInit(): void {
-    this.login = '';
-    this.password = '';
-  }
+    }
 
   async submit() {
-    // TODO: add a form, and checks before to send data
-    await this.userService.login( this.login, this.password);
 
-    const route = this.route.snapshot.queryParams['redirect'] || 'admin/dashboard';
-
-    if( !await this.router.navigate([route]) )
+    if( this.form.valid )
     {
-      console.error('Unable to navigate!');
+      const response = await this.userService.login( this.form.value.username, this.form.value.password);
+
+      if( response.status == Status.SUCCESS )
+      {
+        const route = this.route.snapshot.queryParams['redirect'] || 'admin/dashboard';
+        if( !await this.router.navigate([route]) )
+        {
+          console.error('Unable to navigate!');
+        }
+      }
     }
+
+    this.submited = true;
+    this.form.markAllAsTouched();
   }
 
-  cancel() {
-
+  reset() {
+    this.submited = false;
+    this.form.reset();
+    this.form.markAsPristine();
+    this.form.markAsUntouched();
+    this.form.updateValueAndValidity();
   }
 
 }

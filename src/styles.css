@@ -150,10 +150,13 @@ p.justified {
       Form validation
 ********************************
 */
-p.invalid, .invalid p {
+.invalid, .invalid p {
+  margin-top: 0.5em;
+  font-size: smaller;
   color: #bf1d00;
 }
 
-p.valid, .valid p {
+.valid, .valid p {
+  margin-top: 0.5em;
   color: #05a300;
 }

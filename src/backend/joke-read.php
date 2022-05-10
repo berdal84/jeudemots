@@ -1,12 +1,12 @@
 <?php
 
-require_once('../../private/joke-crud.php');
-require_once('../../private/utils.php');
-require_once('../../private/models/response.php');
+require_once('joke-crud.php');
+require_once('url-params.php');
+require_once('response.php');
 
 // get "id" from URL params
 $id;
-if( Utils::getIntParamFromURL($id, 'id'))
+if( !UrlParams::getInt($id, 'id'))
 {
     die("Unable to get id!");
 }

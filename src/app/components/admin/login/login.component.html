@@ -1,23 +1,33 @@
 <div class="center-content">
     <div class="frame">
 
-        <h1>Login Form</h1>
+        <h1>Authentification</h1>
 
-        <p>Who are you ?</p>
-        
+        <form [formGroup]="form" (ngSubmit)="submit()">
         <div class="form-field">
-            <label>Login</label>
-            <input [(ngModel)]="login" type="text"/>
+            <label>Nom d'utilisateur</label>
+            <input formControlName="username" type="text"/>
+            <div class="flex-row invalid" *ngIf="form.controls.username.touched && form.controls.username.errors">
+              <p>Nom d'utilisateur requis</p>
+            </div>
         </div>
 
         <div class="form-field">
-            <label>Password</label>
-            <input [(ngModel)]="password" type="password"/>
+            <label>Mot de passe</label>
+            <input formControlName="password" type="password"/>
+            <div class="flex-row invalid" *ngIf="form.controls.password.touched && form.controls.password.errors">
+              <p>Un mot de passe est requis</p>
+            </div>
         </div>
 
         <div class="actions">
-            <button href (click)="cancel()">Cancel</button>
-            <button href (click)="submit()">Submit</button>
+            <button type="reset" (click)="reset()">Annuler</button>
+            <button type="submit">OK</button>
         </div>
+
+        <div class="flex-row invalid" *ngIf="submited && form.invalid">
+          <p>Le formulaire comporte des erreurs</p>
+        </div>
+      </form>
     </div>
 </div>

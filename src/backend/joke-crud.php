@@ -1,7 +1,7 @@
 <?php
 
-require_once 'models/joke.php';
-require_once 'models/page.php';
+require_once 'joke.php';
+require_once 'page.php';
 require_once 'db.php';
 
 class JokeCRUD {

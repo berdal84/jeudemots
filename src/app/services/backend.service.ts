@@ -7,17 +7,20 @@ import { Page, Pages } from '../models/page.model';
 
 enum URL
 {
-  JOKE_MAIL      = 'backend/public/joke/mail.php',
-  JOKE_CREATE    = 'backend/public/joke/create.php',
-  JOKE_READ      = 'backend/public/joke/read.php',
-  JOKE_UPDATE    = 'backend/public/joke/update.php',
-  JOKE_DELETE    = 'backend/public/joke/delete.php',
-  JOKE_RESTORE   = 'backend/public/joke/restore.php',
-  JOKE_BACKUP    = 'backend/public/joke/backup.php',
-  PAGE_READ      = 'backend/public/page/read.php',
-  PAGES_READ     = 'backend/public/pages/read.php',
-  INSTALL        = 'backend/private/install.php',
-  UNINSTALL      = 'backend/private/uninstall.php',
+  JOKE_MAIL      = 'backend/joke-mail.php',
+  JOKE_CREATE    = 'backend/joke-create.php',
+  JOKE_READ      = 'backend/joke-read.php',
+  JOKE_UPDATE    = 'backend/joke-update.php',
+  JOKE_DELETE    = 'backend/joke-delete.php',
+  JOKE_RESTORE   = 'backend/joke-restore.php',
+  JOKE_BACKUP    = 'backend/joke-backup.php',
+  PAGE_READ      = 'backend/page-read.php',
+  PAGES_READ     = 'backend/pages-read.php',
+  INSTALL        = 'backend/db-install.php',
+  UNINSTALL      = 'backend/db-uninstall.php',
+  LOGIN          = 'backend/user-login.php',
+  LOGOUT         = 'backend/user-logout.php',
+
 }
 
 export enum Status
@@ -76,6 +79,24 @@ export class BackendService {
     return this.readPages(size);
   }
 
+  login( user: string, password: string): Promise<Response> {
+    return this.httpClient
+    .post<Response>(URL.LOGIN, { user, password})
+    .pipe(
+      retry(3),
+      catchError( () => of({status: Status.FAILURE }) ),
+    ).toPromise();
+  }
+
+  logout(): Promise<Response> {
+    return this.httpClient
+    .get<Response>(URL.LOGOUT)
+    .pipe(
+      retry(3),
+      catchError( () => of({status: Status.FAILURE }) ),
+    ).toPromise();
+  }
+
   /**
    * Install the necessary tables
    * @returns
@@ -84,8 +105,8 @@ export class BackendService {
     return this.httpClient
     .get<Response<string>>(URL.INSTALL)
     .pipe(
-      catchError( () => of({status: Status.FAILURE }) ),
       retry(3),
+      catchError( () => of({status: Status.FAILURE }) ),
     ).toPromise();
   }
 
@@ -97,8 +118,8 @@ export class BackendService {
     return this.httpClient
     .get<Response<string>>(URL.UNINSTALL)
     .pipe(
-      catchError( () => of({status: Status.FAILURE }) ),
       retry(3),
+      catchError( () => of({status: Status.FAILURE }) ),
     ).toPromise();
   }
 

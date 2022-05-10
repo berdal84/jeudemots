@@ -4,8 +4,12 @@
     Restore db from a JSON
 */
 
-require_once('../../private/joke-crud.php');
-require_once('../../private/models/response.php');
+require_once('joke-crud.php');
+require_once('response.php');
+require_once('session.php');
+
+Session::start();
+Session::exit_if_not_logged();
 
 class Summary {
     public $restored_count = 0;

@@ -1,5 +1,7 @@
 <?php
 
+require_once('joke-crud.php');
+
 class DB
 {
     const HOST = 'localhost';
@@ -10,7 +12,7 @@ class DB
     static function connect()
     {
         $mysqli = new mysqli(DB::HOST, DB::USER, DB::PASS, DB::NAME);
-        
+
         // Check connection
         if( !$mysqli)
         {
@@ -18,6 +20,16 @@ class DB
         }
 
         return $mysqli;
+    }
+
+    static function install(): bool
+    {
+      return JokeCRUD::install(); /* && UserCRUD::install(); */
+    }
+
+    static function uninstall(): bool
+    {
+      return JokeCRUD::uninstall(); /* && UserCRUD::uninstall() */
     }
 }
 

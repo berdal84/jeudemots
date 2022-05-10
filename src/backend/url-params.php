@@ -1,11 +1,11 @@
 <?php
 
-class Utils 
+class UrlParams
 {
     /**
      * Helper to get an integer from URL parameters.
      */
-    static function getIntParamFromURL(int &$out, string $name): bool
+    static function getInt(int &$out, string $name): bool
     {
         // get from URL params
         $str = $_GET[$name];

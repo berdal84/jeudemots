@@ -2,7 +2,8 @@
     <a [routerLink]="['install']">Installer</a>
     <a [routerLink]="['uninstall']">Désinstaller</a>
     <a [routerLink]="['backup']">Sauvegarder</a>
-    <a [routerLink]="['restore']">Restaurer</a>    
+    <a [routerLink]="['restore']">Restaurer</a>
+    <a href (click)="logout()">Se déconnecter</a>
 </div>
 
 <router-outlet></router-outlet>

@@ -3,9 +3,9 @@
     Get a set of N jokes
 */
 
-require_once('../../private/joke-crud.php');
-require_once('../../private/utils.php');
-require_once('../../private/models/response.php');
+require_once('joke-crud.php');
+require_once('url-params.php');
+require_once('response.php');
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET");
@@ -14,12 +14,12 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 $id   = 0;
 $size = 0;
 
-if( !Utils::getIntParamFromURL($id, 'id'))
+if( !UrlParams::getInt($id, 'id'))
 {
     die("Unable to get id!");
 }
 
-if( !Utils::getIntParamFromURL($size, 'size'))
+if( !UrlParams::getInt($size, 'size'))
 {
     die("Unable to get size!");
 }

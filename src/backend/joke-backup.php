@@ -4,8 +4,12 @@
     Backup db to JSON
 */
 
-require_once('../../private/joke-crud.php');
-require_once('../../private/models/response.php');
+require_once('joke-crud.php');
+require_once('response.php');
+require_once('session.php');
+
+Session::start();
+Session::exit_if_not_logged();
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET");
