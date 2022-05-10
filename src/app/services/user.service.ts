@@ -18,10 +18,6 @@ export class UserService {
     }
   }
 
-  canVisit(pathFromRoot: ActivatedRouteSnapshot[]): boolean {
-      return this.#currentUser.logged;
-  }
-
   async login(user: string, password: string): Promise<boolean> {
     // TODO: check login/pass on server side, set a session to identify this as logged user.
     this.#currentUser.logged = true;

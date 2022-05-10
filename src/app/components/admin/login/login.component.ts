@@ -18,14 +18,17 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.login = ''; 
+    this.login = '';
     this.password = '';
   }
 
   async submit() {
     // TODO: add a form, and checks before to send data
     await this.userService.login( this.login, this.password);
-    if( !await this.router.navigate(['dashboard'], { relativeTo: this.route }) )
+
+    const route = this.route.snapshot.queryParams['redirect'] || 'admin/dashboard';
+
+    if( !await this.router.navigate([route]) )
     {
       console.error('Unable to navigate!');
     }

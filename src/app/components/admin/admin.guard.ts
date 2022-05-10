@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild, UrlTree } from "@angular/router";
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild, UrlTree, Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { UserService } from "../../services/user.service";
 
 @Injectable()
 export class AdminGuard implements CanActivate, CanActivateChild {
 
-  constructor( private userService: UserService ) {}
+  constructor( private userService: UserService, private router: Router ) {}
 
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
@@ -14,9 +14,14 @@ export class AdminGuard implements CanActivate, CanActivateChild {
     return this.canActivate(childRoute, state);
   }
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): boolean {
-      return this.userService.canVisit(next.pathFromRoot);
+  canActivate( next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+
+      if( this.userService.isLogged() )
+      {
+        return true;
+      }
+
+      this.router.navigate(['/admin'], { queryParams: { redirect: state.url }});
+      return false;
   }
 }
