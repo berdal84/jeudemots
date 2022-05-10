@@ -1,12 +1,12 @@
 <?php
     require_once('joke-crud.php');
-    echo("Uninstalling ...\n");
+    require_once('models/response.php');
 
     if(!JokeCRUD::uninstall())
     {
-        http_response_code(500);
-        die("Unable to uninstall!");        
+      echo( Response::failure("Unable to uninstall!")->json() );
+      exit;
     }
 
-    echo("Uninstall done!");
+    echo( Response::success("Uninstall successful")->json() );
 ?>

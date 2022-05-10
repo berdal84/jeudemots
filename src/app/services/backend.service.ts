@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Joke } from '../models/joke.model';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { ReplaySubject, throwError, Observable, of } from 'rxjs';
-import { catchError, retry, tap } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { ReplaySubject, of } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
 import { Page, Pages } from '../models/page.model';
 
-enum URL 
+enum URL
 {
   JOKE_MAIL      = 'backend/public/joke/mail.php',
   JOKE_CREATE    = 'backend/public/joke/create.php',
@@ -18,6 +18,17 @@ enum URL
   PAGES_READ     = 'backend/public/pages/read.php',
   INSTALL        = 'backend/private/install.php',
   UNINSTALL      = 'backend/private/uninstall.php',
+}
+
+export enum Status
+{
+  FAILURE = 'failure',
+  SUCCESS = 'success',
+}
+
+export interface Response<T = any> {
+  status: Status;
+  data?: T;
 }
 
 @Injectable({
@@ -41,56 +52,69 @@ export class BackendService {
     });
   }
 
-  async install(): Promise<any> {
-    return this.httpClient
-    .get(URL.INSTALL)
-    .pipe(
-      catchError( () => of(null) ),
-      retry(3),
-    ).toPromise();
-  }
-
-  async uninstall(): Promise<any> {
-    return this.httpClient
-    .get(URL.UNINSTALL)
-    .pipe(
-      catchError( () => of(null) ),
-      retry(3),
-    ).toPromise();
-  }
-
   /**
    * Refresh completely the data (pages, current page, etc.)
    */
-  refresh() {
-    this.readPages(10);
+  refresh(): Promise<Response<Pages>> {
+    return this.readPages(10);
   }
 
   /**
    * Set current page
    * @param id zero-based index of the page, must be < pages count
    */
-  setPage(id: number) {
-    this.readPage(id, this.pages.size );
+  setPage(id: number): Promise<Response<Page>> {
+    return this.readPage(id, this.pages.size );
   }
 
-  setPageSize(size: number) {
-    this.readPages(size);
+  /**
+   * Change the page size
+   * @param size the element count per page
+   * @returns
+   */
+  setPageSize(size: number): Promise<Response<Pages>> {
+    return this.readPages(size);
+  }
+
+  /**
+   * Install the necessary tables
+   * @returns
+   */
+  install(): Promise<Response<string>> {
+    return this.httpClient
+    .get<Response<string>>(URL.INSTALL)
+    .pipe(
+      catchError( () => of({status: Status.FAILURE }) ),
+      retry(3),
+    ).toPromise();
+  }
+
+  /**
+   * Do the exact opposite of install()
+   * @returns
+   */
+  uninstall(): Promise<Response<string>> {
+    return this.httpClient
+    .get<Response<string>>(URL.UNINSTALL)
+    .pipe(
+      catchError( () => of({status: Status.FAILURE }) ),
+      retry(3),
+    ).toPromise();
   }
 
   /**
    * Restore a backup file (@see backup())
    * @param formData must contain a file field pointing a json file.
    * that json must contain a Joke array.
-   * @returns 
+   * @returns
    */
-  restore(formData: FormData): Promise<any>
+  restore(formData: FormData): Promise<Response>
   {
     return this.httpClient
-      .post(URL.JOKE_RESTORE, formData)
+      .post<Response>(URL.JOKE_RESTORE, formData)
       .pipe(
         retry(3),
-        catchError( () => of(null) )
+        catchError( () => of({status: Status.FAILURE}) )
       ).toPromise();
   }
 
@@ -98,28 +122,28 @@ export class BackendService {
    * Backup database
    * @returns an array of jokes with all information to restore it.
    */
-  backup(): Promise<Joke[]>
+  backup(): Promise<Response<Joke[]>>
   {
     return this.httpClient
-    .get<Joke[]>(URL.JOKE_BACKUP)
-    .pipe(
-      catchError( () => of(null) ),
-      retry(3),
-    ).toPromise();
+      .get<Response<Joke[]>>(URL.JOKE_BACKUP)
+      .pipe(
+        retry(3),
+        catchError( () => of({status: Status.FAILURE}) )
+      ).toPromise();
   }
 
   /**
-   * Create a joke on server side
+   * Create a joke
    * @param joke the joke to insert
    * @returns a joke with a unique id
    */
-  create(joke: Joke): Promise<Joke>
+  create(joke: Joke): Promise<Response<Joke>>
   {
     return this.httpClient
-      .post<Joke>(URL.JOKE_CREATE, joke)
+      .post<Response<Joke>>(URL.JOKE_CREATE, joke)
       .pipe(
-        catchError( () => of(null) ),
         retry(3),
+        catchError( () => of({ status: Status.FAILURE}) ),
       ).toPromise();
   }
 
@@ -127,58 +151,79 @@ export class BackendService {
    * Read the pages for a give page size.
    * @param size the item count per page
    */
-  private readPages(size: number): void {
+  private async readPages(size: number): Promise<Response<Pages>> {
 
     const params = new HttpParams().append('size', size);
 
-    this.httpClient
-    .get<Pages>(URL.PAGES_READ, { params } )
-    .pipe(
-      catchError( () => of(null) ),
-      retry(3),
-    ).subscribe( (requestResult: Pages) => {
-      this.pagesSubject.next(requestResult);
-    });
-  } 
+    const response = await this.httpClient
+      .get<Response<Pages>>(URL.PAGES_READ, { params } )
+      .pipe(
+        retry(3),
+        catchError( () => of( { status: Status.FAILURE, data: null}) )
+      ).toPromise();
+
+    if( response.status === Status.SUCCESS)
+    {
+      this.pagesSubject.next(response.data);
+    }
+    return response;
+  }
 
   /**
    * Read a page from backend
    * @param id a page index
    * @param size a page size (item count per page)
    */
-  private readPage(id: number, size: number): void {
+  private async readPage(id: number, size: number): Promise<Response<Page>> {
     let params = new HttpParams();
     params = params.append('id', id);
     params = params.append('size', size);
 
-    this.httpClient
-      .get<Page>(URL.PAGE_READ, { params })
+    const response = await this.httpClient
+      .get<Response<Page>>(URL.PAGE_READ, { params })
       .pipe(
-        catchError( () => of(null) ),
         retry(3),
-      ).subscribe( (requestResult: Page) => {
-        this.currentPageSubject.next(requestResult);
-      });
-  } 
+        catchError( () => of({ status: Status.FAILURE, data: null}) )
+      ).toPromise();
 
-  update(joke: Joke) {
-    this.httpClient
-    .put(URL.JOKE_UPDATE, joke )
+
+    if( response.status === Status.SUCCESS)
+    {
+      this.currentPageSubject.next(response.data);
+    }
+
+    return response;
+  }
+
+  /**
+   * Update an existing joke
+   * @param joke the joke to update (must have a valid id)
+   * @returns
+   */
+  update(joke: Joke): Promise<Response> {
+    return this.httpClient
+    .put<Response>(URL.JOKE_UPDATE, joke )
     .pipe(
-      catchError( () => of(null) ),
       retry(3),
+      catchError( () => of({ status: Status.FAILURE}) ),
     ).toPromise();
   }
 
-  delete(joke: Joke) {
+  /**
+   * Delete an existing joke
+   * @param id the joke id
+   * @returns
+   */
+  delete(id: number): Promise<Response> {
     let params = new HttpParams();
-    params = params.append('id', joke.id);
+    params = params.append('id', id);
 
-    this.httpClient
-    .delete(URL.JOKE_DELETE, { params })
+    return this.httpClient
+    .delete<Response>(URL.JOKE_DELETE, { params })
     .pipe(
-      catchError( () => of(null) ),
-      retry(3),      
+      retry(3),
+      catchError( () => of({ status: Status.FAILURE }) ),
     ).toPromise();
   }
 }
+

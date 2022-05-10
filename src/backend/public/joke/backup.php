@@ -5,6 +5,7 @@
 */
 
 require_once('../../private/joke-crud.php');
+require_once('../../private/models/response.php');
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET");
@@ -14,8 +15,9 @@ $jokes = array();
 
 if( !JokeCRUD::backup($jokes) )
 {
-    http_response_code(500);
+    echo(Response::failure([])->json());
+    exit;
 }
-echo(json_encode($jokes));
+echo(Response::success($jokes)->json());
 
 ?>

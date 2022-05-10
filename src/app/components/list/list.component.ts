@@ -38,7 +38,7 @@ export class ListComponent implements OnInit {
         this.pageCount = pages.count;
         this.changeRef.detectChanges();
     }));
-    
+
     this.jokeService.refresh();
   }
 
@@ -55,7 +55,7 @@ export class ListComponent implements OnInit {
   }
 
   delete( joke: Joke ) {
-    this.jokeService.delete(joke);
+    this.jokeService.delete(joke.id);
   }
 
   toggleVisibility( joke: Joke ) {

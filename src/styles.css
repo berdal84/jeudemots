@@ -107,28 +107,39 @@ p.justified {
 /* Elements identified by and ID */
 
 #content {
-	padding: 25px;
-	margin: 55px auto;
+	margin:  55px auto;
 	max-width: 1000px;
+  width: auto;
 	min-width: 0;
 }
 
 #footer {
-	padding: 3px;
 	position: fixed;
-	bottom: 0px;
-	left: 0px;
-	width: 100%;
+	bottom: 0;
+	left: 0;
+	right: 0;
 	background: linear-gradient(rgba(200, 200, 200, 0), rgb(221, 221, 221));
-	text-align: center;
-	padding: 10px;
-	bottom: 0px;
-	height: 60px;
+	padding: 5px;
+	height: fit-content;
 }
 
 #footer p {
+  text-align: center;
 	color: #a6a6a6;
-	font-size: 14px;
-	bottom: -20px;
-	position: relative;
+	font-size: 0.75em;
+  position: relative;
+}
+
+@media only screen and (max-width: 1200px) and (min-width: 800px)
+{
+  * {
+    font-size: 0.9rem;
+  }
+}
+
+@media only screen and (max-width: 800px)
+{
+  * {
+    font-size: 0.8rem;
+  }
 }

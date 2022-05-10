@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { BackendService } from 'src/app/services/backend.service';
+import { BackendService, Status } from 'src/app/services/backend.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Status } from '../enums/status.enum';
 
 @Component({
   selector: 'app-backup',
@@ -11,8 +10,7 @@ import { Status } from '../enums/status.enum';
 export class BackupComponent {
 
   Status = Status;
-
-  status;
+  status: Status;
 
   /** URL of the JSON to download */
   downloadJsonHref;
@@ -22,23 +20,19 @@ export class BackupComponent {
     private sanitizer: DomSanitizer)
   {
     this.downloadJsonHref = null;
-    this.status = Status.IDLE;
+    this.status           = null;
   }
 
   async onBackup()
-  {                
-    const jsonResponse = await this.jokeService.backup();
-    if( jsonResponse ) 
+  {
+    const response = await this.jokeService.backup();
+    if( response.status === Status.SUCCESS )
     {
-      const json        = JSON.stringify(jsonResponse);
+      const json        = JSON.stringify(response.data);
       const encodedJson = encodeURIComponent(json);
       const uri         = this.sanitizer.bypassSecurityTrustUrl(`data:text/json;charset=UTF-8,${encodedJson}`);
       this.downloadJsonHref = uri;
-      this.status           = Status.SUCCESS;
     }
-    else
-    {
-      this.status = Status.ERROR;
-    }
+    this.status = response.status;
   }
 }

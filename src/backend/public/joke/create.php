@@ -1,6 +1,7 @@
 <?php
 
 require_once('../../private/joke-crud.php');
+require_once('../../private/models/response.php');
 
 // get raw data (text)
 $raw_data = file_get_contents('php://input');
@@ -26,6 +27,6 @@ if( !JokeCRUD::create($joke) )
     die("Unable to create the joke!");
 }
 
-echo( json_encode($joke) );
+echo( Response::success($joke)->json() );
 
 ?>

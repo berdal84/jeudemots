@@ -5,8 +5,9 @@
 */
 
 require_once('../../private/joke-crud.php');
+require_once('../../private/models/response.php');
 
-class Response {
+class Summary {
     public $restored_count = 0;
     public $deleted_count = 0;
 }
@@ -36,10 +37,10 @@ if(!is_array($data))
     die("Wrong data type!");
 }
 
-$response = new Response();
+$summary = new Summary();
 
 // clear table
-if( !JokeCRUD::delete_all($response->deleted_count) )
+if( !JokeCRUD::delete_all($summary->deleted_count) )
 {
     die("Unable to delete existing jokes!");
 }
@@ -53,9 +54,8 @@ foreach ($data as $each)
     {
         die("Unable to create the joke!");
     }
-    $response->restored_count++;
+    $summary->restored_count++;
 }
 
-
-echo( json_encode($response) );
+echo( Response::success($summary)->json() );
 ?>

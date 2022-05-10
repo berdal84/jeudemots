@@ -5,6 +5,7 @@
 
 require_once('../../private/joke-crud.php');
 require_once('../../private/utils.php');
+require_once('../../private/models/response.php');
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET");
@@ -27,8 +28,9 @@ $page = new Page($id, $size);
 
 if( !JokeCRUD::read_page($page) )
 {
-    http_response_code(500);
+  echo( Response::failure(null)->json() );
+  exit(0);
 }
-echo(json_encode($page));
+echo( Response::success($page)->json() );
 
 ?>

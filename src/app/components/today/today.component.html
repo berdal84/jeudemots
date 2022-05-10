@@ -9,7 +9,7 @@
                 <div id="navbar">
 
                     <img src="assets/arrow-left.svg"
-                        [class]="hasPrevious() ? 'navbar-btn' : 'navbar-btn-disable'"
+                        class="navbar-btn {{ !hasPrevious() ?? 'navbar-btn-disable' }}"
                         (click)="onPreviousButtonClicked()"
                         [title]="hasPrevious() ? 'précédent' : 'plus rien par ici...'" />
 
@@ -20,7 +20,7 @@
                         (click)="onPauseButtonClicked()" title="Mettre le diaporama en pause" />
 
                     <img src="assets/arrow-right.svg"
-                        [class]="hasNext() ? 'navbar-btn' : 'navbar-btn-disable'"
+                        class="navbar-btn {{ !hasPrevious() ?? 'navbar-btn-disable' }}"
                         (click)="onNextButtonClicked()" [title]="hasNext() ? 'suivant' : 'plus rien par là...'" />
 
                 </div>

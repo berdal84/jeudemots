@@ -30,7 +30,7 @@
 
 #jokeText {
     text-align: left;
-    font-size: 1.8em;
+    font-size: 1.8rem;
     line-height : 1.5;
 }
 
@@ -46,7 +46,6 @@
     border-bottom-left-radius: 0px;
     width: 50%;
     margin: 0px;
-    margin-left: 0px;
     margin-left: 20px;
     padding-bottom: 6px;
 }
@@ -60,6 +59,7 @@
 #topbar {
     display: flex;
     flex-direction: row;
+    height: 3rem;
     justify-content: space-between;
 }
 
@@ -71,12 +71,12 @@
 }
 
 .navbar-btn {
-    width: 40px;
-    height: 40px;
-    margin: 10px;
+    width: auto;
+    height: auto;
+    margin: 0.5rem;
     filter: invert(0.8) drop-shadow( 1px 1px 2px white);
     cursor: pointer;
-    transition-duration: 0.5s;    
+    transition-duration: 0.5s;
 }
 
 .navbar-btn:hover {
@@ -85,11 +85,9 @@
     transition-duration: 0.2s;
 }
 
-.navbar-btn-disable { 
-    width: 40px;
-    height: 40px;
-    margin: 10px;
+.navbar-btn-disable {
     filter: invert(0.8) drop-shadow( 1px 1px 2px white);
     cursor: pointer;
-    transition-duration: 0.5s;  
+    transition-duration: 0.5s;
 }
+

@@ -4,7 +4,7 @@ require_once 'models/joke.php';
 require_once 'models/page.php';
 require_once 'db.php';
 
-class JokeCRUD {    
+class JokeCRUD {
 
     public static function delete_all(int &$delete_count): bool
     {
@@ -15,7 +15,7 @@ class JokeCRUD {
         if( $stmt = $mysqli->prepare($query) )
         {
             if( $stmt->execute() )
-            {     
+            {
                 $delete_count = $mysqli->affected_rows;
                 $success      = true;
             }
@@ -37,7 +37,7 @@ class JokeCRUD {
         if( $stmt = $mysqli->prepare($query) )
         {
             if( $stmt->execute() )
-            {     
+            {
                 $result       = $stmt->get_result();
                 $row          = $result->fetch_row();
                 $pages->count = ceil($row[0] / $pages->size);
@@ -63,16 +63,16 @@ class JokeCRUD {
         {
             $offset = $page->id * $page->size;
             $limit  = $page->size;
-            $stmt->bind_param("ii", $offset, $limit);         
+            $stmt->bind_param("ii", $offset, $limit);
 
             if( $stmt->execute() )
-            {     
+            {
                 $result = $stmt->get_result();
                 $rows   = $result->fetch_all(MYSQLI_ASSOC);
                 foreach ($rows as $row)
-                {           
+                {
                     $each_joke = new Joke();
-                    $each_joke->fromArray($row);                    
+                    $each_joke->fromArray($row);
                     array_push( $page->jokes, $each_joke);
                 }
                 $success = true;
@@ -88,7 +88,7 @@ class JokeCRUD {
         $success = false;
         $mysqli  = DB::connect();
         $query   = "INSERT INTO `jokes` (`category`, `text`, `author`, `date`, `visible`) VALUES ( ?, ?, ?, ?, ?)";
-        
+
         if( $stmt = $mysqli->prepare($query) )
         {
             $stmt->bind_param("ssssi"
@@ -96,10 +96,10 @@ class JokeCRUD {
                 , $joke->text
                 , $joke->author
                 , $joke->date
-                , $joke->visible);         
+                , $joke->visible);
 
             if( $stmt->execute() )
-            {     
+            {
                 $joke->id = $stmt->insert_id;
                 $success   = true;
             }
@@ -112,26 +112,26 @@ class JokeCRUD {
     public static function read(Joke& $joke, int $id): bool
     {
         $success = false;
-        $mysqli  = DB::connect();        
+        $mysqli  = DB::connect();
         $query   = "SELECT * FROM jokes WHERE id = ?";
-        
+
         if( $stmt = $mysqli->prepare($query) )
         {
-            $stmt->bind_param("i", $id);         
+            $stmt->bind_param("i", $id);
 
             if( $stmt->execute() )
             {
                 $result = $stmt->get_result();
-        
+
                 if( $result->num_rows == 1 )
                 {
-                    $row     = $result->fetch_array(MYSQLI_ASSOC);                    
+                    $row     = $result->fetch_array(MYSQLI_ASSOC);
                     $joke->fromArray($row);
                     $success = true;
-                }           
+                }
             }
         }
-        $mysqli->close();        
+        $mysqli->close();
         return $success;
     }
 
@@ -139,19 +139,19 @@ class JokeCRUD {
     {
         $success = false;
 
-        $mysqli = DB::connect();        
+        $mysqli = DB::connect();
         $query  = "SELECT * FROM `jokes`";
-        
+
         if( $stmt = $mysqli->prepare($query) )
-        {    
+        {
             if( $stmt->execute() )
             {
                 $result = $stmt->get_result();
                 $rows = $result->fetch_all(MYSQLI_ASSOC);
                 foreach ($rows as $row)
-                {           
+                {
                     $each_joke = new Joke();
-                    $each_joke->fromArray($row);                    
+                    $each_joke->fromArray($row);
                     array_push($array_out, $each_joke);
                 }
                 $success = true;
@@ -162,16 +162,16 @@ class JokeCRUD {
         return $success;
     }
 
-    public static function update(Joke $joke)
+    public static function update(Joke $joke): bool
     {
-        printf( "Update %s", $joke->name);
-        // ...
+      // TODO
+      return false;
     }
 
-    public static function delete(Joke $joke)
+    public static function delete(Joke $joke): bool
     {
-        printf( "Delete %s", $joke->name);
-        // ...
+      // TODO
+      return false;
     }
 
     public static function uninstall(): bool
@@ -181,15 +181,11 @@ class JokeCRUD {
         $query = "DROP TABLE jokes";
 
         //echo("\n".$query."\n");
-        $mysqli = DB::connect();        
-        
+        $mysqli = DB::connect();
+
         if( $mysqli->query($query) )
-        {                
-            $success = true;
-        }
-        else
         {
-            echo("Does table exist?\n");
+            $success = true;
         }
         $mysqli->close();
         return $success;
@@ -214,10 +210,10 @@ class JokeCRUD {
 SQL;
 
         //echo("\n".$query."\n");
-        $mysqli = DB::connect();        
-        
+        $mysqli = DB::connect();
+
         if( $mysqli->multi_query($query) )
-        {                
+        {
             $success = true;
         }
         else

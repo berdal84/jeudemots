@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { BackendService } from 'src/app/services/backend.service';
+import { BackendService, Status } from 'src/app/services/backend.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Status } from '../enums/status.enum';
 
 @Component({
   selector: 'app-restore',
@@ -25,7 +24,7 @@ export class RestoreComponent implements OnInit {
 
     ngOnInit() {
       this.displayErrors  = false;
-      this.status         = Status.IDLE;
+      this.status         = null;
       this.form           = new FormGroup({});
 
       const fileControl = new FormControl(
@@ -56,7 +55,7 @@ export class RestoreComponent implements OnInit {
     }
 
     onFileChange(event) {
-  
+
       if (event.target.files.length > 0)
       {
         const file = event.target.files[0];
@@ -70,24 +69,20 @@ export class RestoreComponent implements OnInit {
      * Submit form content only if form is valid
      */
     async onSubmit()
-    {      
+    {
       this.displayErrors = this.form.invalid;
       if ( !this.form.invalid)
       {
-        
+
         const formData = new FormData();
         formData.append('file', this.form.get('fileSrc').value);
-      
+
         const result = await this.jokeService.restore(formData);
-        if( result ) 
+        if( result.status === Status.SUCCESS )
         {
           this.form.reset();
-          this.status = Status.SUCCESS;
         }
-        else
-        {
-          this.status = Status.ERROR;
-        }
+        this.status = result.status;
       }
     }
 
@@ -95,7 +90,7 @@ export class RestoreComponent implements OnInit {
      * Reset form
      */
     onReset() {
-      this.status = Status.IDLE;
+      this.status = null;
       this.form.reset();
     }
 

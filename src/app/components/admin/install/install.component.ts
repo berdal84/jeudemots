@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BackendService } from 'src/app/services/backend.service';
-import { Status } from '../enums/status.enum';
+import { BackendService, Status } from 'src/app/services/backend.service';
 
 @Component({
   selector: 'app-install',
@@ -23,7 +22,7 @@ export class InstallComponent implements OnInit {
 
   ngOnInit() {
     this.displayErrors  = false;
-    this.status         = Status.IDLE;
+    this.status         = null;
     this.form           = new FormGroup({});
     const agreeControl = new FormControl(
       null,
@@ -45,20 +44,17 @@ export class InstallComponent implements OnInit {
    * Submit form content only if form is valid
    */
   async onSubmit()
-  {      
+  {
     this.displayErrors = this.form.invalid;
     if ( !this.form.invalid)
     {
-      const result = await this.jokeService.install();
-      if( result ) 
+      const response = await this.jokeService.install();
+      if( response.status === Status.SUCCESS )
       {
         this.form.reset();
-        this.status = Status.SUCCESS;
       }
-      else
-      {
-        this.status = Status.ERROR;
-      }
+
+      this.status = response.status;
     }
   }
 
@@ -66,7 +62,7 @@ export class InstallComponent implements OnInit {
    * Reset form
    */
   onReset() {
-    this.status = Status.IDLE;
+    this.status = null;
     this.form.reset();
   }
 

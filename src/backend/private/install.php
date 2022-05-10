@@ -1,12 +1,12 @@
 <?php
     require_once('joke-crud.php');
-    echo("Installing ...\n");
+    require_once('models/response.php');
 
     if(!JokeCRUD::install())
     {
-        http_response_code(500);
-        die("Unable to install!");        
+      echo( Response::failure("Unable to install!")->json() );
+      exit;
     }
 
-    echo("Install done!");
+    echo( Response::success("Install successful")->json() );
 ?>
