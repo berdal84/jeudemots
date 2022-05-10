@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { BackendService, Status } from 'src/app/services/backend.service';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-restore',
@@ -18,9 +17,7 @@ export class RestoreComponent implements OnInit {
     /** display form errors */
     displayErrors: boolean;
 
-    constructor(
-      private jokeService: BackendService,
-      private sanitizer: DomSanitizer) {}
+    constructor( private jokeService: BackendService) {}
 
     ngOnInit() {
       this.displayErrors  = false;
@@ -37,7 +34,7 @@ export class RestoreComponent implements OnInit {
       const agreeControl = new FormControl(
         null,
         {
-          validators: [Validators.required],
+          validators: [Validators.requiredTrue],
           updateOn: 'change'
         });
 
@@ -71,7 +68,7 @@ export class RestoreComponent implements OnInit {
     async onSubmit()
     {
       this.displayErrors = this.form.invalid;
-      if ( !this.form.invalid)
+      if ( this.form.valid)
       {
 
         const formData = new FormData();

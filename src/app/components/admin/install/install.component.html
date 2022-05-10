@@ -16,7 +16,7 @@
         </div>
 
     </div>
-    <div class="flex-row invalid-feedback" *ngIf="displayErrors && controls.agree.errors">
+    <div class="flex-row invalid" *ngIf="displayErrors && controls.agree.errors">
         <label class="flex-left"></label>
         <p class="flex-right flex-row">Lisez et cochez.
         </p>
@@ -36,13 +36,13 @@
     <!-- Error -->
     <div class="flex-row" *ngIf="status === Status.FAILURE">
         <div class="flex-left"></div>
-        <p class="flex-right flex-row invalid-feedback-joke">Oh... Un problème a eu lieu pendant l'installation.</p>
+        <p class="flex-right flex-row invalid">Oh... Un problème a eu lieu pendant l'installation.</p>
     </div>
 
     <!-- Confirmation -->
     <div class="flex-row" *ngIf="status === Status.SUCCESS">
         <div class="flex-left"></div>
-        <p class="flex-right flex-row valid-feedback-joke">L'installation s'est bien déroulée.</p>
+        <p class="flex-right valid">L'installation s'est bien déroulée.</p>
     </div>
 
 </form>

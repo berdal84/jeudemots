@@ -9,12 +9,12 @@
 
 <!-- Global error message (with a joke inside) -->
 <div class="flex-row" *ngIf="status === Status.FAILURE">
-    <p class="flex-row invalid-feedback-joke">Oh... Un problème a eu lieu pendant le transfert.</p>
+    <p class="flex-row invalid">Oh... Un problème a eu lieu pendant le transfert.</p>
 </div>
 
 <!-- Global confirmation message (with a joke inside) -->
 <div class="flex-row" *ngIf="status === Status.SUCCESS">
-    <p class="valid-feedback-joke">La base de données a été sauvegardée, téléchargez le fichier
+    <p class="valid">La base de données a été sauvegardée, téléchargez le fichier
         <a class="btn btn-clear" [href]="downloadJsonHref" download="backup.json">backup.json</a>
     </p>
 </div>

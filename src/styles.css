@@ -143,3 +143,17 @@ p.justified {
     font-size: 0.8rem;
   }
 }
+
+
+/*
+********************************
+      Form validation
+********************************
+*/
+p.invalid, .invalid p {
+  color: #bf1d00;
+}
+
+p.valid, .valid p {
+  color: #05a300;
+}

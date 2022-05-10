@@ -19,7 +19,7 @@ button {
 }
 
 button[type="reset"] {
-    width: 30%;    
+    width: 30%;
 }
 
 .flex-row {
@@ -31,24 +31,7 @@ button[type="reset"] {
    width: 20%
 }
 
-.invalid-feedback p {
-    color: #bf1d00;
-    font-size: 0.9em;    
-    margin-top: 5px;
-}
-
-.invalid-feedback-joke {
-    color: #bf1d00;  
-}
-
-.valid-feedback-joke {
-    color: #05a300;  
-}
-
 .flex-right {
     width: 80%
- }
+}
 
- .invalid-input {
-    box-shadow: 0px 0px 2px 2px #ff5c3f;
- }

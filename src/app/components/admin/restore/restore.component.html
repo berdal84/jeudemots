@@ -14,7 +14,7 @@
             type="file"
             formControlName="file"
             (change)="onFileChange($event)">
-            <div *ngIf="displayErrors && controls.file.errors" class="invalid-feedback">
+            <div *ngIf="displayErrors && controls.file.errors" class="invalid">
                 <p *ngIf="controls.file.errors.required">Fichier requis</p>
             </div>
         </div>
@@ -25,11 +25,11 @@
         <label class="flex-left"></label>
         <div class="flex-right flex-row">
             <input type="checkbox" formControlName="agree" id="agree" />
-            <label for="agree" class="form-check-label">J'ai conscience que la table sere entièrement vidée avant d'être remplie par le contenu du fichier.</label>
+            <label for="agree" class="form-check-label">J'ai conscience que la table sera entièrement vidée avant d'être remplie par le contenu du fichier.</label>
         </div>
 
     </div>
-    <div class="flex-row invalid-feedback" *ngIf="displayErrors && controls.agree.errors">
+    <div class="flex-row invalid" *ngIf="displayErrors && controls.agree.errors">
         <label class="flex-left"></label>
         <p class="flex-right flex-row">Lisez et cochez.
         </p>
@@ -50,13 +50,13 @@
     <!-- Global error message (with a joke inside) -->
     <div class="flex-row" *ngIf="status === Status.FAILURE">
         <div class="flex-left"></div>
-        <p class="flex-right flex-row invalid-feedback-joke">Oh... Un problème a eu lieu pendant le transfert.</p>
+        <p class="flex-right flex-row invalid">Oh... Un problème a eu lieu pendant le transfert.</p>
     </div>
 
     <!-- Global confirmation message (with a joke inside) -->
     <div class="flex-row" *ngIf="status === Status.SUCCESS">
         <div class="flex-left"></div>
-        <p class="flex-right flex-row valid-feedback-joke">Expédition réussie! La base de donnée a bien été restaurée.</p>
+        <p class="flex-right flex-row valid">Expédition réussie! La base de donnée a bien été restaurée.</p>
     </div>
 
 </form>
