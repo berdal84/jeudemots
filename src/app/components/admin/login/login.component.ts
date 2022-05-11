@@ -24,6 +24,10 @@ export class LoginComponent {
         password: new FormControl('', [Validators.required]),
       });
 
+      if( this.userService.isLogged() )
+      {
+        this.router.navigate(['admin/dashboard']);
+      }
     }
 
   async submit() {
