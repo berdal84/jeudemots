@@ -164,14 +164,51 @@ class JokeCRUD {
 
     public static function update(Joke $joke): bool
     {
-      // TODO
-      return false;
+      $success = false;
+      $mysqli  = DB::connect();
+      $query = <<<SQL
+        UPDATE `jokes`
+        SET category = ?, text = ?, author = ?, date = ?, visible = ?
+        WHERE id = ?
+SQL;
+      if( $stmt = $mysqli->prepare($query) )
+      {
+          $stmt->bind_param("ssssii"
+              , $joke->category
+              , $joke->text
+              , $joke->author
+              , $joke->date
+              , $joke->visible
+              , $joke->id);
+
+            if( $stmt->execute() )
+            {
+                $success = $stmt->affected_rows !== 0;
+            }
+      }
+      $mysqli->close();
+
+      return $success;
     }
 
-    public static function delete(Joke $joke): bool
+    public static function delete(int $id): bool
     {
-      // TODO
-      return false;
+      $success = false;
+      $mysqli  = DB::connect();
+      $query   = 'DELETE FROM `jokes` WHERE id = ?';
+
+      if( $stmt = $mysqli->prepare($query) )
+      {
+          $stmt->bind_param("i", $id);
+
+            if( $stmt->execute() )
+            {
+                $success = $stmt->affected_rows !== 0;
+            }
+      }
+      $mysqli->close();
+
+      return $success;
     }
 
     public static function uninstall(): bool

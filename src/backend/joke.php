@@ -18,11 +18,12 @@ class Joke {
         $this->category  = '';
         $this->text      = '';
         $this->author    = '';
-        $this->date      = ''; 
+        $this->date      = '';
     }
 
     function fromObject(object $data)
     {
+        $this->id       = property_exists($data, "id") ? intval($data->id) : -1;
         $this->visible  = property_exists($data, "visible") ? boolval($data->visible) : false;
         $this->category = strval($data->category);
         $this->text     = strval($data->text);
@@ -36,7 +37,7 @@ class Joke {
         else
         {
             $this->date     = strval($data->date);
-        }        
+        }
     }
 
     /* Create a Joke from an array. T
