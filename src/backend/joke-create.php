@@ -3,6 +3,10 @@
 require_once('joke-crud.php');
 require_once('response.php');
 
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+
 // get raw data (text)
 $raw_data = file_get_contents('php://input');
 if(!$raw_data)

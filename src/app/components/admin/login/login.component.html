@@ -25,8 +25,9 @@
             <button type="submit">OK</button>
         </div>
 
-        <div class="flex-row invalid" *ngIf="submited && form.invalid">
-          <p>Le formulaire comporte des erreurs</p>
+        <div class="flex-row invalid" *ngIf="submited">
+          <p *ngIf="form.invalid">Le formulaire comporte des erreurs</p>
+          <p *ngIf="status === 'failure'">username/password invalide(s)</p>
         </div>
       </form>
     </div>

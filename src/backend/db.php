@@ -1,17 +1,13 @@
 <?php
 
 require_once('joke-crud.php');
+require_once('config.php');
 
 class DB
 {
-    const HOST = 'localhost';
-    const NAME = 'jeudemots-ng';
-    const USER = 'root';
-    const PASS = '';
-
     static function connect()
     {
-        $mysqli = new mysqli(DB::HOST, DB::USER, DB::PASS, DB::NAME);
+        $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
         // Check connection
         if( !$mysqli)

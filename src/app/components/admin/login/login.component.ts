@@ -13,6 +13,7 @@ export class LoginComponent {
 
   form: FormGroup;
   submited = false;
+  status: Status = null;
 
   constructor(
     private userService: UserService,
@@ -39,6 +40,8 @@ export class LoginComponent {
           console.error('Unable to navigate!');
         }
       }
+
+      this.status = response.status;
     }
 
     this.submited = true;

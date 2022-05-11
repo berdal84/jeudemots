@@ -1,10 +1,10 @@
 <?php
     require_once('db.php');
     require_once('response.php');
-    require_once('session.php');
+    require_once('user.php');
 
-    Session::start();
-    Session::exit_if_not_logged();
+    session_start();
+    User::exit_if_not_logged();
 
     if(!JokeCRUD::uninstall())
     {

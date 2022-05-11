@@ -1,17 +1,17 @@
 <?php
   require_once('response.php');
-  require_once('session.php');
+  require_once('user.php');
 
   header("Access-Control-Allow-Origin: *");
   header("Access-Control-Allow-Methods: POST");
   header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
-  Session::start();
+  session_start();
 
   $rawData 	= file_get_contents('php://input');
-  $user 		= json_decode($rawData);
+  $data 		= json_decode($rawData);
 
-  if(!Session::login($user))
+  if(!User::login($data->username, $data->password))
   {
     echo( Response::failure("Unable to login!")->json() );
     exit;

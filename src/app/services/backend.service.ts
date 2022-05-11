@@ -79,9 +79,9 @@ export class BackendService {
     return this.readPages(size);
   }
 
-  login( user: string, password: string): Promise<Response> {
+  login( username: string, password: string): Promise<Response> {
     return this.httpClient
-    .post<Response>(URL.LOGIN, { user, password})
+    .post<Response>(URL.LOGIN, { username, password})
     .pipe(
       retry(3),
       catchError( () => of({status: Status.FAILURE }) ),
