@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { Joke } from '../../models/joke.model';
-import { BackendService } from '../../services/backend.service';
+import { BackendService, Status } from '../../services/backend.service';
 
 @Component({
   selector: 'app-list',
@@ -39,7 +39,7 @@ export class ListComponent implements OnInit {
         this.changeRef.detectChanges();
     }));
 
-    this.jokeService.refresh();
+    this.jokeService.reloadAll();
   }
 
   ngOnDestroy() {
@@ -54,13 +54,29 @@ export class ListComponent implements OnInit {
     // TODO
   }
 
-  delete( joke: Joke ) {
-    this.jokeService.delete(joke.id);
+  async delete( joke: Joke ) {
+    const response = await this.jokeService.delete(joke.id);
+    if( response.status === Status.SUCCESS )
+    {
+      await this.jokeService.reloadPage();
+    }
+    else
+    {
+      alert('Oups, delete failed!');
+    }
   }
 
-  toggleVisibility( joke: Joke ) {
+  async toggleVisibility( joke: Joke ) {
     joke.visible = !joke.visible;
-    this.jokeService.update(joke);
+    const response = await this.jokeService.update(joke);
+    if( response.status === Status.SUCCESS )
+    {
+      await this.jokeService.reloadPage();
+    }
+    else
+    {
+      alert('Oups, update failed!');
+    }
   }
 
   setPage(id: number) {

@@ -44,7 +44,7 @@ export class TodayComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.jokeService.refresh();
+    this.jokeService.reloadAll();
   }
 
   ngOnDestroy() {

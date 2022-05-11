@@ -42,24 +42,27 @@ export class BackendService {
   readonly currentPageSubject: ReplaySubject<Page>;
   readonly pagesSubject: ReplaySubject<Pages>;
   private  pages: Pages;
+  private  currentPage: Page;
 
   constructor( private httpClient: HttpClient )
   {
     this.currentPageSubject = new ReplaySubject<Page>();
     this.pagesSubject       = new ReplaySubject<Pages>();
 
-    this.pagesSubject.subscribe( (pages) => {
-        // When new pages are received, we have to get the first one
-        this.pages = pages;
-        this.readPage(0, pages.size);
-    });
+    this.pagesSubject.subscribe( (pages) => { this.pages = pages; });
+    this.currentPageSubject.subscribe( (page) => { this.currentPage = page; });
   }
 
   /**
    * Refresh completely the data (pages, current page, etc.)
    */
-  refresh(): Promise<Response<Pages>> {
-    return this.readPages(10);
+  async reloadAll(): Promise<Response<Pages>> {
+    const response = await this.readPages(10);
+    if( response.status === Status.SUCCESS)
+    {
+      await this.readPage(0, this.pages.size);
+    }
+    return response;
   }
 
   /**
@@ -68,6 +71,17 @@ export class BackendService {
    */
   setPage(id: number): Promise<Response<Page>> {
     return this.readPage(id, this.pages.size );
+  }
+
+  async reloadPage(): Promise<Response<Page>> {
+    let id = this.currentPage.id;
+    const response = await this.readPages(this.pages.size);
+    if( response.status === Status.SUCCESS)
+    {
+      id = Math.min( this.pages.size - 1, id);
+      return await this.readPage( id, this.pages.size );
+    }
+    return { status: Status.FAILURE, data: null };
   }
 
   /**
