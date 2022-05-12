@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Page, Pages } from 'src/app/models/page.model';
 import { Joke } from '../../models/joke.model';
 import { BackendService } from '../../services/backend.service';
 
@@ -17,13 +18,13 @@ export class TodayComponent implements OnInit, OnDestroy {
   isDiaporamaPlaying = false;
 
   private timePerJokeInSeconds = 5;
-  private currentJokeId = 0;
-  private jokes: Joke[] = [];
+  private pages: Pages;
+  private page: Page;
   private diaporamaTimer: number;
   private timeElapsedOnCurrentJokeInSeconds = 0;
   private subscription: Subscription;
 
-  constructor(private jokeService: BackendService) {
+  constructor(private backend: BackendService) {
     /* Set a default joke in case service hasn't loaded data before page is displayed */
     this.currentJoke = {
       category: '...',
@@ -31,44 +32,62 @@ export class TodayComponent implements OnInit, OnDestroy {
       author: '...',
       date: '...'
     };
+
+    this.pages = {
+        size: 1,
+        count: 0,
+    };
+    
+    this.page = {
+      id: 0,
+      jokes: [this.currentJoke],
+      size: 1
+    }
   }
 
-  ngOnInit() {
-    this.subscription = this.jokeService.currentPageSubject.subscribe(
+  async ngOnInit() {
+
+    this.backend.resetFilter();
+    
+    this.subscription = await this.backend.pageSubject.subscribe(
       (page) => {
+        this.page = page;
         if( page.jokes.length )
         {
-        this.jokes = page.jokes;
-        this.setCurrentJokeWithId(0);
-      }
+          this.currentJoke = page.jokes[0]; // 1 joke per page, so we display the first
+        }
       }
     );
 
-    this.jokeService.reloadAll();
+    this.subscription.add( await this.backend.pagesSubject.subscribe(
+      (page) => {
+        this.pages = page;
+      }
+    ));
+
+    const response = await this.backend.reloadAll(1); // 1 joke at once
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
-  private setCurrentJokeWithId(id: number): void {
-    this.currentJokeId  = id;
-    this.currentJoke    = this.jokes[this.currentJokeId];
+  private async setPage(id: number) {
+    await this.backend.setPage(id);
     this.resetDiaporamaTime();
   }
 
   hasNext(): boolean {
-    return this.currentJokeId < this.jokes.length - 1;
+    return this.page.id + 1 < this.pages.count;
   }
 
   hasPrevious(): boolean {
-    return this.currentJokeId > 0;
+    return this.page.id > 0;
   }
 
   getDiaporamaTimerText(): string {
     const timeLeftInSeconds = this.timePerJokeInSeconds - this.timeElapsedOnCurrentJokeInSeconds;
-    const str: string = 'Prochain jeu de mots dans ' + timeLeftInSeconds.toFixed(0) + ' sec.';
-    return str;
+    return `Prochain jeu de mots dans ${timeLeftInSeconds.toFixed(0)} sec.`;
   }
 
   private resetDiaporamaTime(): void {
@@ -113,13 +132,13 @@ export class TodayComponent implements OnInit, OnDestroy {
 
   onPreviousButtonClicked(): void {
     if (this.hasPrevious()) {
-      this.setCurrentJokeWithId(this.currentJokeId - 1); // TODO: use the joke service to decrement
+      this.setPage(this.page.id - 1);
     }
   }
 
   onNextButtonClicked(): void {
     if (this.hasNext()) {
-      this.setCurrentJokeWithId(this.currentJokeId + 1); // TODO: use the joke service to increment
+      this.setPage(this.page.id + 1);
     }
   }
 

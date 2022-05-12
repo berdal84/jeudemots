@@ -22,16 +22,21 @@ export class ListComponent implements OnInit {
     private backend: BackendService,
     private user: UserService,
     private changeRef: ChangeDetectorRef
-    ) { }
+    )
+  {
+  }
 
   onFilterChange(evt)
   {
-    this.backend.filter(evt.target.value);
+    this.backend.setFilter(evt.target.value);
+    this.backend.reloadAll();
   }
 
   ngOnInit() {
+    this.filterInput = this.backend.getFilter();
+    
     this.subscriptions = this.backend
-      .currentPageSubject.subscribe(
+      .pageSubject.subscribe(
         (page) => {
           this.jokes = page.jokes;
           this.currentPage = page.id;

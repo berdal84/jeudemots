@@ -39,31 +39,30 @@ export interface Response<T = any> {
 })
 export class BackendService {
 
-  readonly currentPageSubject: ReplaySubject<Page>;
+  readonly pageSubject: ReplaySubject<Page>;
   readonly pagesSubject: ReplaySubject<Pages>;
   private  pages: Pages;
-  private  currentPage: Page;
+  private  page: Page;
   private  filterStr: string;
 
   constructor( private httpClient: HttpClient )
   {
-    this.currentPageSubject = new ReplaySubject<Page>();
-    this.pagesSubject       = new ReplaySubject<Pages>();
-    this.filterStr          = '';
+    this.pageSubject  = new ReplaySubject<Page>();
+    this.pagesSubject = new ReplaySubject<Pages>();
+    this.filterStr    = '';
     this.pagesSubject.subscribe( (pages) => { this.pages = pages; });
-    this.currentPageSubject.subscribe( (page) => { this.currentPage = page; });
+    this.pageSubject.subscribe( (page) => { this.page = page; });
   }
 
-  async filter(filterStr: string): Promise<Response<Pages>> {
-    this.filterStr = filterStr;
-    return await this.reloadAll();
-  }
+  setFilter(filterStr: string) {this.filterStr = filterStr;}
+  getFilter() { return this.filterStr;}  
+  resetFilter() {this.filterStr = '';}
 
   /**
    * Refresh completely the data (pages, current page, etc.)
    */
-  async reloadAll(): Promise<Response<Pages>> {
-    const response = await this.readPages(10);
+  async reloadAll( page_size = 10): Promise<Response<Pages>> {
+    const response = await this.readPages(page_size);
     if( response.status === Status.SUCCESS)
     {
       await this.readPage(0, this.pages.size);
@@ -80,7 +79,7 @@ export class BackendService {
   }
 
   async reloadPage(): Promise<Response<Page>> {
-    let id = this.currentPage.id;
+    let id = this.page.id;
     const response = await this.readPages(this.pages.size);
     if( response.status === Status.SUCCESS)
     {
@@ -238,7 +237,7 @@ export class BackendService {
 
     if( response.status === Status.SUCCESS)
     {
-      this.currentPageSubject.next(response.data);
+      this.pageSubject.next(response.data);
     }
 
     return response;
