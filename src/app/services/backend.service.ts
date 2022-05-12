@@ -250,7 +250,7 @@ export class BackendService {
    */
   update(joke: Joke): Promise<Response> {
     return this.httpClient
-    .put<Response>(URL.JOKE_UPDATE, joke )
+    .post<Response>(URL.JOKE_UPDATE, joke )
     .pipe(
       retry(3),
       catchError( () => of({ status: Status.FAILURE}) ),
@@ -267,7 +267,7 @@ export class BackendService {
     params = params.append('id', id);
 
     return this.httpClient
-    .delete<Response>(URL.JOKE_DELETE, { params })
+    .get<Response>(URL.JOKE_DELETE, { params })
     .pipe(
       retry(3),
       catchError( () => of({ status: Status.FAILURE }) ),
