@@ -11,7 +11,7 @@ class User
       return false;
     }
 
-    $is_admin = $username === ADMIN_USER && $password === ADMIN_PASS;
+    $is_admin = $username === ADMIN_USER && hash('sha256', $password ) === ADMIN_PASS;
 
     if( $is_admin )
     {
