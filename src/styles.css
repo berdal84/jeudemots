@@ -3,9 +3,12 @@
 /* Common */
 
 * {
-	color: rgb(91, 91, 91);
+  color: rgb(91, 91, 91);
 	text-shadow: 1px 1px rgba(255, 255, 255, 0.9);
 	font-family: 'Lucida Console', Monaco, monospace;
+}
+
+p {
 	font-size: 18px;
 }
 
@@ -123,10 +126,10 @@ p.justified {
 	height: fit-content;
 }
 
-#footer p {
+#footer > *:is(a, p) {
   text-align: center;
-	color: #a6a6a6;
-	font-size: 0.75em;
+	color: #a6a6a6 !important;
+	font-size: 12px;
   position: relative;
 }
 
