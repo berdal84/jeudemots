@@ -28,14 +28,16 @@ class JokeCRUD {
      /**
      * Get joke pages (size and count).
      */
-    public static function read_pages(Pages &$pages): bool
+    public static function read_pages(Pages &$pages, string $filter): bool
     {
-        $success = false;
-        $mysqli  = DB::connect();
-        $query   = "SELECT COUNT(IF(`visible` = 1, 1, NULL)) FROM `jokes`";
+        $success      = false;
+        $mysqli       = DB::connect();
+        $where_clause = JokeCRUD::build_where_clause($filter);
+        $query        = "SELECT COUNT(*) AS `count` FROM `jokes` ".$where_clause;
 
         if( $stmt = $mysqli->prepare($query) )
         {
+
             if( $stmt->execute() )
             {
                 $result       = $stmt->get_result();
@@ -49,15 +51,36 @@ class JokeCRUD {
         return $success;
     }
 
+    private static function build_where_clause(string $filter): string
+    {
+      $where_clause = "WHERE visible";
+
+      if( !empty($filter))
+      {
+
+        //$parts = [];
+        $word = strtok($filter, ",");
+        while ($word !== false) {
+            //$parts[] = $tok;
+            $where_clause .= " AND ( text LIKE '%".$word."%' )";
+            $word = strtok(",");
+        }
+      }
+
+      var_dump($where_clause);
+      return $where_clause;
+    }
 
     /**
      * Get a joke page.
      */
-    public static function read_page(Page &$page): bool
+    public static function read_page(Page &$page, string $filter): bool
     {
-        $success = false;
-        $mysqli = DB::connect();
-        $query  = "SELECT * FROM `jokes` WHERE `visible` ORDER BY `date` DESC  LIMIT ?, ?";
+        $success      = false;
+        $mysqli       = DB::connect();
+        $where_clause = JokeCRUD::build_where_clause($filter);
+        $query        = "SELECT * FROM `jokes` ".$where_clause." ORDER BY `date` DESC LIMIT ?, ?";
+
 
         if( $stmt = $mysqli->prepare($query) )
         {

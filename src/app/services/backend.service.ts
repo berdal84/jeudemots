@@ -43,14 +43,20 @@ export class BackendService {
   readonly pagesSubject: ReplaySubject<Pages>;
   private  pages: Pages;
   private  currentPage: Page;
+  private  filterStr: string;
 
   constructor( private httpClient: HttpClient )
   {
     this.currentPageSubject = new ReplaySubject<Page>();
     this.pagesSubject       = new ReplaySubject<Pages>();
-
+    this.filterStr          = '';
     this.pagesSubject.subscribe( (pages) => { this.pages = pages; });
     this.currentPageSubject.subscribe( (page) => { this.currentPage = page; });
+  }
+
+  async filter(filterStr: string): Promise<Response<Pages>> {
+    this.filterStr = filterStr;
+    return await this.reloadAll();
   }
 
   /**
@@ -188,7 +194,11 @@ export class BackendService {
    */
   private async readPages(size: number): Promise<Response<Pages>> {
 
-    const params = new HttpParams().append('size', size);
+    const params = new HttpParams({
+      fromObject:{
+        size,
+        filter: this.filterStr
+    }});
 
     const response = await this.httpClient
       .get<Response<Pages>>(URL.PAGES_READ, { params } )
@@ -210,9 +220,13 @@ export class BackendService {
    * @param size a page size (item count per page)
    */
   private async readPage(id: number, size: number): Promise<Response<Page>> {
-    let params = new HttpParams();
-    params = params.append('id', id);
-    params = params.append('size', size);
+
+    const params = new HttpParams({
+      fromObject:{
+        size,
+        id,
+        filter: this.filterStr
+    }});
 
     const response = await this.httpClient
       .get<Response<Page>>(URL.PAGE_READ, { params })

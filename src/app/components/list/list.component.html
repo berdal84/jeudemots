@@ -2,7 +2,7 @@
     <h2>Liste complète des jeu de mots :</h2>
     <div class="filter">
         <label>Filtre: </label>
-        <input title="saisissez ici des mots clés séparés par des espaces" size="50" [(ngModel)]="filterInput">
+        <input title="saisissez ici des mots clés séparés par des espaces" size="50" (change)="onFilterChange($event)">
     </div>
 </div>
 
@@ -25,7 +25,7 @@
                 <p >Actions</p>
             </th>
         </tr>
-        <tr *ngFor="let joke of jokes | jokeFilter: filterInput" [class]="{hidden: !joke.visible }">
+        <tr *ngFor="let joke of jokes" [class]="{hidden: !joke.visible }">
             <td>
                 <p style="text-align:left;">{{ joke.category }}</p>
             </td>
@@ -43,7 +43,7 @@
                 <div class="actions">
                     <button (click)="toggleVisibility(joke)">{{ joke.visible ? 'masquer' : 'publier'}}</button>
                     <button (click)="edit(joke)">éditer</button>
-                    <button (click)="delete(joke)">supprimer</button>                    
+                    <button (click)="delete(joke)">supprimer</button>
                 </div>
             </td>
         </tr>

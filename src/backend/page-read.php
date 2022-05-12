@@ -13,6 +13,7 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 
 $id   = 0;
 $size = 0;
+$filter = '';
 
 if( !UrlParams::getInt($id, 'id'))
 {
@@ -24,9 +25,11 @@ if( !UrlParams::getInt($size, 'size'))
     die("Unable to get size!");
 }
 
+UrlParams::getString($filter, 'filter');
+
 $page = new Page($id, $size);
 
-if( !JokeCRUD::read_page($page) )
+if( !JokeCRUD::read_page($page, $filter) )
 {
   echo( Response::failure(null)->json() );
   exit(0);

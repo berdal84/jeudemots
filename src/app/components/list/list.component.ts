@@ -19,13 +19,18 @@ export class ListComponent implements OnInit {
   private subscriptions: Subscription;
 
   constructor(
-    private jokeService: BackendService,
-    private userService: UserService,
+    private backend: BackendService,
+    private user: UserService,
     private changeRef: ChangeDetectorRef
     ) { }
 
+  onFilterChange(evt)
+  {
+    this.backend.filter(evt.target.value);
+  }
+
   ngOnInit() {
-    this.subscriptions = this.jokeService
+    this.subscriptions = this.backend
       .currentPageSubject.subscribe(
         (page) => {
           this.jokes = page.jokes;
@@ -34,12 +39,12 @@ export class ListComponent implements OnInit {
     );
 
     this.subscriptions.add(
-      this.jokeService.pagesSubject.subscribe( (pages) => {
+      this.backend.pagesSubject.subscribe( (pages) => {
         this.pageCount = pages.count;
         this.changeRef.detectChanges();
     }));
 
-    this.jokeService.reloadAll();
+    this.backend.reloadAll();
   }
 
   ngOnDestroy() {
@@ -47,7 +52,7 @@ export class ListComponent implements OnInit {
   }
 
   canShowActions(): boolean {
-    return this.userService.isLogged();
+    return this.user.isLogged();
   }
 
   edit( joke: Joke) {
@@ -55,10 +60,10 @@ export class ListComponent implements OnInit {
   }
 
   async delete( joke: Joke ) {
-    const response = await this.jokeService.delete(joke.id);
+    const response = await this.backend.delete(joke.id);
     if( response.status === Status.SUCCESS )
     {
-      await this.jokeService.reloadPage();
+      await this.backend.reloadPage();
     }
     else
     {
@@ -68,10 +73,10 @@ export class ListComponent implements OnInit {
 
   async toggleVisibility( joke: Joke ) {
     joke.visible = !joke.visible;
-    const response = await this.jokeService.update(joke);
+    const response = await this.backend.update(joke);
     if( response.status === Status.SUCCESS )
     {
-      await this.jokeService.reloadPage();
+      await this.backend.reloadPage();
     }
     else
     {
@@ -80,6 +85,6 @@ export class ListComponent implements OnInit {
   }
 
   setPage(id: number) {
-    this.jokeService.setPage(id);
+    this.backend.setPage(id);
   }
 }
