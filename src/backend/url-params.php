@@ -26,8 +26,8 @@ class UrlParams
         return true;
     }
 
-        /**
-     * Helper to get an integer from URL parameters.
+    /**
+     * Helper to get a String from URL parameters.
      */
     static function getString(string &$out, string $name): bool
     {
