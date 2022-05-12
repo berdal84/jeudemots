@@ -4,8 +4,8 @@
     flex-direction: column;
 }
 
-.hidden > td > p {
-    opacity: 0.33;
+.masked > td > p {
+    opacity: 0.66;
 }
 
 th {

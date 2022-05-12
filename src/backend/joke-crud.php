@@ -3,8 +3,10 @@
 require_once 'joke.php';
 require_once 'page.php';
 require_once 'db.php';
+require_once 'user.php';
 
 class JokeCRUD {
+    const filter_separator = ' ';
 
     public static function delete_all(int &$delete_count): bool
     {
@@ -32,7 +34,7 @@ class JokeCRUD {
     {
         $success      = false;
         $mysqli       = DB::connect();
-        $where_clause = JokeCRUD::build_where_clause($filter);
+        $where_clause = JokeCRUD::build_where_clause($mysqli, $filter);
         $query        = "SELECT COUNT(*) AS `count` FROM `jokes` ".$where_clause;
 
         if( $stmt = $mysqli->prepare($query) )
@@ -51,23 +53,50 @@ class JokeCRUD {
         return $success;
     }
 
-    private static function build_where_clause(string $filter): string
+    private static function build_where_clause(mysqli $mysqli, string $filter): string
     {
-      $where_clause = "WHERE visible";
+
+      $where_clause = "";
+
+      if( session_start() && !User::is_logged())
+      {
+          $where_clause = "WHERE `visible` = 1";
+      }
 
       if( !empty($filter))
       {
-
-        //$parts = [];
-        $word = strtok($filter, ",");
-        while ($word !== false) {
-            //$parts[] = $tok;
-            $where_clause .= " AND ( text LIKE '%".$word."%' )";
-            $word = strtok(",");
+        if( empty($where_clause) )
+        {
+          $where_clause = "WHERE (";
         }
+        else
+        {
+          $where_clause .= " AND (";
+        }
+        $count = 0;
+        $word  = strtok($filter, JokeCRUD::filter_separator);
+
+        // we search each word in each column
+        while ($word !== false) {
+
+            if( $count )
+              $where_clause .= " OR ";
+
+            $s = $mysqli->real_escape_string($word);
+            $where_clause .= "(";
+            $where_clause .= "    category LIKE '%".$s."%'";
+            $where_clause .= " OR text     LIKE '%".$s."%'";
+            $where_clause .= " OR author   LIKE '%".$s."%'";
+            $where_clause .= " OR date     LIKE '%".$s."%'";
+            $where_clause .= ")";
+
+            $word = strtok(JokeCRUD::filter_separator);
+            $count++;
+        }
+        $where_clause .= ")";
       }
 
-      var_dump($where_clause);
+      //var_dump($where_clause);
       return $where_clause;
     }
 
@@ -78,7 +107,7 @@ class JokeCRUD {
     {
         $success      = false;
         $mysqli       = DB::connect();
-        $where_clause = JokeCRUD::build_where_clause($filter);
+        $where_clause = JokeCRUD::build_where_clause($mysqli, $filter);
         $query        = "SELECT * FROM `jokes` ".$where_clause." ORDER BY `date` DESC LIMIT ?, ?";
 
 
