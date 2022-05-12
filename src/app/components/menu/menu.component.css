@@ -34,6 +34,7 @@ li a:active, li.itemEnable a {
 }
 
 ul {
+  margin-bottom: 40px;
   display: flex;
   flex-direction: row;
   align-content: center;
