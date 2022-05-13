@@ -41,3 +41,4 @@ Thumbs.db
 
 # should never be commited
 src/backend/config.php
+src/backend/config.prod.php
