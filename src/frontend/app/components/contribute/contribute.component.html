@@ -28,7 +28,7 @@
     <div class="flex-row">
         <label class="flex-left">Texte*</label>
         <div class="flex-right">
-            <textarea class="joke-text-input" type="text" rows="3" maxlength="85"
+            <textarea class="joke-text-input" type="text" rows="3" maxlength="250"
                 formControlName="text"></textarea>
             <div *ngIf="displayErrors && controls.text.errors" class="invalid">
                 <p *ngIf="controls.text.errors.required">Texte requis</p>

@@ -44,7 +44,7 @@ export class ContributeComponent implements OnInit {
       const textControl = new FormControl(null, {
         validators: [
           Validators.required,
-          Validators.maxLength(200),
+          Validators.maxLength(250),
           Validators.minLength(5)],
         updateOn: 'change'
       });
