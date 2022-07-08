@@ -27,23 +27,45 @@
             </th>
         </tr>
         <tr *ngFor="let joke of jokes" [class]="{'masked': !joke.visible }">
-            <td>
-                <p style="text-align:left;">{{ joke.category }}</p>
-            </td>
-            <td>
-                <p class="justified">{{ joke.text }}</p>
-            </td>
-            <td>
-                <p>{{ joke.author }}</p>
-            </td>
-            <td>
-                <p>{{ joke.date }}</p>
-            </td>
+
+            <!-- Reading -->
+            <ng-container *ngIf="!isEditing(joke)">
+                <td>
+                    <p style="text-align:left;">{{ joke.category }}</p>
+                </td>
+                <td>
+                    <p class="justified">{{ joke.text }}</p>
+                </td>
+                <td>
+                    <p>{{ joke.author }}</p>
+                </td>
+                <td>
+                    <p>{{ joke.date }}</p>
+                </td>
+            </ng-container>
+
+            <!-- Editing -->
+            <ng-container *ngIf="isEditing(joke)">
+                <td>
+                    <input style="text-align:left;" type="text" [(ngModel)]="joke.category"/>
+                </td>
+                <td>
+                    <textarea class="justified" cols="50" rows="5" [(ngModel)]="joke.text"></textarea>
+                </td>
+                <td>
+                    <input type="text" [(ngModel)]="joke.author"/>
+                </td>
+                <td>
+                    <input type="date" [(ngModel)]="joke.date"/>
+                </td>
+            </ng-container>
 
             <td *ngIf="canShowActions()">
                 <div class="actions">
                     <button (click)="toggleVisibility(joke)">{{ joke.visible ? 'masquer' : 'publier'}}</button>
-                    <button (click)="edit(joke)">éditer</button>
+                    <button *ngIf="!isEditing(joke)" (click)="edit(joke)">éditer</button>
+                    <button *ngIf="isEditing(joke)" (click)="save(joke)">enregistrer</button>
+                    <button *ngIf="isEditing(joke)" (click)="cancel(joke)">annuler</button>
                     <button (click)="delete(joke)">supprimer</button>
                 </div>
             </td>

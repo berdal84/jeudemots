@@ -15,7 +15,7 @@ export class ListComponent implements OnInit {
   currentPage: number = 0;
   jokes: Array<Joke>  = new Array<Joke>();
   filterInput: string = '';
-
+  editedJokes = new Set<number>();
   private subscriptions: Subscription;
 
   constructor(
@@ -60,8 +60,33 @@ export class ListComponent implements OnInit {
     return this.user.isLogged();
   }
 
-  edit( joke: Joke) {
-    // TODO
+  isEditing(joke: Joke): boolean {
+    return this.editedJokes.has(joke.id);
+  }
+
+  edit(joke: Joke) {
+    this.editedJokes.add(joke.id);
+  }
+
+  async cancel(joke: Joke) {
+    const result = await this.backend.reloadPage();
+    if( result.status === Status.SUCCESS) {
+      this.editedJokes.delete(joke.id);
+    }
+    else {
+      alert('Oups, cancel failed!');
+    }
+  }
+
+  async save(joke: Joke) {
+    const result = await this.backend.update(joke);
+    if( result.status === Status.SUCCESS) {
+      this.editedJokes.delete(joke.id);
+    }
+    else
+    {
+      alert('Oups, save failed!');
+    }
   }
 
   async delete( joke: Joke ) {
@@ -72,7 +97,7 @@ export class ListComponent implements OnInit {
     }
     else
     {
-      alert('Oups, delete failed!');
+      alert('Nothing changed!');
     }
   }
 
