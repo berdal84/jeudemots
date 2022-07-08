@@ -9,7 +9,6 @@
     "build-front": "ng build --configuration production --base-href /jeudemots/ --output-path dist/jeudemots",
     "watch-front": "ng build --base-href /jeudemots/ --watch --output-path dev/frontend",
     "build-back": "mkdir -p dist/jeudemots-api && cp -a ./src/backend/. ./dist/jeudemots-api/ && mv dist/jeudemots-api/config.prod.php dist/jeudemots-api/config.php && rm dist/jeudemots-api/config.*.php",
-    "watch-back": "mkdir -p dev/backend && cp -a ./src/backend/. ./dev/backend/ && mv dev/backend/config.dev.php dev/backend/config.php && rm dev/backend/config.*.php",
     "test": "ng test",
     "test:cov": "ng test --codeCoverage=true --progress=true",
     "lint": "ng lint",
