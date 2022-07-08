@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "npm run build-front && npm run build-back",
-    "watch": "npm run watch-front & npm run watch-back",
+    "watch": "npm run watch-front & npm run build-back",
     "build-front": "ng build --configuration production --base-href /jeudemots/ --output-path dist/jeudemots",
     "watch-front": "ng build --base-href /jeudemots/ --watch --output-path dev/frontend",
     "build-back": "mkdir -p dist/jeudemots-api && cp -a ./src/backend/. ./dist/jeudemots-api/ && mv dist/jeudemots-api/config.prod.php dist/jeudemots-api/config.php && rm dist/jeudemots-api/config.*.php",
