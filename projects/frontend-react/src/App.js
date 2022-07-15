@@ -24,6 +24,8 @@ class App extends React.Component {
     };
 
     // TODO: fetch pageS once to get page count.
+    this.fetchPage();
+    setInterval( () => { this.fetchNextPage() }, this.state.refreshInterval )
   }
 
   async fetchPage() {
@@ -37,13 +39,8 @@ class App extends React.Component {
   }
 
   fetchNextPage() {
-    this.page++;
+    this.state.page.id++;
     this.fetchPage();
-  }
-
-  componentDidMount() {
-    this.fetchPage();
-    setInterval( () => { this.fetchNextPage() }, this.state.refreshInterval )
   }
 
   render() {
