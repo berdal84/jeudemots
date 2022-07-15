@@ -2,6 +2,9 @@ import React from 'react';
 import './App.css';
 import Joke from './components/Joke.js';
 
+const BACKEND_BASE      = "https://www.relativementutile.fr/jeudemots-api";
+const BACKEND_PAGE_READ = `${BACKEND_BASE}/page-read.php`;
+
 class App extends React.Component {
 
   constructor(state) {
@@ -9,11 +12,36 @@ class App extends React.Component {
 
     this.state = {
       currentJoke: {
-        category: "Category",
-        text: "This is a joke text",
-        author: "Author"
-      }
+        category: "...",
+        text: "...",
+        author: "..."
+      },
+      page: {
+        id: 0,
+        size: 1
+      },
+      refreshInterval: 10000
     };
+  }
+
+  async fetchPage() {
+    const params = new URLSearchParams({
+      id:   this.state.page.id,
+      size: this.state.page.size,
+    });
+    const response = await fetch(`${BACKEND_PAGE_READ}?${params}`)
+    const json     = await response.json();
+    this.setState({ currentJoke: json.data.jokes[0] });
+  }
+
+  next() {
+    this.page++;
+    this.fetchPage();
+  }
+
+  componentDidMount() {
+    this.fetchPage();
+    setInterval( () => { this.next() }, this.state.refreshInterval )
   }
 
   render() {
