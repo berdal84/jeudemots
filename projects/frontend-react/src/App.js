@@ -2,8 +2,9 @@ import React from 'react';
 import './App.css';
 import Joke from './components/Joke.js';
 
-const BACKEND_BASE      = "https://www.relativementutile.fr/jeudemots-api";
-const BACKEND_PAGE_READ = `${BACKEND_BASE}/page-read.php`;
+const BASE_URL = "https://www.relativementutile.fr/jeudemots-api";
+const BACKEND_PAGE_READ  = `${BASE_URL}/page-read.php`;
+const BACKEND_PAGES_READ = `${BASE_URL}/pages-read.php`;
 
 class App extends React.Component {
 
@@ -16,22 +17,39 @@ class App extends React.Component {
         text: "...",
         author: "..."
       },
-      page: {
+      pages: {
+        count: 0,
+        size: 1
+      },
+      currentPage: {
         id: 0,
         size: 1
       },
       refreshInterval: 10000
     };
 
-    // TODO: fetch pageS once to get page count.
+    
+  }
+
+  async componentDidMount() {
+    await this.fetchPages();
     this.fetchPage();
     setInterval( () => { this.fetchNextPage() }, this.state.refreshInterval )
   }
 
+  async fetchPages() {
+    const params = new URLSearchParams({
+      size: this.state.pages.size,
+    });
+    const response = await fetch(`${BACKEND_PAGES_READ}?${params}`)
+    const json     = await response.json();
+    this.setState({ pages: {...json.data} });
+  }
+
   async fetchPage() {
     const params = new URLSearchParams({
-      id:   this.state.page.id,
-      size: this.state.page.size,
+      id:   this.state.currentPage.id,
+      size: this.state.currentPage.size,
     });
     const response = await fetch(`${BACKEND_PAGE_READ}?${params}`)
     const json     = await response.json();
@@ -39,7 +57,14 @@ class App extends React.Component {
   }
 
   fetchNextPage() {
-    this.state.page.id++;
+    if( this.state.currentPage.id + 1 >= this.state.pages.count )
+    {
+      this.state.currentPage.id = 0;
+    }
+    else
+    {
+      this.state.currentPage.id++;
+    }    
     this.fetchPage();
   }
 
