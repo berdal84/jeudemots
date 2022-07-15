@@ -1,0 +1,47 @@
+.App {
+  text-align: center;
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    background-color: var(--bg-light);
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.App .logo {
+  pointer-events: none;
+}
+
+.App header {
+  display: flex;
+  flex-direction: column;
+  flex: 0.3 0.3;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.Joke {
+  flex: 0.6 0;
+  padding: 20px;
+}
+
+.App footer {
+  position: fixed;
+  align-items: center;
+  bottom: 0px;
+  width: 100vw;
+  background-color: var(--bg-dark);
+  opacity: 0.75
+}
+
+.App footer > p  {
+  margin: 5px;
+}
+
+.spacer {
+  flex: 30px;
+}
+

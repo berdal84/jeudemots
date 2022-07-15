@@ -1,0 +1,26 @@
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+p {
+  color: var(--text-light);
+}
+
+a {
+  color: var(--text-light);
+  transition: 0.5s;
+}
+
+a:hover {
+  color: var(--text-light);
+}
