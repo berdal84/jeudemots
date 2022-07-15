@@ -7,36 +7,41 @@
     flex-direction: column;
 }
 
-.tab {
-    padding: 10px 20px 10px 20px;
-    background-color: var(--bg-dark);
-    margin: 0;
-}
-
 .category {
     font-size: 2em;
     align-self: start;
     border-radius: 20px 20px 0 0;
     margin-left: 20px;
+    margin-bottom: 0;
 }
 
-.text {
+div.text {
     margin: 0;
-    padding: 20px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding: var(--padding-lg);
     border-radius: 20px;
-    font-size: 2.5em;
-    text-align: left;
     background-color: var(--bg-dark);
     border: solid var(--bg-light) 5px;
+    min-height: 7.5em;
+    transition: height 1s ease-out;    
+}
+
+h1.text {
+    font-size: 2.5em;
+    text-align: left;
+    padding: 0;
+    margin: 0;
 }
 
 .author {
     border-radius: 0 0 20px 20px;
-    padding: 10px;
-    padding-right: 10px;
+    padding: var(--padding-lg);
     font-size: 1.2em;
     align-self: end;
     margin-right: 20px;
+    margin-top: 0;
+}
+
+.tab {
+    padding: var(--padding-sm) var(--padding-lg) var(--padding-sm) var(--padding-lg) ;
+    background-color: var(--bg-dark);
 }
