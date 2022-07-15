@@ -9,7 +9,8 @@
     "build-front-react": "npm run --prefix ./projects/frontend-react build",
     "build-front-ng": "npm run --prefix ./projects/frontend-ng build",
     "watch-front-ng": "npm run --prefix ./projects/frontend-ng build --base-href /jeudemots/ --watch --output-path dev/frontend",
-    "build-back": "bash ./projects/backend/build.sh"
+    "build-back": "bash ./projects/backend/build.sh",
+    "ci": "npm ci --prefix ./projects/frontend-ng && npm ci --prefix ./projects/frontend-react"
   },
   "private": true
 }
