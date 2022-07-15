@@ -10,7 +10,6 @@ class App extends React.Component {
 
   constructor(state) {
     super(state);
-
     this.state = {
       currentJoke: {
         category: "...",
@@ -27,11 +26,9 @@ class App extends React.Component {
       },
       refreshInterval: 10000
     };
-
-    
   }
 
-  async componentDidMount() {
+  async componentDidMount() {    
     await this.fetchPages();
     this.fetchPage();
     setInterval( () => { this.fetchNextPage() }, this.state.refreshInterval )
@@ -49,7 +46,7 @@ class App extends React.Component {
   async fetchPage() {
     const params = new URLSearchParams({
       id:   this.state.currentPage.id,
-      size: this.state.currentPage.size,
+      size: this.state.pages.size,
     });
     const response = await fetch(`${BACKEND_PAGE_READ}?${params}`)
     const json     = await response.json();
@@ -59,11 +56,17 @@ class App extends React.Component {
   fetchNextPage() {
     if( this.state.currentPage.id + 1 >= this.state.pages.count )
     {
-      this.state.currentPage.id = 0;
+      this.setState( {currentPage: {
+        id: 0,
+        size: this.state.currentPage.size
+      }});
     }
     else
     {
-      this.state.currentPage.id++;
+      this.setState( { currentPage: {
+        id: this.state.currentPage.id + 1,
+        size: this.state.currentPage.size
+      }});
     }    
     this.fetchPage();
   }
