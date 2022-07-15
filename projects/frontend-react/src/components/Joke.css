@@ -1,0 +1,42 @@
+
+.Joke {
+    display: flex;
+    justify-content: center;
+    color: var(--text-light);
+    text-shadow: var(--text-shadow);
+    flex-direction: column;
+}
+
+.tab {
+    padding: 10px 20px 10px 20px;
+    background-color: var(--bg-dark);
+    margin: 0;
+}
+
+.category {
+    font-size: 2em;
+    align-self: start;
+    border-radius: 20px 20px 0 0;
+    margin-left: 20px;
+}
+
+.text {
+    margin: 0;
+    padding: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 20px;
+    font-size: 2.5em;
+    text-align: left;
+    background-color: var(--bg-dark);
+    border: solid var(--bg-light) 5px;
+}
+
+.author {
+    border-radius: 0 0 20px 20px;
+    padding: 10px;
+    padding-right: 10px;
+    font-size: 1.2em;
+    align-self: end;
+    margin-right: 20px;
+}
