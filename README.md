@@ -9,10 +9,12 @@ This is the source repository for the website [www.relativementutile.fr/jeudemot
 
 This repository contains source code for different part of the project:
 - projects/backend: PHP sources for the backend part.
-- projects/frontend-ng: Angular project (initial front-end)
-- projects/frontend-react: React project (wip front-end, learning...)
+- projects/frontend-ng: Angular project (main front-end)
 
-WIP React Front-end: [www.relativementutile.fr/jeudemots-react](https://www.relativementutile.fr/jeudemots-react).
+WIP:
+- projects/frontend-common: code reusable in each frontend.
+- projects/frontend-react: React project (see [www.relativementutile.fr/jeudemots-react](https://www.relativementutile.fr/jeudemots-react))
+- projects/frontend-vue: Vue project
 
 ### `npm run build`
 
