@@ -1,13 +1,12 @@
 import { ReplaySubject } from "rxjs";
-import { Joke } from "../models/joke.model";
-import { Page } from "../models/page.model";
-import { BackendService } from "../services/backend.service";
+import { Joke, Page } from "frontend-common";
+import { BackendService, Response, Status } from "../services/backend.service";
 import { PAGE_MOCK } from "./page.mock";
 
 /**
  * A JokeService mock that always return a valid set of jokes
  */
-export class BackendServiceMock implements Pick<BackendService, 'create' | 'currentPageSubject' > {
+export class BackendServiceMock implements Pick<BackendService, 'create' | 'pageSubject' > {
 
     pageSubject = new ReplaySubject<Page>();
     
@@ -15,8 +14,14 @@ export class BackendServiceMock implements Pick<BackendService, 'create' | 'curr
         this.pageSubject.next(PAGE_MOCK);
     }
 
-    async create(joke: Joke): Promise<Joke>
+    async create(joke: Joke): Promise<Response<Joke>>
     {
-        return Promise.resolve({...joke, id: 1});
+        return Promise.resolve({
+            status: Status.SUCCESS,
+            data: {
+                ...joke,
+                id: 1
+            }
+        });
     }    
 }

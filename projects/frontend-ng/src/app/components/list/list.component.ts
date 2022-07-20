@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
-import { Joke } from '../../models/joke.model';
+import { Joke } from 'frontend-common';
 import { BackendService, Status } from '../../services/backend.service';
 
 @Component({

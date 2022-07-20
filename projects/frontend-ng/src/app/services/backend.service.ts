@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Joke } from '../models/joke.model';
+import { Joke, Page, Pages } from 'frontend-common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ReplaySubject, of } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { Page, Pages } from '../models/page.model';
 import { environment } from 'src/environments/environment';
 
 const backend = environment.backend_url;

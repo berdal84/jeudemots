@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { BackendService } from 'src/app/services/backend.service';
-import { DatePipe } from '@angular/common';
-import { MailSubmission } from 'src/app/models/mail-submission.model';
-import { Joke } from 'src/app/models/joke.model';
+import { MailSubmission, Joke } from 'frontend-common';
 
 enum Status {
   IDLE,

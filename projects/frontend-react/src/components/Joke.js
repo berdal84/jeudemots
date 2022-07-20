@@ -1,7 +1,11 @@
 import React from 'react';
+import Joke from 'frontend-common';
+
 import './Joke.css';
 
-class Joke extends React.Component {
+class JokeComponent extends React.Component {
+    displayName = "Joke";
+    
     render() {
         return <div className="Joke">
             <h1 className="category tab">{this.props.category}</h1>
@@ -13,4 +17,4 @@ class Joke extends React.Component {
     }
 }
 
-export default Joke;
+export default JokeComponent;

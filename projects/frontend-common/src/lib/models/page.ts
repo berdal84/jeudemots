@@ -1,4 +1,4 @@
-import { Joke } from './joke.model';
+import { Joke } from './joke';
 
 interface Page {
     id: number;

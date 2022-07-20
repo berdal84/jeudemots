@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Page, Pages } from 'src/app/models/page.model';
-import { Joke } from '../../models/joke.model';
+import { Page, Pages, Joke } from 'frontend-common';
 import { BackendService } from '../../services/backend.service';
 
 @Component({
