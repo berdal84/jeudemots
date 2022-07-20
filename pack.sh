@@ -17,6 +17,7 @@ cd ${SCRIPT_DIR};
 BASE_DIR=dist
 NG_DIR=${BASE_DIR}/jeudemots
 REACT_DIR=${BASE_DIR}/jeudemots-react
+VUE_DIR=${BASE_DIR}/jeudemots-vue
 BACKEND_DIR=${BASE_DIR}/jeudemots-api
 
 rm -rf ${BASE_DIR}
@@ -45,6 +46,17 @@ then
     echo "Front (React) OK";
 else
     error "Unable to copy React files!";
+fi
+
+# FrontEnd Vue
+
+mkdir -p ${VUE_DIR}
+
+if( cp -vr projects/frontend-vue/build/* ${VUE_DIR} )
+then
+    echo "Vue (React) OK";
+else
+    error "Unable to copy Vue files!";
 fi
 
 # Check errors and exit
