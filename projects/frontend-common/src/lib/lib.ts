@@ -1,8 +1,3 @@
-
-export namespace Backend {
-    export class Api {
-        helloworld() {
-            console.log(`Hello World!`);
-        }
-    }
-}
+export * from './models/joke';
+export * from  './models/page';
+export * from  './models/mail-submission';

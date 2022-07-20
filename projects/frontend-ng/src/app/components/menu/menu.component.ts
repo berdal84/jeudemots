@@ -2,11 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
-interface PageModel {
-  pageId: string; // now displayed
-  label: string;
-}
-
 interface Link {
   label: string;
   url: string;
