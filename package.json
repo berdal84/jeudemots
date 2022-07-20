@@ -2,16 +2,18 @@
   "name": "jeudemots",
   "version": "0.2.0",
   "scripts": {
-    "install": "npm i --prefix ./projects/frontend-react && npm i --prefix ./projects/frontend-ng && npm i --prefix ./projects/frontend-vue",
+    "install": "npm i --prefix ./projects/frontend-common && npm i --prefix ./projects/frontend-react && npm i --prefix ./projects/frontend-ng && npm i --prefix ./projects/frontend-vue",
     "pack": "bash ./pack.sh",
-    "build": "npm run build-front-ng && npm run build-front-react && npm run build-front-vue && npm run build-back",
+    "build": "npm run build-front && npm run build-back",
     "watch": "npm run watch-front-ng & npm run build-back",
+    "build-front-common": "npm run --prefix ./projects/frontend-common build",
     "build-front-react": "npm run --prefix ./projects/frontend-react build",
     "build-front-vue": "npm run --prefix ./projects/frontend-vue build",
     "build-front-ng": "npm run --prefix ./projects/frontend-ng build",
     "watch-front-ng": "npm run --prefix ./projects/frontend-ng build --base-href /jeudemots/ --watch --output-path dev/frontend",
+    "build-front": "npm run build-front-common && npm run build-front-ng && npm run build-front-react && npm run build-front-vue",
     "build-back": "bash ./projects/backend/build.sh",
-    "ci": "npm ci --prefix ./projects/frontend-ng && npm ci --prefix ./projects/frontend-react && npm ci --prefix ./projects/frontend-vue"
+    "ci": "npm ci --prefix ./projects/frontend-common && npm ci --prefix ./projects/frontend-ng && npm ci --prefix ./projects/frontend-react && npm ci --prefix ./projects/frontend-vue"
   },
   "private": true
 }
