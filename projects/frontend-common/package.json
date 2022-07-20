@@ -1,0 +1,15 @@
+{
+  "name": "frontend-common",
+  "version": "0.1.0",
+  "description": "Common library for all frontend.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "berdal84",
+  "license": "ISC",
+  "devDependencies": {
+    "tsconfig": "^7.0.0"
+  }
+}
