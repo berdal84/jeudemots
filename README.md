@@ -1,5 +1,5 @@
 
-# Jeu de mots (PHP Backend, Angular/React Front-ends)
+# Jeu de mots (PHP Backend, Angular Frontend & React/Vue alternative Frontends)
 
 <a href="https://github.com/berdal84/jeudemots-ng/actions?query=workflow Node.js CI" title="ng build">
 <img src="https://github.com/berdal84/jeudemots-ng/workflows/Node.js CI/badge.svg" />
