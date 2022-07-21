@@ -1,21 +1,34 @@
 
 # Jeu de mots (PHP Backend, Angular Frontend & React/Vue alternative Frontends)
 
+## Introduction
+
 <a href="https://github.com/berdal84/jeudemots-ng/actions?query=workflow Node.js CI" title="ng build">
 <img src="https://github.com/berdal84/jeudemots-ng/workflows/Node.js CI/badge.svg" />
 </a>
 
 This is the source repository for the website [www.relativementutile.fr/jeudemots](https://www.relativementutile.fr/jeudemots).
 
+<div align="center">
+  <figure>
+  <img width="75%" height="75%" src="https://user-images.githubusercontent.com/942052/180222208-a69cdd30-a730-4cb8-907f-27b67ad6e844.png" />
+  <captions>www.relativementutile.fr/jeudemots home page capture<captions/>
+  <figure/>
+</div>
+
+## Description
+
 This repository contains source code for different parts of the project:
 - `projects/backend`: backend PHP sources files
 - `projects/frontend-ng`: main Angular frontend sources
+
 
 WIP:
 - `projects/frontend-react`: alternative React frontend sources (deployed at [www.relativementutile.fr/jeudemots-react](https://www.relativementutile.fr/jeudemots-react))
 - `projects/frontend-vue`: alternative Vue frontend sources (deployed at [www.relativementutile.fr/jeudemots-vue](https://www.relativementutile.fr/jeudemots-vue))
 - `projects/frontend-common`: code reusable in each frontend.
 
+## Development
 ### `npm run build`
 
 Launches the build of the subprojects (backend, angular/react frontends). Produce a `./build` subfolder in each subproject folder (see `in projects/`).
@@ -28,7 +41,7 @@ Copy the last build files from all subprojects to a global `./dist` folder. This
 
 *note: The first time you will need to install the database. To do that, sign in to the admin page (add `/admin`to the URL), go to the install section and click on install. Then, you can optionnaly restore a previously backed up file.*
 
-# History
+## History
 
 This project started in 2015 during my training at Montpellier Institute of Technology (France), it was developed using AngularJS 1.7.x and has been translated for Angular 2+ in 2019. The old AngularJS repository is still available [here](https://www.github.com/berdal84/jeudemots)).
 
