@@ -31,7 +31,7 @@ WIP:
 
 Launches the build of the subprojects (backend, angular/react frontends). Produce a `./build` subfolder in each subproject folder (see `in projects/`).
 
-*note: the first time, before launching the command, you need to duplicate `projects/backend/config/config.example.php`, rename it to `config.prod.php` and replace the data inside the file with your credentials (depends on your server config). If not, the backend build will fail.*
+*note: the first time, before launching the command, you need to duplicate `projects/backend/config/config.sample.php`, rename it to `config.prod.php` and replace the data inside the file with your credentials (depends on your server config). If not, the backend build will fail.*
 
 ### `npm run pack`
 
