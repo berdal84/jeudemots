@@ -8,13 +8,13 @@
 This is the source repository for the website [www.relativementutile.fr/jeudemots](https://www.relativementutile.fr/jeudemots).
 
 This repository contains source code for different parts of the project:
-- projects/backend: backend PHP sources files
-- projects/frontend-ng: main Angular frontend sources
+- `projects/backend`: backend PHP sources files
+- `projects/frontend-ng`: main Angular frontend sources
 
 WIP:
-- projects/frontend-react: alternative React frontend sources (deployed at [www.relativementutile.fr/jeudemots-react](https://www.relativementutile.fr/jeudemots-react))
-- projects/frontend-vue: alternative Vue frontend sources (deployed at [www.relativementutile.fr/jeudemots-vue](https://www.relativementutile.fr/jeudemots-vue))
-- projects/frontend-common: code reusable in each frontend.
+- `projects/frontend-react`: alternative React frontend sources (deployed at [www.relativementutile.fr/jeudemots-react](https://www.relativementutile.fr/jeudemots-react))
+- `projects/frontend-vue`: alternative Vue frontend sources (deployed at [www.relativementutile.fr/jeudemots-vue](https://www.relativementutile.fr/jeudemots-vue))
+- `projects/frontend-common`: code reusable in each frontend.
 
 ### `npm run build`
 
@@ -32,5 +32,5 @@ Copy the last build files from all subprojects to a global `./dist` folder. This
 
 This project started in 2015 during my training at Montpellier Institute of Technology (France), it was developed using AngularJS 1.7.x and has been translated for Angular 2+ in 2019. The old AngularJS repository is still available [here](https://www.github.com/berdal84/jeudemots)).
 
-Later in 2022, I decided to implement a backend in PHP8 to store jokes as a relational database instead of a JSON. Additionally, the admin can install/uninstall and restore/backup the table content. After that, I also started to implement alternative frontends using React and Vue, those are still WIP.
+Later in 2022, I decided to implement a backend in PHP8 to store jokes as a MySQL relational database instead of a JSON file. Additionally, the admin can install/uninstall and restore/backup the table content. After that, I also started to implement alternative frontends using React and Vue, those are still WIP.
 
