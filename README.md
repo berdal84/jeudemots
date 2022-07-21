@@ -47,14 +47,21 @@ Later in 2022, I decided to implement a backend in PHP8 to store jokes as a MySQ
 
 ## TODO
 
-- services
+0 - refactor
+  - replace table by divs in list.component
+  - show a progress message when searching in list.component
+ 
+1 - services
   - front-ng: extract Split BackendService to BackendService (frontend-ng) and BackendAPI (frontend-common)
   - front-ng: extract Split UserService to UserService (frontend-ng) and UserAPI (frontend-common)
   - front-react/vue: reuse frontend-common's UserAPI
   - front-react/vue: reuse frontend-common's BackendAPI
-- style
+  
+2 - style
   - front-ng: extract CSS to get a common.css + customizable theme.css (a base exists in frontend-react)
-- components
+  - front-ng: think about responsiveness (tinyscreens, smartphones, desktop)
+  
+3 - components
   - front-react/vue: implem all ng existing components.
   - front-react/vue: reuse common.css and theme.css
 
