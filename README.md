@@ -7,16 +7,14 @@
 <img src="https://github.com/berdal84/jeudemots-ng/workflows/Node.js CI/badge.svg" />
 </a>
 
-This is the source repository for the website [www.relativementutile.fr/jeudemots](https://www.relativementutile.fr/jeudemots).
+This is the source repository for the website [www.relativementutile.fr/jeudemots](https://www.relativementutile.fr/jeudemots), a client-server solution to host jokes using PHP8/MySQL and Angular. Two alternative React/Vue frontends are work in progress.
 
 <div align="center">
-  <figure>
   <img width="75%" height="75%" src="https://user-images.githubusercontent.com/942052/180222208-a69cdd30-a730-4cb8-907f-27b67ad6e844.png" />
-  <captions>www.relativementutile.fr/jeudemots home page capture<captions/>
-  <figure/>
+  <p>Angular Frontend | home page capture<p/>
 </div>
 
-## Description
+## Project files
 
 This repository contains source code for different parts of the project:
 - `projects/backend`: backend PHP sources files
