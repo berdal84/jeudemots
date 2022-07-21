@@ -1,11 +1,11 @@
 
 # Jeu de mots (PHP Backend, Angular Frontend & React/Vue alternative Frontends)
 
-## Introduction
-
 <a href="https://github.com/berdal84/jeudemots-ng/actions?query=workflow Node.js CI" title="ng build">
 <img src="https://github.com/berdal84/jeudemots-ng/workflows/Node.js CI/badge.svg" />
 </a>
+
+## Introduction
 
 This is the source repository for the website [www.relativementutile.fr/jeudemots](https://www.relativementutile.fr/jeudemots), a client-server solution to host jokes using PHP8/MySQL and Angular. Two alternative React/Vue frontends are work in progress.
 
@@ -44,4 +44,17 @@ Copy the last build files from all subprojects to a global `./dist` folder. This
 This project started in 2015 during my training at Montpellier Institute of Technology (France), it was developed using AngularJS 1.7.x and has been translated for Angular 2+ in 2019. The old AngularJS repository is still available [here](https://www.github.com/berdal84/jeudemots)).
 
 Later in 2022, I decided to implement a backend in PHP8 to store jokes as a MySQL relational database instead of a JSON file. Additionally, the admin can install/uninstall and restore/backup the table content. After that, I also started to implement alternative frontends using React and Vue, those are still WIP.
+
+## TODO
+
+- services
+  - front-ng: extract Split BackendService to BackendService (frontend-ng) and BackendAPI (frontend-common)
+  - front-ng: extract Split UserService to UserService (frontend-ng) and UserAPI (frontend-common)
+  - front-react/vue: reuse frontend-common's UserAPI
+  - front-react/vue: reuse frontend-common's BackendAPI
+- style
+  - front-ng: extract CSS to get a common.css + customizable theme.css (a base exists in frontend-react)
+- components
+  - front-react/vue: implem all ng existing components.
+  - front-react/vue: reuse common.css and theme.css
 
