@@ -1,5 +1,5 @@
 import React from 'react';
-import Joke from 'frontend-common';
+// import Joke from 'frontend-common';
 
 import './Joke.css';
 
