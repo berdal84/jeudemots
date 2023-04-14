@@ -36,7 +36,7 @@ describe('MenuComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
-        RouterModule.forRoot(ROUTES, { relativeLinkResolution: 'legacy' })
+        RouterModule.forRoot(ROUTES, {})
       ]
     })
     .compileComponents();
