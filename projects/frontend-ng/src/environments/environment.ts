@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  backend_url: '../jeudemots-backend',
+  // backend_url: '../jeudemots-backend',
+  backend_url: 'http://art.42borgata.com/jeudemots-api'
 };
 
 /*
