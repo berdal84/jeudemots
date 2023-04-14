@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { UntypedFormGroup, Validators, UntypedFormControl } from '@angular/forms';
 import { BackendService } from 'src/app/services/backend.service';
 import { MailSubmission, Joke } from 'frontend-common';
 
@@ -20,7 +20,7 @@ export class ContributeComponent implements OnInit {
 
     status: Status;
     /** main form group */
-    contributeForm: FormGroup;
+    contributeForm: UntypedFormGroup;
     /** display form errors */
     displayErrors: boolean;
 
@@ -29,9 +29,9 @@ export class ContributeComponent implements OnInit {
     ngOnInit() {
       this.displayErrors  = false;
       this.status         = Status.IDLE;
-      this.contributeForm = new FormGroup({});
+      this.contributeForm = new UntypedFormGroup({});
 
-      const categoryControl = new FormControl(
+      const categoryControl = new UntypedFormControl(
         null,
         {
           validators: [Validators.maxLength(20), Validators.required],
@@ -39,7 +39,7 @@ export class ContributeComponent implements OnInit {
         });
       this.contributeForm.addControl('category', categoryControl);
 
-      const textControl = new FormControl(null, {
+      const textControl = new UntypedFormControl(null, {
         validators: [
           Validators.required,
           Validators.maxLength(250),
@@ -48,7 +48,7 @@ export class ContributeComponent implements OnInit {
       });
       this.contributeForm.addControl('text', textControl);
 
-      const authorControl = new FormControl(
+      const authorControl = new UntypedFormControl(
         null,
         {
           validators: Validators.required,
@@ -56,7 +56,7 @@ export class ContributeComponent implements OnInit {
         });        
       this.contributeForm.addControl('author', authorControl);
 
-      const acceptTermsControl = new FormControl(
+      const acceptTermsControl = new UntypedFormControl(
         null,
         {
           validators: Validators.requiredTrue,

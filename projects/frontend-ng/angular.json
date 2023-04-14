@@ -122,6 +122,9 @@
           }
         }
       }
-    }},
-  "defaultProject": "jeudemots-ng"
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
 }

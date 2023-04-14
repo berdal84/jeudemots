@@ -34,7 +34,7 @@ describe('AppComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
-        RouterModule.forRoot(ROUTES, { relativeLinkResolution: 'legacy' })
+        RouterModule.forRoot(ROUTES, {})
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA

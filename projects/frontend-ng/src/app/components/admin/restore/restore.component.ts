@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { UntypedFormGroup, Validators, UntypedFormControl } from '@angular/forms';
 import { BackendService, Status } from 'src/app/services/backend.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class RestoreComponent implements OnInit {
 
     status: Status;
     /** main form group */
-    form: FormGroup;
+    form: UntypedFormGroup;
     /** display form errors */
     displayErrors: boolean;
 
@@ -22,16 +22,16 @@ export class RestoreComponent implements OnInit {
     ngOnInit() {
       this.displayErrors  = false;
       this.status         = null;
-      this.form           = new FormGroup({});
+      this.form           = new UntypedFormGroup({});
 
-      const fileControl = new FormControl(
+      const fileControl = new UntypedFormControl(
         null,
         {
           validators: [Validators.required],
           updateOn: 'change'
         });
 
-      const agreeControl = new FormControl(
+      const agreeControl = new UntypedFormControl(
         null,
         {
           validators: [Validators.requiredTrue],
@@ -40,7 +40,7 @@ export class RestoreComponent implements OnInit {
 
       this.form.addControl('file', fileControl);
       this.form.addControl('agree', agreeControl);
-      this.form.addControl('fileSrc', new FormControl());
+      this.form.addControl('fileSrc', new UntypedFormControl());
 
     }
 
