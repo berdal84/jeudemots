@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Status } from 'src/app/services/backend.service';
 import { UserService } from 'src/app/services/user.service';
@@ -11,7 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginComponent {
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   submited = false;
   status: Status = null;
 
@@ -19,9 +19,9 @@ export class LoginComponent {
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute) {
-      this.form = new FormGroup({
-        username: new FormControl('', [Validators.required]),
-        password: new FormControl('', [Validators.required]),
+      this.form = new UntypedFormGroup({
+        username: new UntypedFormControl('', [Validators.required]),
+        password: new UntypedFormControl('', [Validators.required]),
       });
 
       if( this.userService.isLogged() )

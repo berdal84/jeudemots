@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { BackendService, Status } from 'src/app/services/backend.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class UninstallComponent implements OnInit {
 
   status: Status;
   /** main form group */
-  form: FormGroup;
+  form: UntypedFormGroup;
   /** display form errors */
   displayErrors: boolean;
 
@@ -23,8 +23,8 @@ export class UninstallComponent implements OnInit {
   ngOnInit() {
     this.displayErrors  = false;
     this.status         = null;
-    this.form           = new FormGroup({});
-    const agreeControl = new FormControl(
+    this.form           = new UntypedFormGroup({});
+    const agreeControl = new UntypedFormControl(
       null,
       {
         validators: [Validators.required],
