@@ -7,7 +7,7 @@
 
 ## Introduction
 
-This is the source repository for the website [www.relativementutile.fr/jeudemots](https://www.relativementutile.fr/jeudemots), a client-server solution to host jokes using PHP8/MySQL and Angular. Two alternative React/Vue frontends are work in progress.
+This is the source repository for the website [http://art.42borgata.com/jeudemots](http://art.42borgata.com/jeudemots), a client-server solution to host jokes using PHP8/MySQL and Angular. Two alternative React/Vue frontends are work in progress.
 
 <div align="center">
   <img width="75%" height="75%" src="https://user-images.githubusercontent.com/942052/180222208-a69cdd30-a730-4cb8-907f-27b67ad6e844.png" />
@@ -22,8 +22,8 @@ This repository contains source code for different parts of the project:
 
 
 WIP:
-- `projects/frontend-react`: alternative React frontend sources (deployed at [www.relativementutile.fr/jeudemots-react](https://www.relativementutile.fr/jeudemots-react))
-- `projects/frontend-vue`: alternative Vue frontend sources (deployed at [www.relativementutile.fr/jeudemots-vue](https://www.relativementutile.fr/jeudemots-vue))
+- `projects/frontend-react`: alternative React frontend sources (deployed at [http://art.42borgata.com/jeudemots-react](http://art.42borgata.com/jeudemots-react))
+- `projects/frontend-vue`: alternative Vue frontend sources (deployed at [http://art.42borgata.com/jeudemots-vue](http://art.42borgata.com/jeudemots-vue))
 - `projects/frontend-common`: code reusable in each frontend.
 
 ## Development
@@ -59,7 +59,7 @@ Later in 2022, I decided to implement a backend in PHP8 to store jokes as a MySQ
   
 2 - style
   - front-ng: extract CSS to get a common.css + customizable theme.css (a base exists in frontend-react)
-  - front-ng: think about responsiveness (tinyscreens, smartphones, desktop)
+  - front-ng: think about responsiveness
   
 3 - components
   - front-react/vue: implem all ng existing components.
