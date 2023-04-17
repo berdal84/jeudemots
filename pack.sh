@@ -11,50 +11,51 @@ echo "Packing files ..."
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-cd ${SCRIPT_DIR};
+cd ${SCRIPT_DIR} || exit;
 
 
-BASE_DIR=dist
-NG_DIR=${BASE_DIR}/jeudemots
-REACT_DIR=${BASE_DIR}/jeudemots-react
-VUE_DIR=${BASE_DIR}/jeudemots-vue
-BACKEND_DIR=${BASE_DIR}/jeudemots-api
+# Define output directories
+OUTPUT_DIR=dist
+NG_OUTPUT_DIR=${OUTPUT_DIR}/jeudemots
+REACT_OUTPUT_DIR=${OUTPUT_DIR}/jeudemots-react
+VUE_OUTPUT_DIR=${OUTPUT_DIR}/jeudemots-vue
+SERVER_OUTPUT_DIR=${OUTPUT_DIR}/jeudemots-api
 
-rm -rf ${BASE_DIR}
+rm -rf ${OUTPUT_DIR}
 
-# Backend
-mkdir -p ${BACKEND_DIR}
-cp -vr projects/backend/build/* ${BACKEND_DIR} && echo "Backend OK" || (echo "Unable to copy Backend files!" && exit )
+# Server
+mkdir -p ${SERVER_OUTPUT_DIR}
+cp -vr server/build/* ${SERVER_OUTPUT_DIR} && echo "Server OK" || (echo "Unable to copy Server files!" && exit )
 
-# FrontEnd Angular
+# Client Angular
 
-mkdir -p ${NG_DIR}
+mkdir -p ${NG_OUTPUT_DIR}
 
-if( cp -vr projects/frontend-ng/build/* ${NG_DIR} )
+if( cp -vr client/ng/build/* ${NG_OUTPUT_DIR} )
 then
-    echo "Front (Angular) OK";
+    echo "Client (Angular) OK";
 else
     error "Unable to copy Angular files!" ;
 fi
 
-# FrontEnd React
+# Client React
 
-mkdir -p ${REACT_DIR}
+mkdir -p ${REACT_OUTPUT_DIR}
 
-if( cp -vr projects/frontend-react/build/* ${REACT_DIR} )
+if( cp -vr client/react-js/build/* ${REACT_OUTPUT_DIR} )
 then
-    echo "Front (React) OK";
+    echo "Client (React) OK";
 else
     error "Unable to copy React files!";
 fi
 
-# FrontEnd Vue
+# Client Vue
 
-mkdir -p ${VUE_DIR}
+mkdir -p ${VUE_OUTPUT_DIR}
 
-if( cp -vr projects/frontend-vue/build/* ${VUE_DIR} )
+if( cp -vr client/vue/build/* ${VUE_OUTPUT_DIR} )
 then
-    echo "Vue (React) OK";
+    echo "Client (Vue) OK";
 else
     error "Unable to copy Vue files!";
 fi
@@ -62,7 +63,7 @@ fi
 # Check errors and exit
 if [[ "${ERRC}" -eq "0" ]];
 then
-    echo "Packing OK - output: ${SCRIPT_DIR}/${BASE_DIR}"
+    echo "Packing OK - output: ${SCRIPT_DIR}/${OUTPUT_DIR}"
     exit
 fi
 
