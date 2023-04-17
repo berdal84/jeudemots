@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { Joke } from 'jeudemots-shared';
 import { BackendService } from '@services/backend.service';
-import type { Status } from 'jeudemots-shared';
+import { Status } from 'jeudemots-shared';
 
 @Component({
   selector: 'app-list',

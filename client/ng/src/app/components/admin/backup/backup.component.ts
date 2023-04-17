@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BackendService } from '@services/backend.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import type { Status } from 'jeudemots-shared';
+import { Status } from 'jeudemots-shared';
 
 @Component({
   selector: 'app-backup',
