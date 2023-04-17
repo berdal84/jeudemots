@@ -34,7 +34,7 @@ export class BackendService {
   private pages: Pages;
   private page: Page;
   private filterStr: string;
-
+  private cache: Map<string, Response>;
   constructor(private httpClient: HttpClient) {
     this.pageSubject = new ReplaySubject<Page>();
     this.pagesSubject = new ReplaySubject<Pages>();
@@ -45,16 +45,30 @@ export class BackendService {
     this.pageSubject.subscribe((page) => {
       this.page = page;
     });
+    this.cache = new Map<string, Response>();
   }
 
   /**
    * Generic request, guarantee not to throw.
    * Check response.status
    */
-  private _request<TResponse extends Response>(method: 'GET' | 'POST' | 'DELETE', url: string, headers?: {
-    [p: string]: any | string[]
-  }): Promise<TResponse> {
-    return this.httpClient
+  private async _request<TResponse extends Response>(
+    method: 'GET' | 'POST' | 'DELETE',
+    url: string,
+    headers?: {
+      params?: Record<string, number | string>,
+      body?: any
+    }): Promise<TResponse> {
+
+    // Try to get response from cache
+    const cache_key = `${method}:${url}:${JSON.stringify(headers)}`;
+    if (method === 'GET' && this.cache.has(cache_key)) {
+      const cache_response = this.cache.get(cache_key) as TResponse;
+      return structuredClone(cache_response);
+    }
+
+    // Fetch
+    const response = await this.httpClient
       .request<TResponse>(method, url, headers)
       .pipe(retry(3), catchError(() => of({
         status: Status.FAILURE,
@@ -62,6 +76,12 @@ export class BackendService {
         error: `Unable to get request response from ${url} (three attempts)`
       } as TResponse)))
       .toPromise();
+
+    // Update cache
+    if ( response.status === Status.SUCCESS ) {
+      this.cache.set(cache_key, structuredClone(response));
+    }
+    return response;
   }
 
   setFilter(filterStr: string) {
@@ -146,7 +166,7 @@ export class BackendService {
    * that json must contain a Joke array.
    */
   restore(formData: FormData): Promise<Response> {
-    return this._request<Response>('POST', URL.JOKE_RESTORE, formData);
+    return this._request<Response>('POST', URL.JOKE_RESTORE, { body: formData });
   }
 
   /**
@@ -172,11 +192,10 @@ export class BackendService {
    */
   private async readPages(size: number): Promise<Response<Pages>> {
 
-    const params = new HttpParams({
-      fromObject: {
-        size, filter: this.filterStr
-      }
-    });
+    const params = {
+      size,
+      filter: this.filterStr
+    };
 
     const response = await this._request<Response<Pages>>('GET', URL.PAGES_READ, {params});
 
@@ -193,11 +212,11 @@ export class BackendService {
    */
   private async readPage(id: number, size: number): Promise<Response<Page>> {
 
-    const params = new HttpParams({
-      fromObject: {
-        size, id, filter: this.filterStr
-      }
-    });
+    const params = {
+      size,
+      id,
+      filter: this.filterStr
+    };
 
     const response = await this._request<Response<Page>>('GET', URL.PAGE_READ, {params});
 
@@ -213,7 +232,7 @@ export class BackendService {
    * @param joke the joke to update (must have a valid id)
    */
   update(joke: Joke): Promise<Response> {
-    return this._request<Response>('POST', URL.JOKE_UPDATE, joke);
+    return this._request<Response>('POST', URL.JOKE_UPDATE, { body: joke});
   }
 
   /**
@@ -221,9 +240,7 @@ export class BackendService {
    * @param id the joke id
    */
   delete(id: number): Promise<Response> {
-    let params = new HttpParams();
-    params = params.append('id', id);
-    return this._request<Response>('DELETE', URL.JOKE_DELETE, {params});
+    return this._request<Response>('DELETE', URL.JOKE_DELETE, {params: { id }});
   }
 }
 
