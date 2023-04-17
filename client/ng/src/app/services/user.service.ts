@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { BackendService} from './backend.service';
-import { Credentials, Status, Response } from 'jeudemots-shared';
+import { Credentials, Response } from 'jeudemots-shared';
 
 interface User {
   user: string;
@@ -29,7 +29,7 @@ export class UserService {
     const response = await this.backend.login(credentials);
     this.#currentUser = {
       user: credentials.username,
-      is_logged: response.status === Status.SUCCESS
+      is_logged: response.ok
     };
     this.notify();
     return response;

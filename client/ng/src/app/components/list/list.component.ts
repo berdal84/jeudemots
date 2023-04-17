@@ -1,9 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { UserService } from '../../services/user.service';
+import { UserService } from '@services/user.service';
 import { Joke } from 'jeudemots-shared';
 import { BackendService } from '@services/backend.service';
-import { Status } from 'jeudemots-shared';
 
 @Component({
   selector: 'app-list',
@@ -70,8 +69,8 @@ export class ListComponent implements OnInit {
   }
 
   async cancel(joke: Joke) {
-    const result = await this.backend.reloadPage();
-    if( result.status === Status.SUCCESS) {
+    const response = await this.backend.reloadPage();
+    if( response.ok) {
       this.editedJokes.delete(joke.id);
     }
     else {
@@ -80,8 +79,8 @@ export class ListComponent implements OnInit {
   }
 
   async save(joke: Joke) {
-    const result = await this.backend.update(joke);
-    if( result.status === Status.SUCCESS) {
+    const response = await this.backend.update(joke);
+    if( response.ok ) {
       this.editedJokes.delete(joke.id);
     }
     else
@@ -92,7 +91,7 @@ export class ListComponent implements OnInit {
 
   async delete( joke: Joke ) {
     const response = await this.backend.delete(joke.id);
-    if( response.status === Status.SUCCESS )
+    if( response.ok )
     {
       await this.backend.reloadPage();
     }
@@ -105,7 +104,7 @@ export class ListComponent implements OnInit {
   async toggleVisibility( joke: Joke ) {
     joke.visible = !joke.visible;
     const response = await this.backend.update(joke);
-    if( response.status === Status.SUCCESS )
+    if ( response.ok )
     {
       await this.backend.reloadPage();
     }
@@ -116,6 +115,6 @@ export class ListComponent implements OnInit {
   }
 
   setPage(id: number) {
-    this.backend.setPage(id);
+    return this.backend.setPage(id);
   }
 }

@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Joke, Page, Pages} from 'jeudemots-shared';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient } from '@angular/common/http';
 import {ReplaySubject, of} from 'rxjs';
 import {catchError, retry} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
-import {Response, Status, Credentials} from 'jeudemots-shared';
+import {Response, Credentials} from 'jeudemots-shared';
 
 const backend = environment.backend_url;
 
@@ -71,14 +71,14 @@ export class BackendService {
     const response = await this.httpClient
       .request<TResponse>(method, url, headers)
       .pipe(retry(3), catchError(() => of({
-        status: Status.FAILURE,
+        ok: false,
         data: null,
         error: `Unable to get request response from ${url} (three attempts)`
       } as TResponse)))
       .toPromise();
 
     // Update cache
-    if ( response.status === Status.SUCCESS ) {
+    if ( response.ok ) {
       this.cache.set(cache_key, structuredClone(response));
     }
     return response;
@@ -101,7 +101,7 @@ export class BackendService {
    */
   async reloadAll(page_size = 10): Promise<Response<Pages>> {
     const response = await this.readPages(page_size);
-    if (response.status === Status.SUCCESS) {
+    if (response.ok) {
       await this.readPage(0, this.pages.size);
     }
     return response;
@@ -118,11 +118,11 @@ export class BackendService {
   async reloadPage(): Promise<Response<Page>> {
     const current_page_id = this.page.id;
     const response = await this.readPages(this.pages.size);
-    if (response.status === Status.FAILURE) {
+    if (!response.ok) {
       return {
         error: `Unable to reload page`,
         reason: response,
-        status: Status.FAILURE,
+        ok: false,
         data: null
       };
     }
@@ -199,7 +199,7 @@ export class BackendService {
 
     const response = await this._request<Response<Pages>>('GET', URL.PAGES_READ, {params});
 
-    if (response.status === Status.SUCCESS) {
+    if (response.ok) {
       this.pagesSubject.next(response.data);
     }
     return response;
@@ -220,7 +220,7 @@ export class BackendService {
 
     const response = await this._request<Response<Page>>('GET', URL.PAGE_READ, {params});
 
-    if (response.status === Status.SUCCESS) {
+    if (response.ok) {
       this.pageSubject.next(response.data);
     }
 
