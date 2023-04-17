@@ -49,5 +49,8 @@
     "tslint": "~6.1.0",
     "typescript": "4.9.5",
     "jeudemots-shared": "file:../shared"
-  }
+  },
+  "browserslist": [
+    "defaults"
+  ]
 }
