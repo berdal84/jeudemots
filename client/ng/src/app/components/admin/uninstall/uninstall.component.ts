@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BackendService } from '@services/backend.service';
-import { Status } from 'jeudemots-shared';
 
 @Component({
   selector: 'app-uninstall',
@@ -9,12 +8,9 @@ import { Status } from 'jeudemots-shared';
   styleUrls: ['./uninstall.component.css']
 })
 export class UninstallComponent implements OnInit {
-
-  Status = Status; // expose to html
-
-  status: Status;
+  status: 'inactive' | 'uninstalled' | 'uninstalling' | 'error';
   /** main form group */
-  form: UntypedFormGroup;
+  form: FormGroup;
   /** display form errors */
   displayErrors: boolean;
 
@@ -23,9 +19,9 @@ export class UninstallComponent implements OnInit {
 
   ngOnInit() {
     this.displayErrors  = false;
-    this.status         = null;
-    this.form           = new UntypedFormGroup({});
-    const agreeControl = new UntypedFormControl(
+    this.status         = 'inactive';
+    this.form           = new FormGroup({});
+    const agreeControl = new FormControl(
       null,
       {
         validators: [Validators.required],
@@ -49,13 +45,14 @@ export class UninstallComponent implements OnInit {
     this.displayErrors = this.form.invalid;
     if ( !this.form.invalid)
     {
+      this.status = 'uninstalling';
       const result = await this.jokeService.uninstall();
-      if( result.status === Status.SUCCESS )
-      {
+      if ( result.ok ) {
         this.form.reset();
+        this.status = 'uninstalled';
+      } else {
+        this.status = 'error';
       }
-
-      this.status = result.status;
     }
   }
 
