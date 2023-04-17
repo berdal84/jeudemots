@@ -8,11 +8,9 @@
 
     if(!DB::install())
     {
-      echo( Response::failure("Unable to install!")->json() );
-      exit;
+      http_response_code(500);
+      die( Response::failure("Unable to install!") );
     }
 
-    echo( Response::success("Install successful")->json() );
-
-
+    die( Response::success("Install successful") );
 ?>

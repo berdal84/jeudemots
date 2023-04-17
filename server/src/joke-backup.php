@@ -19,9 +19,8 @@ $jokes = array();
 
 if( !JokeCRUD::backup($jokes) )
 {
-    echo(Response::failure([])->json());
-    exit;
+    http_response_code(500);
+    die(Response::failure("Backup failed"));
 }
-echo(Response::success($jokes)->json());
-
+echo(Response::success($jokes));
 ?>

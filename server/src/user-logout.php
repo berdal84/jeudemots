@@ -11,8 +11,9 @@
 
   if( !User::logout() )
   {
-    echo( Response::failure("Unable to logout!")->json() );
+    http_response_code(500);
+    die( Response::failure("Unable to logout") );
   }
 
-  echo( Response::success("Unlogged")->json() );
+  die( Response::success("Successfully disconnected") );
 ?>

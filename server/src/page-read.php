@@ -17,12 +17,14 @@ $filter = '';
 
 if( !UrlParams::getInt($id, 'id'))
 {
-    die("Unable to get id!");
+    http_response_code(400);
+    die( Response::failure("id is required"));
 }
 
 if( !UrlParams::getInt($size, 'size'))
 {
-    die("Unable to get size!");
+    http_response_code(400);
+    die( Response::failure("size is required"));
 }
 
 UrlParams::getString($filter, 'filter');
@@ -31,9 +33,10 @@ $page = new Page($id, $size);
 
 if( !JokeCRUD::read_page($page, $filter) )
 {
-  echo( Response::failure(null)->json() );
-  exit(0);
+      http_response_code(500);
+      die( Response::failure("Unable to get the page"));
 }
-echo( Response::success($page)->json() );
+
+die( Response::success($page) );
 
 ?>

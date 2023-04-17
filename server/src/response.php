@@ -2,30 +2,27 @@
 
 class Response
 {
-    public $status;
+    public $ok;
     public $data;
+    public $error;
 
-    function __construct(string $status, $data)
+    function __construct($ok, $data, $error)
     {
-      $this->status = $status;
-      $this->data   = $data;
+      $this->ok   = $ok;
+      $this->data = $data;
+      $this->error = $error;
     }
 
-    /* Convert response to json string */
-    public function json(): string
+    static public function failure($error, $data = NULL): string
     {
-      $response = new Response($this->status, $this->data);
-      return json_encode($response);
+      response = new Response(false, $data, $error);
+      return json_encode(response);
     }
 
-    static public function failure($data): Response
+    static public function success($data): string
     {
-      return new Response('failure', $data);
-    }
-
-    static public function success($data): Response
-    {
-      return new Response('success', $data);
+      response = new Response(false, $data, NULL);
+      return json_encode(response);
     }
 }
 

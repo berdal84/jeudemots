@@ -12,16 +12,16 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 $id;
 if( !UrlParams::getInt($id, 'id'))
 {
-    die("Unable to get id!");
+    http_response_code(400);
+    die( Response::failure("id is required", $id) );
 }
 
 if( !JokeCRUD::read($joke, $id) )
 {
-  echo( Response::failure(null)->json() );
-  exit(0);
+  http_response_code(400);
+  die( Response::failure("Unable to read the joke", $id) );
 }
 
-// return it as json
-echo( Response::success($joke)->json() );
+die( Response::success($joke) );
 
 ?>

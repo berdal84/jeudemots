@@ -9,13 +9,13 @@
   session_start();
 
   $rawData 	= file_get_contents('php://input');
-  $data 		= json_decode($rawData);
+  $data 	= json_decode($rawData);
 
   if(!User::login($data->username, $data->password))
   {
-    echo( Response::failure("Unable to login!")->json() );
-    exit;
+    http_response_code(401)
+    die( Response::failure("The couple username/password does not match with any valid account") );
   }
 
-  echo( Response::success("Login successful")->json() );
+  die( Response::success("Login successful") );
 ?>

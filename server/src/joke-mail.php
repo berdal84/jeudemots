@@ -21,12 +21,15 @@
  * 
  */
 
+require_once('config.php');
+require_once('response.php');
+
 // Get the JSON from the body of the post request
 $rawData 	= file_get_contents('php://input');                   // Takes raw data from the request
 $data 		= json_decode($rawData);
 
 // Prepare the mail parameters
-$to      = 'contact@dalle-cort.fr';
+$to      = ADMIN_EMAIL;
 $subject = 'Proposition de jeu de mots';
 
 $messageTemplate = "
@@ -57,10 +60,10 @@ $headers = array(
 
 // set the mail and echo a message in case of success / fail
 
-if ( mail($to, $subject, $message, $headers) ) {
-    echo "Mail sent !";
-} else {
-    die( "Mail sending failed !" );
+if ( !mail($to, $subject, $message, $headers) ) {
+    http_response_code(500);
+    die(Response::failed("Joke couldn't be submitted"));
 }
+die(Response::success("Joke submitted"));
 
 ?>

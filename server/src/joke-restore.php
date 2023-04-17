@@ -24,7 +24,8 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 $file_tmp = $_FILES['file']['tmp_name'];
 if(!$file_tmp)
 {
-    die("No file found!");
+    http_response_code(400);
+    die( Response::failure("No file found"));
 }
 
 // try to decode raw_data
@@ -32,13 +33,15 @@ $raw_data = file_get_contents($file_tmp);
 $data     = json_decode($raw_data);
 if(!$data)
 {
-    die("Unable to decode raw data!");
+    http_response_code(400);
+    die( Response::failure("Unable to decode raw data"));
 }
 
 // try to decode raw_data
 if(!is_array($data))
 {
-    die("Wrong data type!");
+    http_response_code(400);
+    die( Response::failure("Array is expected" ));
 }
 
 $summary = new Summary();
@@ -46,7 +49,8 @@ $summary = new Summary();
 // clear table
 if( !JokeCRUD::delete_all($summary->deleted_count) )
 {
-    die("Unable to delete existing jokes!");
+    http_response_code(500);
+    die( Response::failure("Unable to delete existing jokes" ));
 }
 
 // loop on array to create jokes (we will use this script rarely, no need to optimize)
@@ -56,10 +60,11 @@ foreach ($data as $each)
     $joke->fromObject($each);
     if( !JokeCRUD::create($joke) )
     {
-        die("Unable to create the joke!");
+        http_response_code(500);
+        die( Response::failure("Unable to create the joke", $joke ));
     }
     $summary->restored_count++;
 }
 
-echo( Response::success($summary)->json() );
+echo( Response::success($summary) );
 ?>

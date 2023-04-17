@@ -11,14 +11,16 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 $raw_data = file_get_contents('php://input');
 if(!$raw_data)
 {
-    die("No data found!");
+    http_response_code(400);
+    die( Response::failure("A JSON file must be sent") );
 }
 
 // try to decode raw_data
 $data = json_decode($raw_data);
 if(!$data)
 {
-    die("Unable to decode data!");
+    http_response_code(400);
+    die( Response::failure("Unable to decode JSON") );
 }
 
 // try to create the joke
@@ -28,9 +30,10 @@ $joke->visible = FALSE; // needs to be validated by admin
 
 if( !JokeCRUD::create($joke) )
 {
-    die("Unable to create the joke!");
+    http_response_code(500);
+    die( Response::failure("Unable to create the joke!") );
 }
 
-echo( Response::success($joke)->json() );
+die( Response::success($joke));
 
 ?>

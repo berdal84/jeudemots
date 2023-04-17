@@ -8,9 +8,9 @@
 
     if(!JokeCRUD::uninstall())
     {
-      echo( Response::failure("Unable to uninstall!")->json() );
-      exit;
+      http_response_code(500);
+      die( Response::failure("Unable to uninstall!") );
     }
 
-    echo( Response::success("Uninstall successful")->json() );
+    die( Response::success("Uninstall successful") );
 ?>

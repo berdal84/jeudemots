@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Joke, Page, Pages} from 'jeudemots-shared';
-import {HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {ReplaySubject, of} from 'rxjs';
 import {catchError, retry} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
@@ -35,6 +35,7 @@ export class BackendService {
   private page: Page;
   private filterStr: string;
   private cache: Map<string, Response>;
+
   constructor(private httpClient: HttpClient) {
     this.pageSubject = new ReplaySubject<Page>();
     this.pagesSubject = new ReplaySubject<Pages>();
@@ -53,7 +54,29 @@ export class BackendService {
    * Check response.status
    */
   private async _request<TResponse extends Response>(
-    method: 'GET' | 'POST' | 'DELETE',
+    method: 'GET' | 'POST' | 'DELETE' | 'PATCH',
+    url: string,
+    headers?: {
+      params?: Record<string, number | string>,
+      body?: any
+    }): Promise<TResponse> {
+
+    return this.httpClient
+      .request<TResponse>(method, url, headers)
+      .pipe(retry(3), catchError(() => of({
+        ok: false,
+        data: null,
+        error: `Unable to get request response from ${url} (three attempts)`
+      } as TResponse)))
+      .toPromise();
+  }
+
+  /**
+   * Generic request using a local cache system.
+   *
+   */
+  private async _requestWithCache<TResponse extends Response>(
+    method: 'GET' | 'POST' | 'DELETE' | 'PATCH',
     url: string,
     headers?: {
       params?: Record<string, number | string>,
@@ -62,23 +85,16 @@ export class BackendService {
 
     // Try to get response from cache
     const cache_key = `${method}:${url}:${JSON.stringify(headers)}`;
-    if (method === 'GET' && this.cache.has(cache_key)) {
+    if (this.cache.has(cache_key)) {
       const cache_response = this.cache.get(cache_key) as TResponse;
       return structuredClone(cache_response);
     }
 
     // Fetch
-    const response = await this.httpClient
-      .request<TResponse>(method, url, headers)
-      .pipe(retry(3), catchError(() => of({
-        ok: false,
-        data: null,
-        error: `Unable to get request response from ${url} (three attempts)`
-      } as TResponse)))
-      .toPromise();
+    const response = await this._request<TResponse>(method, url, headers);
 
     // Update cache
-    if ( response.ok ) {
+    if (response.ok) {
       this.cache.set(cache_key, structuredClone(response));
     }
     return response;
@@ -166,7 +182,7 @@ export class BackendService {
    * that json must contain a Joke array.
    */
   restore(formData: FormData): Promise<Response> {
-    return this._request<Response>('POST', URL.JOKE_RESTORE, { body: formData });
+    return this._request<Response>('POST', URL.JOKE_RESTORE, {body: formData});
   }
 
   /**
@@ -197,7 +213,7 @@ export class BackendService {
       filter: this.filterStr
     };
 
-    const response = await this._request<Response<Pages>>('GET', URL.PAGES_READ, {params});
+    const response = await this._requestWithCache<Response<Pages>>('GET', URL.PAGES_READ, {params});
 
     if (response.ok) {
       this.pagesSubject.next(response.data);
@@ -218,7 +234,7 @@ export class BackendService {
       filter: this.filterStr
     };
 
-    const response = await this._request<Response<Page>>('GET', URL.PAGE_READ, {params});
+    const response = await this._requestWithCache<Response<Page>>('GET', URL.PAGE_READ, {params});
 
     if (response.ok) {
       this.pageSubject.next(response.data);
@@ -231,16 +247,20 @@ export class BackendService {
    * Update an existing joke
    * @param joke the joke to update (must have a valid id)
    */
-  update(joke: Joke): Promise<Response> {
-    return this._request<Response>('POST', URL.JOKE_UPDATE, { body: joke});
+  async update(joke: Joke): Promise<Response> {
+    const response = await this._request<Response>('PATCH', URL.JOKE_UPDATE, {body: joke});
+    if (response.ok) this.cache.clear();
+    return response;
   }
 
   /**
    * Delete an existing joke
    * @param id the joke id
    */
-  delete(id: number): Promise<Response> {
-    return this._request<Response>('DELETE', URL.JOKE_DELETE, {params: { id }});
+  async delete(id: number): Promise<Response> {
+    const response = await this._request<Response>('DELETE', URL.JOKE_DELETE, {params: {id}});
+    if (response.ok) this.cache.clear();
+    return response;
   }
 }
 

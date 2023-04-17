@@ -16,7 +16,8 @@ $filter = '';
 
 if( !UrlParams::getInt($size, 'size'))
 {
-    die("Unable to get size!");
+    http_response_code(400);
+    die( Response::failure("size not found"));
 }
 
 UrlParams::getString($filter, 'filter');
@@ -26,9 +27,10 @@ $pages->size = $size;
 
 if( !JokeCRUD::read_pages($pages, $filter) )
 {
-  echo( Response::failure(null)->json() );
-  exit(0);
+  http_response_code(500);
+  die( Response::failure("Unable to get pages"));
 }
-echo( Response::success($pages)->json() );
+
+die( Response::success($pages) );
 
 ?>
