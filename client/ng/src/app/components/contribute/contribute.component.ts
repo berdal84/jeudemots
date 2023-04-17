@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormGroup, Validators, UntypedFormControl } from '@angular/forms';
-import { BackendService } from 'src/app/services/backend.service';
+import { BackendService } from '@services/backend.service';
 import { Joke } from 'jeudemots-shared';
 
 enum Status {

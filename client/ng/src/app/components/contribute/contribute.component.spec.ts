@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BackendServiceMock } from 'src/app/mocks/backend-service.mock';
-import { BackendService, Status } from 'src/app/services/backend.service';
+import { BackendService, Status } from '../../services/backend.service';
 import { ContributeComponent } from './contribute.component';
 
 describe('ContributeComponent', () => {

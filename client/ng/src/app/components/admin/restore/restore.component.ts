@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormGroup, Validators, UntypedFormControl } from '@angular/forms';
-import { BackendService, Status } from 'src/app/services/backend.service';
+import { BackendService } from '@services/backend.service';
+import { Status } from 'jeudemots-shared';
 
 @Component({
   selector: 'app-restore',

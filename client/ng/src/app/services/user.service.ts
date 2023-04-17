@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
-import { BackendService, Status, Response } from './backend.service';
+import { BackendService} from './backend.service';
+import { Credentials, Status, Response } from 'jeudemots-shared';
 
 interface User {
   user: string;
@@ -24,10 +25,10 @@ export class UserService {
     this.notify();
   }
 
-  async login(user: string, password: string): Promise<Response> {
-    const response = await this.backend.login(user, password);
+  async login(credentials: Credentials): Promise<Response> {
+    const response = await this.backend.login(credentials);
     this.#currentUser = {
-      user,
+      user: credentials.username,
       is_logged: response.status === Status.SUCCESS
     };
     this.notify();

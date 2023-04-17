@@ -1,8 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from '../../services/user.service';
 import { Joke } from 'jeudemots-shared';
-import { BackendService, Status } from '../../services/backend.service';
+import { BackendService } from '@services/backend.service';
+import { Status } from 'jeudemots-shared';
 
 @Component({
   selector: 'app-list',

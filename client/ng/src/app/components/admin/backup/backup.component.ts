@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { BackendService, Status } from 'src/app/services/backend.service';
+import { BackendService } from '@services/backend.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Status } from 'jeudemots-shared';
 
 @Component({
   selector: 'app-backup',
@@ -26,7 +27,7 @@ export class BackupComponent {
   async onBackup()
   {
     const response = await this.jokeService.backup();
-    if( response.status === Status.SUCCESS )
+    if ( response.status === Status.SUCCESS )
     {
       const json        = JSON.stringify(response.data);
       const encodedJson = encodeURIComponent(json);

@@ -1,7 +1,7 @@
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { PAGE_MOCK } from 'src/app/mocks/page.mock';
 import { BackendServiceMock } from 'src/app/mocks/backend-service.mock';
-import { BackendService } from 'src/app/services/backend.service';
+import { BackendService } from '../../services/backend.service';
 import { TodayComponent } from './today.component';
 
 describe(TodayComponent.name, () => {

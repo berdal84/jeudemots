@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BackendServiceMock } from 'src/app/mocks/backend-service.mock';
 import { JokeFilterPipe } from 'src/app/pipes/jokefilter.pipe';
-import { BackendService } from 'src/app/services/backend.service';
+import { BackendService } from '../../services/backend.service';
 
 import { ListComponent } from './list.component';
 

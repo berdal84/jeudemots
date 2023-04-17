@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Page, Pages, Joke } from 'jeudemots-shared';
-import { BackendService } from '../../services/backend.service';
+import { BackendService } from '@services/backend.service';
 
 @Component({
   selector: 'app-today',

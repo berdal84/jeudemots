@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild, UrlTree, Router } from "@angular/router";
 import { Observable } from "rxjs";
-import { UserService } from "../../services/user.service";
+import { UserService } from "@services/user.service";
 
 @Injectable()
 export class AdminGuard implements CanActivate, CanActivateChild {
@@ -16,7 +16,7 @@ export class AdminGuard implements CanActivate, CanActivateChild {
 
   canActivate( next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
 
-      if( this.userService.isLogged() )
+      if ( this.userService.isLogged() )
       {
         return true;
       }

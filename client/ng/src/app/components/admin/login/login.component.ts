@@ -1,46 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Status } from 'src/app/services/backend.service';
-import { UserService } from 'src/app/services/user.service';
+import {Component} from '@angular/core';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Status, Credentials} from 'jeudemots-shared';
+import {UserService} from '@services/user.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-login', templateUrl: './login.component.html', styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
 
   form: UntypedFormGroup;
-  submited = false;
+  submitted = false;
   status: Status = null;
 
-  constructor(
-    private userService: UserService,
-    private router: Router,
-    private route: ActivatedRoute) {
-      this.form = new UntypedFormGroup({
-        username: new UntypedFormControl('', [Validators.required]),
-        password: new UntypedFormControl('', [Validators.required]),
-      });
+  constructor(private userService: UserService, private router: Router, private route: ActivatedRoute) {
+    this.form = new UntypedFormGroup({
+      username: new UntypedFormControl('', [Validators.required]),
+      password: new UntypedFormControl('', [Validators.required]),
+    });
 
-      if( this.userService.isLogged() )
-      {
-        this.router.navigate(['admin/dashboard']);
-      }
+    if (this.userService.isLogged()) {
+      this.router.navigate(['admin/dashboard']);
     }
+  }
 
   async submit() {
 
-    if( this.form.valid )
-    {
-      const response = await this.userService.login( this.form.value.username, this.form.value.password);
+    if (this.form.valid) {
+      const credentials: Credentials = {
+        username: this.form.value.username, password: this.form.value.password
+      };
+      const response = await this.userService.login(credentials);
 
-      if( response.status == Status.SUCCESS )
-      {
+      if (response.status === Status.SUCCESS) {
         const route = this.route.snapshot.queryParams['redirect'] || 'admin/dashboard';
-        if( !await this.router.navigate([route]) )
-        {
+        if (!await this.router.navigate([route])) {
           console.error('Unable to navigate!');
         }
       }
@@ -48,12 +42,12 @@ export class LoginComponent {
       this.status = response.status;
     }
 
-    this.submited = true;
+    this.submitted = true;
     this.form.markAllAsTouched();
   }
 
   reset() {
-    this.submited = false;
+    this.submitted = false;
     this.form.reset();
     this.form.markAsPristine();
     this.form.markAsUntouched();

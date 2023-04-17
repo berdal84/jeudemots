@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from '@services/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
 
   async logout() {
     const response = await this.user.logout();
-    if( response.status === 'failure' )
+    if ( response.status === 'failure' )
     {
       console.error('unable to logout!');
     }

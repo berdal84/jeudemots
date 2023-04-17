@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { BackendService, Status } from 'src/app/services/backend.service';
+import { BackendService } from '@services/backend.service';
+import { Status } from 'jeudemots-shared';
 
 @Component({
   selector: 'app-install',
@@ -49,7 +50,7 @@ export class InstallComponent implements OnInit {
     if ( !this.form.invalid)
     {
       const response = await this.jokeService.install();
-      if( response.status === Status.SUCCESS )
+      if ( response.status === Status.SUCCESS )
       {
         this.form.reset();
       }

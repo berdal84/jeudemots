@@ -1,4 +1,4 @@
-import { Page } from "src/frontend/app/models/page.model";
+import { Page } from 'jeudemots-shared';
 
 /**
  * Simple array with two jokes for testing purpose.

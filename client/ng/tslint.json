@@ -37,7 +37,8 @@
     "import-spacing": true,
     "indent": {
       "options": [
-        "spaces"
+        "spaces",
+        2
       ]
     },
     "interface-name": false,
@@ -135,7 +136,8 @@
       "options": [
         "ban-keywords",
         "check-format",
-        "allow-pascal-case"
+        "allow-pascal-case",
+        "allow-snake-case"
       ]
     },
     "whitespace": {
