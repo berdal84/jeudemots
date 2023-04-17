@@ -8,7 +8,7 @@ import { BackendService } from '@services/backend.service';
   styleUrls: ['./uninstall.component.css']
 })
 export class UninstallComponent implements OnInit {
-  status: 'inactive' | 'uninstalled' | 'uninstalling' | 'error';
+  status: true | 'pending' | 'ok' | 'ko';
   /** main form group */
   form: FormGroup;
   /** display form errors */
@@ -19,7 +19,7 @@ export class UninstallComponent implements OnInit {
 
   ngOnInit() {
     this.displayErrors  = false;
-    this.status         = 'inactive';
+    this.status         = null;
     this.form           = new FormGroup({});
     const agreeControl = new FormControl(
       null,
@@ -45,13 +45,13 @@ export class UninstallComponent implements OnInit {
     this.displayErrors = this.form.invalid;
     if ( !this.form.invalid)
     {
-      this.status = 'uninstalling';
+      this.status = 'pending';
       const result = await this.jokeService.uninstall();
       if ( result.ok ) {
         this.form.reset();
-        this.status = 'uninstalled';
+        this.status = 'ok';
       } else {
-        this.status = 'error';
+        this.status = 'ko';
       }
     }
   }

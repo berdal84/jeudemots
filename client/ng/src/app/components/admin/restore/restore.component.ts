@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup, Validators, UntypedFormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { BackendService } from '@services/backend.service';
-import { Status } from 'jeudemots-shared';
 
 @Component({
   selector: 'app-restore',
@@ -9,30 +8,27 @@ import { Status } from 'jeudemots-shared';
   styleUrls: ['./restore.component.css']
 })
 export class RestoreComponent implements OnInit {
-
-    Status = Status; // expose to html
-
-    status: Status;
+    status: null | 'pending' | 'ok' | 'ko';
     /** main form group */
-    form: UntypedFormGroup;
+    form: FormGroup;
     /** display form errors */
     displayErrors: boolean;
 
-    constructor( private jokeService: BackendService) {}
+    constructor( private backend: BackendService) {}
 
     ngOnInit() {
       this.displayErrors  = false;
       this.status         = null;
-      this.form           = new UntypedFormGroup({});
+      this.form           = new FormGroup({});
 
-      const fileControl = new UntypedFormControl(
+      const fileControl = new FormControl(
         null,
         {
           validators: [Validators.required],
           updateOn: 'change'
         });
 
-      const agreeControl = new UntypedFormControl(
+      const agreeControl = new FormControl(
         null,
         {
           validators: [Validators.requiredTrue],
@@ -41,7 +37,7 @@ export class RestoreComponent implements OnInit {
 
       this.form.addControl('file', fileControl);
       this.form.addControl('agree', agreeControl);
-      this.form.addControl('fileSrc', new UntypedFormControl());
+      this.form.addControl('fileSrc', new FormControl(''));
 
     }
 
@@ -71,16 +67,19 @@ export class RestoreComponent implements OnInit {
       this.displayErrors = this.form.invalid;
       if ( this.form.valid)
       {
-
+        this.status = 'pending';
         const formData = new FormData();
         formData.append('file', this.form.get('fileSrc').value);
 
-        const result = await this.jokeService.restore(formData);
-        if( result.status === Status.SUCCESS )
+        const result = await this.backend.restore(formData);
+        if ( result.ok )
         {
           this.form.reset();
+          this.status = 'ok';
         }
-        this.status = result.status;
+        else {
+          this.status = 'ko';
+        }
       }
     }
 

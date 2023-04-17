@@ -1,24 +1,28 @@
 import {Component} from '@angular/core';
-import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Status, Credentials} from 'jeudemots-shared';
+import {Credentials} from 'jeudemots-shared';
 import {UserService} from '@services/user.service';
+
+interface LoginForm {
+  username: FormControl<string>;
+  password: FormControl<string>;
+}
 
 @Component({
   selector: 'app-login', templateUrl: './login.component.html', styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-
-  form: UntypedFormGroup;
+  status: null | 'pending' | 'ok' | 'ko';
+  form: FormGroup<LoginForm>;
   submitted = false;
-  status: Status = null;
 
   constructor(private userService: UserService, private router: Router, private route: ActivatedRoute) {
-    this.form = new UntypedFormGroup({
-      username: new UntypedFormControl('', [Validators.required]),
-      password: new UntypedFormControl('', [Validators.required]),
+    this.form = new FormGroup({
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
     });
-
+    this.status = null;
     if (this.userService.isLogged()) {
       this.router.navigate(['admin/dashboard']);
     }
@@ -27,19 +31,22 @@ export class LoginComponent {
   async submit() {
 
     if (this.form.valid) {
+      this.status = 'pending';
       const credentials: Credentials = {
-        username: this.form.value.username, password: this.form.value.password
+        username: this.form.value.username,
+        password: this.form.value.password
       };
       const response = await this.userService.login(credentials);
 
-      if (response.status === Status.SUCCESS) {
+      if (response.ok) {
         const route = this.route.snapshot.queryParams['redirect'] || 'admin/dashboard';
         if (!await this.router.navigate([route])) {
           console.error('Unable to navigate!');
         }
+        this.status = 'ok';
+      } else {
+        this.status = 'ko';
       }
-
-      this.status = response.status;
     }
 
     this.submitted = true;

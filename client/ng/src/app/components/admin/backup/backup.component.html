@@ -4,16 +4,16 @@
 
 <!-- Send/Reset buttons -->
 <div class="flex-row">
-    <button *ngIf="status !== Status.SUCCESS" (click)="onBackup()" >Sauvegarder</button>
+    <button *ngIf="!status" (click)="onBackup()" >Sauvegarder</button>
 </div>
 
 <!-- Global error message (with a joke inside) -->
-<div class="flex-row" *ngIf="status === Status.FAILURE">
+<div class="flex-row" *ngIf="status === 'ko'">
     <p class="flex-row invalid">Oh... Un problème a eu lieu pendant le transfert.</p>
 </div>
 
 <!-- Global confirmation message (with a joke inside) -->
-<div class="flex-row" *ngIf="status === Status.SUCCESS">
+<div class="flex-row" *ngIf="status === 'ok'">
     <p class="valid">La base de données a été sauvegardée, téléchargez le fichier
         <a class="btn btn-clear" [href]="downloadJsonHref" download="backup.json">backup.json</a>
     </p>

@@ -7,20 +7,17 @@ import { UserService } from '@services/user.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
 
   constructor( private user: UserService, private route: Router ) { }
 
-  ngOnInit(): void {
-  }
-
   async logout() {
     const response = await this.user.logout();
-    if ( response.status === 'failure' )
+    if ( !response.ok)
     {
       console.error('unable to logout!');
     }
-    this.route.navigate(['/admin']);
+    return this.route.navigate(['/admin']);
   }
 
 }

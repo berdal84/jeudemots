@@ -43,18 +43,18 @@
         <div class="flex-left"></div>
         <div class="flex-right">
             <button type="reset" (click)="onReset()">Recommencer</button>
-            <button *ngIf="status !== Status.SUCCESS" >Restaurer</button>
+            <button *ngIf="!status" >Restaurer</button>
         </div>
     </div>
 
     <!-- Global error message (with a joke inside) -->
-    <div class="flex-row" *ngIf="status === Status.FAILURE">
+    <div class="flex-row" *ngIf="status === 'ko'">
         <div class="flex-left"></div>
         <p class="flex-right flex-row invalid">Oh... Un problème a eu lieu pendant le transfert.</p>
     </div>
 
     <!-- Global confirmation message (with a joke inside) -->
-    <div class="flex-row" *ngIf="status === Status.SUCCESS">
+    <div class="flex-row" *ngIf="status === 'ok'">
         <div class="flex-left"></div>
         <p class="flex-right flex-row valid">Expédition réussie! La base de donnée a bien été restaurée.</p>
     </div>

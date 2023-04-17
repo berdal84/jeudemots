@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BackendService } from '@services/backend.service';
-import { Status } from 'jeudemots-shared';
 
 @Component({
   selector: 'app-install',
@@ -9,10 +8,7 @@ import { Status } from 'jeudemots-shared';
   styleUrls: ['./install.component.css']
 })
 export class InstallComponent implements OnInit {
-
-  Status = Status; // expose to html
-
-  status: Status;
+  status: null | 'pending' | 'ok' | 'ko';
   /** main form group */
   form: UntypedFormGroup;
   /** display form errors */
@@ -49,13 +45,14 @@ export class InstallComponent implements OnInit {
     this.displayErrors = this.form.invalid;
     if ( !this.form.invalid)
     {
+      this.status = 'pending';
       const response = await this.jokeService.install();
-      if ( response.status === Status.SUCCESS )
-      {
+      if ( response.ok ) {
         this.form.reset();
+        this.status = 'ok';
+      } else {
+        this.status = 'ko';
       }
-
-      this.status = response.status;
     }
   }
 

@@ -29,18 +29,18 @@
     <div class="flex-row">
         <div class="flex-left"></div>
         <div class="flex-right">
-            <button *ngIf="status === 'inactive'" >Désinstaller</button>
+            <button *ngIf="!status">Désinstaller</button>
         </div>
     </div>
 
     <!-- Error -->
-    <div class="flex-row" *ngIf="status === 'error'">
+    <div class="flex-row" *ngIf="status === 'ko'">
         <div class="flex-left"></div>
         <p class="flex-right flex-row invalid">Oh... Un problème a eu lieu pendant la désinstallation.</p>
     </div>
 
     <!-- Confirmation -->
-    <div class="flex-row" *ngIf="status === 'uninstalled'">
+    <div class="flex-row" *ngIf="status === 'ok'">
         <div class="flex-left"></div>
         <p class="flex-right valid">La désinstallation s'est bien déroulée.</p>
     </div>

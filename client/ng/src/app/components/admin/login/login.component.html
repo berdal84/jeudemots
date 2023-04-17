@@ -20,14 +20,15 @@
             </div>
         </div>
 
-        <div class="actions">
+        <div class="actions" >
             <button type="reset" (click)="reset()">Annuler</button>
-            <button type="submit">OK</button>
+            <button type="submit" [disabled]="status === 'pending'">OK</button>
         </div>
+        <p *ngIf="status === 'pending'">Connection ...</p>
 
         <div class="flex-row invalid" *ngIf="submitted">
           <p *ngIf="form.invalid">Le formulaire comporte des erreurs</p>
-          <p *ngIf="status === 'failure'">username/password invalide(s)</p>
+          <p *ngIf="status === 'ko'">username/password invalide(s)</p>
         </div>
       </form>
     </div>

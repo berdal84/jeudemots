@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { BackendService } from '@services/backend.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Status } from 'jeudemots-shared';
 
 @Component({
   selector: 'app-backup',
@@ -9,10 +8,7 @@ import { Status } from 'jeudemots-shared';
   styleUrls: ['./backup.component.css']
 })
 export class BackupComponent {
-
-  Status = Status;
-  status: Status;
-
+  status: null | 'pending' | 'ok' | 'ko';
   /** URL of the JSON to download */
   downloadJsonHref;
 
@@ -26,14 +22,17 @@ export class BackupComponent {
 
   async onBackup()
   {
+    this.status = 'pending';
     const response = await this.jokeService.backup();
-    if ( response.status === Status.SUCCESS )
+    if ( response.ok)
     {
       const json        = JSON.stringify(response.data);
       const encodedJson = encodeURIComponent(json);
       const uri         = this.sanitizer.bypassSecurityTrustUrl(`data:text/json;charset=UTF-8,${encodedJson}`);
       this.downloadJsonHref = uri;
+      this.status = 'ok';
+    } else {
+      this.status = 'ko';
     }
-    this.status = response.status;
   }
 }
