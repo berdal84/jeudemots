@@ -30,8 +30,8 @@ class App extends React.Component {
 
   async componentDidMount() {    
     await this.fetchPages();
-    this.fetchPage();
     setInterval( () => { this.fetchNextPage() }, this.state.refreshInterval )
+    return this.fetchPage();
   }
 
   async fetchPages() {
