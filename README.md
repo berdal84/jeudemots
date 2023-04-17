@@ -6,9 +6,8 @@
 
 ## Introduction
 
-This is the source repository for the website [http://art.42borgata.com/jeudemots](http://art.42borgata.com/jeudemots),
-a client-server solution to host jokes using PHP8/MySQL and Angular. Two alternative React/Vue clients are work in
-progress.
+This is a client-server solution to host jokes using PHP8/MySQL and Angular. Two alternative React/Vue clients are work in
+progress. The project is deployed at [http://art.42borgata.com/jeudemots](http://art.42borgata.com/jeudemots),
 
 <div align="center">
   <img width="75%" height="75%" src="https://user-images.githubusercontent.com/942052/180222208-a69cdd30-a730-4cb8-907f-27b67ad6e844.png" />
@@ -35,9 +34,9 @@ WIP:
 ### `npm run build`
 
 Launches the build of the subprojects (server, angular/react frontends). Produce a `./build` subfolder in each
-subprojectfolder (see `in projects/`).
+subprojectfolder (see `in client/`).
 
-*note: the first time, before launching the command, you need to duplicate `projects/server/config/config.sample.php`,
+*note: the first time, before launching the command, you need to duplicate `server/config/config.sample.php`,
 rename it to `config.prod.php` and replace the data inside the file with your credentials (depends on your server
 config). If not, the server build will fail.*
 
