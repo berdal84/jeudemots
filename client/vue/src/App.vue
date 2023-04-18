@@ -11,7 +11,7 @@
     />
     <footer>
       <p>This is the Vue version, go to the original 
-        <a href="https://www.relativementutile.fr/jeudemots">Angular version</a>
+        <a href="https://www.jeudemots.42borgata.com">Angular version</a>
       </p>
     </footer>
   </div>
