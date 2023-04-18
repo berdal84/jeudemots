@@ -8,7 +8,7 @@ cd ${SCRIPT_DIR};
 
 rm -rf build || exit "Unable to delete existing build folder!"
 mkdir -p build || exit "Unable to create build folder!"
-cp -av src/ build || exit "Unable to copy PHP files to build folder!"
+cp -av src/* build || exit "Unable to copy PHP files to build folder!"
  
 CONFIG_PROD=conf/config.prod.php
 if test -f "$CONFIG_PROD"; then
