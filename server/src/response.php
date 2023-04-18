@@ -15,13 +15,13 @@ class Response
 
     static public function failure($error, $data = NULL): string
     {
-      response = new Response(false, $data, $error);
+      $response = new Response(false, $data, $error);
       return json_encode(response);
     }
 
     static public function success($data): string
     {
-      response = new Response(false, $data, NULL);
+      $response = new Response(false, $data, NULL);
       return json_encode(response);
     }
 }
