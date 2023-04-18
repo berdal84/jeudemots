@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Joke from './components/Joke.js';
 
-const BASE_URL = "https://jeudemots.api.42borgata.com";
+const BASE_URL = "https://api.jeudemots.42borgata.com";
 const BACKEND_PAGE_READ  = `${BASE_URL}/page-read.php`;
 const BACKEND_PAGES_READ = `${BASE_URL}/pages-read.php`;
 
