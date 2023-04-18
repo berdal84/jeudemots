@@ -1,10 +1,11 @@
 <div>
     <h2>Liste complète des jeu de mots :</h2>
-    <div class="filter">
-        <label>Recherche: </label>
-        <input title="saisissez ici des mots clés séparés par des espaces"
-               [(ngModel)]="filterInput" size="50" (change)="onFilterChange($event)">
-    </div>
+        <form class="filter" [formGroup]="form">
+            <label>Recherche: </label>
+            <input title="saisissez ici des mots clés séparés par des espaces"
+                   formControlName="filter"
+                   size="50" >
+        </form>
 </div>
 
 <div>

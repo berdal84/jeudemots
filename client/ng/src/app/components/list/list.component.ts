@@ -1,20 +1,25 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {interval, Subscription} from 'rxjs';
 import { UserService } from '@services/user.service';
 import { Joke } from 'jeudemots-shared';
 import { BackendService } from '@services/backend.service';
+import {debounce, filter} from 'rxjs/operators';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnDestroy {
 
   pageCount:   number = 0;
   currentPage: number = 0;
   jokes: Array<Joke>  = new Array<Joke>();
-  filterInput: string = '';
+  form = new FormGroup({
+    filter: new FormControl('')
+  });
+
   editedJokes = new Set<number>();
   private subscriptions: Subscription;
 
@@ -26,15 +31,10 @@ export class ListComponent implements OnInit {
   {
   }
 
-  onFilterChange(evt)
-  {
-    this.backend.setFilter(evt.target.value);
-    this.backend.reloadAll();
-  }
-
   ngOnInit() {
-    this.filterInput = this.backend.getFilter();
-    
+
+    this.backend.setFilter('');
+
     this.subscriptions = this.backend
       .pageSubject.subscribe(
         (page) => {
@@ -49,7 +49,18 @@ export class ListComponent implements OnInit {
         this.changeRef.detectChanges();
     }));
 
-    this.backend.reloadAll();
+    this.subscriptions.add( this.form.valueChanges
+      .pipe(
+        filter( changes => changes.filter.length > 2 ),
+        debounce(() => interval(200))
+      )
+      .subscribe( (changes ) => {
+        this.backend.setFilter(changes.filter);
+        return this.backend.reloadAll();
+      })
+    );
+
+    return this.backend.reloadAll();
   }
 
   ngOnDestroy() {
@@ -70,7 +81,7 @@ export class ListComponent implements OnInit {
 
   async cancel(joke: Joke) {
     const response = await this.backend.reloadPage();
-    if( response.ok) {
+    if ( response.ok) {
       this.editedJokes.delete(joke.id);
     }
     else {
@@ -80,7 +91,7 @@ export class ListComponent implements OnInit {
 
   async save(joke: Joke) {
     const response = await this.backend.update(joke);
-    if( response.ok ) {
+    if ( response.ok ) {
       this.editedJokes.delete(joke.id);
     }
     else
@@ -91,7 +102,7 @@ export class ListComponent implements OnInit {
 
   async delete( joke: Joke ) {
     const response = await this.backend.delete(joke.id);
-    if( response.ok )
+    if ( response.ok )
     {
       await this.backend.reloadPage();
     }
