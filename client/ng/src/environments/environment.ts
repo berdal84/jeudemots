@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  backend_url: 'http://jeudemots.api.42borgata.com'
+  backend_url: 'https://jeudemots.api.42borgata.com'
 };
 
 /*
