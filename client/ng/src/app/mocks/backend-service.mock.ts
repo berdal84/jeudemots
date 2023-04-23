@@ -8,10 +8,10 @@ import { PAGE_MOCK } from './page.mock';
  */
 export class BackendServiceMock implements Pick<BackendService, 'create' | 'pageSubject' > {
 
-    pageSubject = new ReplaySubject<Page>();
+    page$ = new ReplaySubject<Page>();
 
     constructor() {
-        this.pageSubject.next(PAGE_MOCK);
+        this.page$.next(PAGE_MOCK);
     }
 
     async create(joke: Joke): Promise<Response<Joke>>

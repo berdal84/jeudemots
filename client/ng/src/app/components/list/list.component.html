@@ -27,7 +27,7 @@
                 <p >Actions</p>
             </th>
         </tr>
-        <tr *ngFor="let joke of jokes" [class]="{'masked': !joke.visible }">
+        <tr *ngFor="let joke of page.jokes" [class]="{'masked': !joke.visible }">
 
             <!-- Reading -->
             <ng-container *ngIf="!isEditing(joke)">
@@ -74,4 +74,4 @@
     </table>
 </div>
 
-<app-pagination [current]="currentPage" [count]="pageCount" (pageChange)="setPage($event)"></app-pagination>
+<app-pagination [current]="page.id" [count]="pageCount()" (pageChange)="handlePageChange($event)"></app-pagination>

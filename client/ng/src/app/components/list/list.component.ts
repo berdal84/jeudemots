@@ -1,10 +1,11 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import {interval, Subscription} from 'rxjs';
 import { UserService } from '@services/user.service';
-import { Joke } from 'jeudemots-shared';
+import { Joke, Page } from 'jeudemots-shared';
 import { BackendService } from '@services/backend.service';
 import {debounce, filter} from 'rxjs/operators';
 import {FormControl, FormGroup} from '@angular/forms';
+import { NULL_PAGE } from 'src/app/constants/null-page';
 
 @Component({
   selector: 'app-list',
@@ -13,9 +14,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 })
 export class ListComponent implements OnInit, OnDestroy {
 
-  pageCount:   number = 0;
-  currentPage: number = 0;
-  jokes: Array<Joke>  = new Array<Joke>();
+  page: Page = NULL_PAGE;
   form = new FormGroup({
     filter: new FormControl('')
   });
@@ -35,19 +34,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
     this.backend.setFilter('');
 
-    this.subscriptions = this.backend
-      .pageSubject.subscribe(
-        (page) => {
-          this.jokes = page.jokes;
-          this.currentPage = page.id;
-        }
-    );
-
-    this.subscriptions.add(
-      this.backend.pagesSubject.subscribe( (pages) => {
-        this.pageCount = pages.count;
-        this.changeRef.detectChanges();
-    }));
+    this.subscriptions = this.backend.page$.subscribe(page => this.page = page );
 
     this.subscriptions.add( this.form.valueChanges
       .pipe(
@@ -56,11 +43,11 @@ export class ListComponent implements OnInit, OnDestroy {
       )
       .subscribe( (changes ) => {
         this.backend.setFilter(changes.filter);
-        return this.backend.reloadAll();
+        return this.backend.reloadPage();
       })
     );
 
-    return this.backend.reloadAll();
+    return this.backend.reloadPage(10); // 10 items per page
   }
 
   ngOnDestroy() {
@@ -125,7 +112,11 @@ export class ListComponent implements OnInit, OnDestroy {
     }
   }
 
-  setPage(id: number) {
+  handlePageChange(id: number) {
     return this.backend.setPage(id);
+  }
+
+  pageCount(): number {
+    return  Math.ceil(this.page.count / this.page.size);
   }
 }

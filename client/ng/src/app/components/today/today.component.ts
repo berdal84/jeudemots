@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Page, Pages, Joke } from 'jeudemots-shared';
+import { Page, Joke } from 'jeudemots-shared';
 import { BackendService } from '@services/backend.service';
 
 @Component({
@@ -17,7 +17,6 @@ export class TodayComponent implements OnInit, OnDestroy {
   isDiaporamaPlaying = false;
 
   private timePerJokeInSeconds = 5;
-  private pages: Pages;
   private page: Page;
   private diaporamaTimer: number;
   private timeElapsedOnCurrentJokeInSeconds = 0;
@@ -32,23 +31,19 @@ export class TodayComponent implements OnInit, OnDestroy {
       date: '...'
     };
 
-    this.pages = {
-        size: 1,
-        count: 0,
-    };
-    
     this.page = {
       id: 0,
       jokes: [this.currentJoke],
-      size: 1
+      size: 1,
+      count: 0
     }
   }
 
   async ngOnInit() {
 
     this.backend.resetFilter();
-    
-    this.subscription = await this.backend.pageSubject.subscribe(
+
+    this.subscription = await this.backend.page$.subscribe(
       (page) => {
         this.page = page;
         if( page.jokes.length )
@@ -58,13 +53,7 @@ export class TodayComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription.add( await this.backend.pagesSubject.subscribe(
-      (page) => {
-        this.pages = page;
-      }
-    ));
-
-    const response = await this.backend.reloadAll(1); // 1 joke at once
+    const response = await this.backend.reloadPage(1); // 1 joke at once
   }
 
   ngOnDestroy() {
@@ -77,7 +66,7 @@ export class TodayComponent implements OnInit, OnDestroy {
   }
 
   hasNext(): boolean {
-    return this.page.id + 1 < this.pages.count;
+    return this.page.id + 1 < this.page.count;
   }
 
   hasPrevious(): boolean {
