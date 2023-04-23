@@ -71,14 +71,13 @@ export class PaginationComponent implements OnInit, OnChanges {
   }
 
   private refresh() {
-    // seems complicated just to have a list of numbers,
-    // but paginator will evolve (ex:   1, 2, 3, ... , 5, 6, 7)
-    this.range = new Array(this.count);
-    this.range.fill({ id: 0, label: "" });
-    this.range.forEach((value, index) => {
-      value.id = index;
-      value.label = `${index + 1}`;
-    });
+    this.range = new Array<PageItem>(this.count);
+    for(let index = 0; index < this.count; index++){
+      this.range[index] = {
+        id: index,
+        label: `${index + 1}`
+      };
+    }
   }
 
   handlePageClick(id: number) {
