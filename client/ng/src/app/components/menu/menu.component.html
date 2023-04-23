@@ -1,16 +1,20 @@
 <div id="header">
+  <div id="div_menu">
 
-    <div id="div_menu">
+    <a href="" routerLink="/presentation" title="Accueil">
+      <img id="logo" src="assets/logo.png" alt="Logo" title="Accueil" />
+    </a>
 
-        <a href="" routerLink="/presentation" title="Accueil">
-            <img id="logo" src="assets/logo.png" alt="Logo" title="Accueil" />
+    <ul>
+      <li *ngFor="let link of links" [class]="getClassFor(link)">
+        <a
+          [hidden]="link.private && !showPrivateLinks"
+          [routerLink]="link.url"
+          >
+          {{ link.label }}
         </a>
+      </li>
+    </ul>
 
-        <ul>
-            <li *ngFor="let eachLink of links" [class]="getClassFor(eachLink)">
-                <a href="" [routerLink]="eachLink.url">{{eachLink.label}}</a>
-            </li>
-        </ul>
-
-    </div>
+  </div>
 </div>

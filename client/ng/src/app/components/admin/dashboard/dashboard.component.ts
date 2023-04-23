@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from '@services/user.service';
+import { AuthService } from '@servicesauth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,10 +9,10 @@ import { UserService } from '@services/user.service';
 })
 export class DashboardComponent {
 
-  constructor( private user: UserService, private route: Router ) { }
+  constructor( private auth: AuthService, private route: Router ) { }
 
   async logout() {
-    const response = await this.user.logout();
+    const response = await this.auth.logout();
     if ( !response.ok)
     {
       console.error('unable to logout!');

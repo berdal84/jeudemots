@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { BackendService} from './backend.service';
 import { Credentials, Response } from 'jeudemots-shared';
 
-interface User {
+export interface UserStatus {
   user: string;
   is_logged: boolean;
 }
@@ -11,45 +11,35 @@ interface User {
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class AuthService {
 
-  #currentUser: User;
-  currentUserSubject: ReplaySubject<User>;
+  /** Current user status */
+  readonly userStatus$ = new BehaviorSubject<UserStatus>({
+    user: null,
+    is_logged: false,
+  });
 
-  constructor( private backend: BackendService ) {
-    this.currentUserSubject = new ReplaySubject<User>(1);
-    this.#currentUser = {
-      user: null,
-      is_logged: false,
-    };
-    this.notify();
-  }
+  constructor( private backend: BackendService ) {}
 
   async login(credentials: Credentials): Promise<Response> {
     const response = await this.backend.login(credentials);
-    this.#currentUser = {
+    this.userStatus$.next( {
       user: credentials.username,
       is_logged: response.ok
-    };
-    this.notify();
+    })
     return response;
   }
 
   async logout(): Promise<Response> {
     const response = await this.backend.logout();
-    this.#currentUser = {
+    this.userStatus$.next( {
       user: null,
-      is_logged: false
-    };
-    this.notify();
+      is_logged: response.ok
+    })
     return response;
   }
 
   isLogged(): boolean {
-    return this.#currentUser.is_logged;
-  }
-
-  notify(): void {
-    this.currentUserSubject.next(this.#currentUser);
+    return this.userStatus$.getValue().is_logged;
   }
 }

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Credentials} from 'jeudemots-shared';
-import {UserService} from '@services/user.service';
+import {AuthService} from '@servicesauth.service';
 
 interface LoginForm {
   username: FormControl<string>;
@@ -17,13 +17,13 @@ export class LoginComponent {
   form: FormGroup<LoginForm>;
   submitted = false;
 
-  constructor(private userService: UserService, private router: Router, private route: ActivatedRoute) {
+  constructor(private auth: AuthService, private router: Router, private route: ActivatedRoute) {
     this.form = new FormGroup({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
     });
     this.status = null;
-    if (this.userService.isLogged()) {
+    if (this.auth.isLogged()) {
       this.router.navigate(['admin/dashboard']);
     }
   }
@@ -36,7 +36,7 @@ export class LoginComponent {
         username: this.form.value.username,
         password: this.form.value.password
       };
-      const response = await this.userService.login(credentials);
+      const response = await this.auth.login(credentials);
 
       if (response.ok) {
         const route = this.route.snapshot.queryParams['redirect'] || 'admin/dashboard';

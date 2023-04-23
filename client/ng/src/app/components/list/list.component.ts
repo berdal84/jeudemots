@@ -1,50 +1,44 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import {interval, Subscription} from 'rxjs';
-import { UserService } from '@services/user.service';
-import { Joke, Page } from 'jeudemots-shared';
-import { BackendService } from '@services/backend.service';
-import {debounce, filter} from 'rxjs/operators';
-import {FormControl, FormGroup} from '@angular/forms';
-import { NULL_PAGE } from 'src/app/constants/null-page';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { interval, Subscription } from "rxjs";
+import { AuthService } from "@servicesauth.service";
+import { Joke, Page } from "jeudemots-shared";
+import { BackendService } from "@services/backend.service";
+import { debounce, filter } from "rxjs/operators";
+import { FormControl, FormGroup } from "@angular/forms";
+import { NULL_PAGE } from "src/app/constants/null-page";
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  selector: "app-list",
+  templateUrl: "./list.component.html",
+  styleUrls: ["./list.component.css"],
 })
 export class ListComponent implements OnInit, OnDestroy {
-
   page: Page = NULL_PAGE;
-  form = new FormGroup({
-    filter: new FormControl('')
+  readonly form = new FormGroup({
+    filter: new FormControl(""),
   });
-
-  editedJokes = new Set<number>();
+  readonly editedJokes = new Set<number>();
   private subscriptions: Subscription;
 
-  constructor(
-    private backend: BackendService,
-    private user: UserService,
-    private changeRef: ChangeDetectorRef
-    )
-  {
-  }
+  constructor(private backend: BackendService, private user: AuthService) {}
 
   ngOnInit() {
+    this.backend.setFilter("");
 
-    this.backend.setFilter('');
+    this.subscriptions = this.backend.page$.subscribe(
+      (page) => (this.page = page)
+    );
 
-    this.subscriptions = this.backend.page$.subscribe(page => this.page = page );
-
-    this.subscriptions.add( this.form.valueChanges
-      .pipe(
-        filter( changes => changes.filter.length > 2 ),
-        debounce(() => interval(200))
-      )
-      .subscribe( (changes ) => {
-        this.backend.setFilter(changes.filter);
-        return this.backend.reloadPage();
-      })
+    this.subscriptions.add(
+      this.form.valueChanges
+        .pipe(
+          filter((changes) => changes.filter.length > 2),
+          debounce(() => interval(200))
+        )
+        .subscribe((changes) => {
+          this.backend.setFilter(changes.filter);
+          return this.backend.reloadPage();
+        })
     );
 
     return this.backend.reloadPage(10); // 10 items per page
@@ -68,47 +62,38 @@ export class ListComponent implements OnInit, OnDestroy {
 
   async cancel(joke: Joke) {
     const response = await this.backend.reloadPage();
-    if ( response.ok) {
+    if (response.ok) {
       this.editedJokes.delete(joke.id);
-    }
-    else {
-      alert('Oups, cancel failed!');
+    } else {
+      alert("Oups, cancel failed!");
     }
   }
 
   async save(joke: Joke) {
     const response = await this.backend.update(joke);
-    if ( response.ok ) {
+    if (response.ok) {
       this.editedJokes.delete(joke.id);
-    }
-    else
-    {
-      alert('Oups, save failed!');
+    } else {
+      alert("Oups, save failed!");
     }
   }
 
-  async delete( joke: Joke ) {
+  async delete(joke: Joke) {
     const response = await this.backend.delete(joke.id);
-    if ( response.ok )
-    {
+    if (response.ok) {
       await this.backend.reloadPage();
-    }
-    else
-    {
-      alert('Nothing changed!');
+    } else {
+      alert("Nothing changed!");
     }
   }
 
-  async toggleVisibility( joke: Joke ) {
+  async toggleVisibility(joke: Joke) {
     joke.visible = !joke.visible;
     const response = await this.backend.update(joke);
-    if ( response.ok )
-    {
+    if (response.ok) {
       await this.backend.reloadPage();
-    }
-    else
-    {
-      alert('Oups, update failed!');
+    } else {
+      alert("Oups, update failed!");
     }
   }
 
@@ -117,6 +102,6 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   pageCount(): number {
-    return  Math.ceil(this.page.count / this.page.size);
+    return Math.ceil(this.page.count / this.page.size);
   }
 }

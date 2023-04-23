@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from '@services/user.service';
+import { AuthService as AuthService } from '@servicesauth.service';
 
 interface Link {
   label: string;
@@ -14,8 +14,7 @@ interface Link {
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-
-  static all_links: Array<Link> = [
+  readonly links: Array<Link> = [
     {
       label: `AUJOURD'HUI`,
       url: '/today'
@@ -42,19 +41,13 @@ export class MenuComponent implements OnInit {
       url: '/more'
     }
   ];
+  showPrivateLinks = false;
 
-  links: Array<Link> = [];
-
-  constructor(private router: Router, private user: UserService) {
-
-  }
+  constructor(private router: Router, private auth: AuthService) {}
 
   ngOnInit() {
-    this.user.currentUserSubject.subscribe( (u) => {
-      // update links
-      this.links = MenuComponent.all_links.filter( link => !link.private || u.is_logged);
-
-    });
+    // hide/show private links if user is unloggeg/logged
+    this.auth.userStatus$.subscribe( user => this.showPrivateLinks = user.is_logged);
   }
 
   /* Return a class name for url depending on current route.url */

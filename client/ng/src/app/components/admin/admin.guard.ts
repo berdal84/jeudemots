@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { UserService } from '@services/user.service';
+import { AuthService } from '@servicesauth.service';
 
 @Injectable()
 export class AdminGuard implements CanActivate, CanActivateChild {
 
-  constructor( private userService: UserService, private router: Router ) {}
+  constructor( private auth: AuthService, private router: Router ) {}
 
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
@@ -16,7 +16,7 @@ export class AdminGuard implements CanActivate, CanActivateChild {
 
   canActivate( next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
 
-      if ( this.userService.isLogged() )
+      if ( this.auth.isLogged() )
       {
         return true;
       }
