@@ -42,5 +42,5 @@ testem.log
 Thumbs.db
 
 # should never be commited
-server/conf/config.prod.php
-server/conf/config.dev.php
+config*.php
+!config.sample.php
