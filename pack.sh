@@ -7,7 +7,7 @@ error(){
     ERRC=${ERRC+1};
 }
 
-echo "Packing files ..."
+echo "-- Packing files ..."
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
@@ -30,10 +30,10 @@ cp -vr server/build/* ${SERVER_OUTPUT_DIR} && echo "Server OK" || (echo "Unable 
 # Client Angular
 
 mkdir -p ${NG_OUTPUT_DIR}
-
+echo "-- Copying Client (Angular) ...";
 if( cp -vr client/ng/build/* ${NG_OUTPUT_DIR} )
 then
-    echo "Client (Angular) OK";
+    echo "-- Client (Angular) OK";
 else
     error "Unable to copy Angular files!" ;
 fi
@@ -41,10 +41,10 @@ fi
 # Client React
 
 mkdir -p ${REACT_OUTPUT_DIR}
-
+echo "-- Copying Client (React) ...";
 if( cp -vr client/react-js/build/* ${REACT_OUTPUT_DIR} )
 then
-    echo "Client (React) OK";
+    echo "-- Client (React) OK";
 else
     error "Unable to copy React files!";
 fi
@@ -52,21 +52,30 @@ fi
 # Client Vue
 
 mkdir -p ${VUE_OUTPUT_DIR}
-
+echo "-- Copying Client (Vue) ...";
 if( cp -vr client/vue/build/* ${VUE_OUTPUT_DIR} )
 then
-    echo "Client (Vue) OK";
+    echo "-- Client (Vue) OK";
 else
     error "Unable to copy Vue files!";
+fi
+
+# Copy .htaccess
+echo "-- Copying .htaccess ...";
+if( cp .htaccess ${SCRIPT_DIR}/${OUTPUT_DIR} )
+then
+    echo "-- .htaccess OK";
+else
+    error "Unable to copy .htaccess";
 fi
 
 # Check errors and exit
 if [[ "${ERRC}" -eq "0" ]];
 then
-    echo "Packing OK - output: ${SCRIPT_DIR}/${OUTPUT_DIR}"
+    echo "-- Packing OK - output: ${SCRIPT_DIR}/${OUTPUT_DIR}"
     exit
 fi
 
-echo "Packing ERROR! (check logs above)"
+echo "-- Packing ERROR! (check logs above)"
 exit 1
 
