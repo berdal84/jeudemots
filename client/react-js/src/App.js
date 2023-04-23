@@ -2,9 +2,8 @@ import React from 'react';
 import './App.css';
 import Joke from './components/Joke.js';
 
-const BASE_URL = "https://api.jeudemots.42borgata.com";
-const BACKEND_PAGE_READ  = `${BASE_URL}/page-read.php`;
-const BACKEND_PAGES_READ = `${BASE_URL}/pages-read.php`;
+const BASE_URL      = "https://jeudemots.42borgata.com/api";
+const BACKEND_PAGE  = `${BASE_URL}/page.php`;
 
 class App extends React.Component {
 
@@ -28,19 +27,9 @@ class App extends React.Component {
     };
   }
 
-  async componentDidMount() {    
-    await this.fetchPages();
+  componentDidMount() {    
     setInterval( () => { this.fetchNextPage() }, this.state.refreshInterval )
     return this.fetchPage();
-  }
-
-  async fetchPages() {
-    const params = new URLSearchParams({
-      size: this.state.pages.size,
-    });
-    const response = await fetch(`${BACKEND_PAGES_READ}?${params}`)
-    const json     = await response.json();
-    this.setState({ pages: {...json.data} });
   }
 
   async fetchPage() {
@@ -48,13 +37,13 @@ class App extends React.Component {
       id:   this.state.currentPage.id,
       size: this.state.pages.size,
     });
-    const response = await fetch(`${BACKEND_PAGE_READ}?${params}`)
+    const response = await fetch(`${BACKEND_PAGE}?${params}`)
     const json     = await response.json();
     this.setState({ currentJoke: json.data.jokes[0] });
   }
 
   fetchNextPage() {
-    if( this.state.currentPage.id + 1 >= this.state.pages.count )
+    if( this.state.currentPage.id + 1 >= this.state.page.count )
     {
       this.setState( {currentPage: {
         id: 0,
@@ -80,7 +69,7 @@ class App extends React.Component {
         <Joke {...this.state.currentJoke} />
         <footer>
           <p >This is the React version,
-            <a href="https://www.relativementutile.fr/jeudemots">go to the original version</a>
+            <a href="https://jeudemots.42borgata.com">go to the original version</a>
           </p>
         </footer>
       </div>
