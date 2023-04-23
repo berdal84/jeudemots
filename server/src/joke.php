@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 require_once('./core/joke-crud.php');
 require_once('./core/response.php');

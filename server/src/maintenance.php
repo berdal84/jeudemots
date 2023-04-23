@@ -79,9 +79,8 @@ switch( $action ) {
     // loop on array to create jokes (we will use this script rarely, no need to optimize)
     foreach ($data as $each)
     {
-      $joke = new Joke();
-      $joke->fromObject($each);
-      if( !JokeCRUD::create($joke) )
+      $joke = Joke::fromObject($each);
+      if( JokeCRUD::create($joke) === NULL)
       {
           http_response_code(500);
           Response::failure("Unable to create the joke", $joke );

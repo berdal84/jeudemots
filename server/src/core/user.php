@@ -8,7 +8,7 @@ class User
   static public function session_start(): bool
   {
     session_set_cookie_params([
-      'lifetime' => 0,
+      'lifetime' => 3600,
       'domain' => COOKIE_DOMAIN,
     ]);
     return session_start();

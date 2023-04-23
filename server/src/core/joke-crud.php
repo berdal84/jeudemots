@@ -180,8 +180,7 @@ class JokeCRUD {
                 $rows = $result->fetch_all(MYSQLI_ASSOC);
                 foreach ($rows as $row)
                 {
-                    $each_joke = new Joke();
-                    $each_joke->fromArray($row);
+                    $each_joke = Joke::fromArray($row);
                     array_push($array_out, $each_joke);
                 }
                 $success = true;
