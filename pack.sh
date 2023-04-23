@@ -16,10 +16,10 @@ cd ${SCRIPT_DIR} || exit;
 
 # Define output directories
 OUTPUT_DIR=dist
-NG_OUTPUT_DIR=${OUTPUT_DIR}/client-ng
-REACT_OUTPUT_DIR=${OUTPUT_DIR}/client-react
-VUE_OUTPUT_DIR=${OUTPUT_DIR}/client-vue
-SERVER_OUTPUT_DIR=${OUTPUT_DIR}/server
+NG_OUTPUT_DIR=${OUTPUT_DIR}/
+REACT_OUTPUT_DIR=${OUTPUT_DIR}/react
+VUE_OUTPUT_DIR=${OUTPUT_DIR}/vue
+SERVER_OUTPUT_DIR=${OUTPUT_DIR}/api
 
 rm -rf ${OUTPUT_DIR}
 
