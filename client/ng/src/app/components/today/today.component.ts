@@ -48,6 +48,7 @@ export class TodayComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.backend.page$
         .pipe(
+          tap(page => this.page = page),
           filter(page => page.jokes.length > 0),
           tap((page) => this.currentJoke = page.jokes[0]) // 1 joke per page, so we display the first
         ).subscribe());
