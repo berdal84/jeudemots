@@ -1,0 +1,4 @@
+# redirect http => https
+RewriteEngine On
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://jeudemots.42borgata.com/$1 [L, R]
