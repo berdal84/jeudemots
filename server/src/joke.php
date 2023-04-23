@@ -1,56 +1,80 @@
 <?php
+session_start();
 
-/* Joke class to wrap a Joke as an object.
-   We need this to store a Joke row temporarly */
-class Joke {
+require_once('./core/joke-crud.php');
+require_once('./core/response.php');
+require_once('./core/url-params.php');
+require_once('./core/user.php');
 
-    public $visible;
-    public $id;
-    public $category;
-    public $text;
-    public $author;
-    public $date;
+header("Access-Control-Allow-Origin: ".ACCESS_CONTROL_ALLOW_ORIGIN);
+header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
-    function __construct()
-    {
-        $this->visible   = FALSE;
-        $this->id        = -1;
-        $this->category  = '';
-        $this->text      = '';
-        $this->author    = '';
-        $this->date      = '';
-    }
-
-    function fromObject(object $data)
-    {
-        $this->id       = property_exists($data, "id") ? intval($data->id) : -1;
-        $this->visible  = property_exists($data, "visible") ? boolval($data->visible) : false;
-        $this->category = strval($data->category);
-        $this->text     = strval($data->text);
-        $this->author   = strval($data->author);
-
-        if( !property_exists($data, "date") )
+switch( $_SERVER['REQUEST_METHOD'] )
+{
+    case 'GET':
+        $id   = UrlParams::requireInt('id');
+        $joke = JokeCRUD::read($id);
+        if( $joke === NULL)
         {
-            $date = new DateTime();
-            $this->date = $date->format('Y-m-d');
+            http_response_code(400);
+            Response::failure("Unable to read the joke", $id);
         }
-        else
-        {
-            $this->date     = strval($data->date);
-        }
-    }
+        Response::success($joke);
 
-    /* Create a Joke from an array. T
-       The array must contain the fields: id, visible, category, text, author and date */
-    function fromArray( array $row )
-    {
-        $this->id       = $row['id'];
-        $this->visible  = filter_var( $row['visible'], FILTER_VALIDATE_BOOLEAN );
-        $this->category = $row['category'];
-        $this->text     = $row['text'];
-        $this->author   = $row['author'];
-        $this->date     = $row['date'];
-    }
+    case 'POST':
+       // get raw data (text)
+        $raw_data = file_get_contents('php://input');
+        if (!$raw_data)
+        {
+            http_response_code(400);
+            Response::failure("A JSON file must be sent");
+        }
+
+        // try to decode raw_data
+        $data = json_decode($raw_data);
+        if (!$data)
+        {
+            http_response_code(400);
+            Response::failure("Unable to decode JSON");
+        }
+
+        // try to create the joke
+        $joke = Joke::fromObject($data);
+        $joke->visible = FALSE; // needs to be validated by admin
+
+        if (!JokeCRUD::create($joke))
+        {
+            http_response_code(500);
+            Response::failure("Unable to create the joke!");
+        }
+        Response::success($joke);
+
+    case 'PATCH':
+        User::exit_if_not_logged();
+        $rawData  = file_get_contents('php://input');
+        $data     = json_decode($rawData);
+        $joke     = Joke::fromObject($data);
+        
+        if( !JokeCRUD::update($joke) )
+        {
+            http_response_code(500);
+            Response::failure("Unable to update joke");
+        }
+        Response::success($joke);
+
+    case 'DELETE':
+        User::exit_if_not_logged();
+        $id = UrlParams::requireInt('id');
+        if( !JokeCRUD::delete($id) )
+        {
+          http_response_code(500);
+          Response::failure('Cannot delete joke '.$id);
+        }
+        Response::success('joke '.$id.' deleted');
+        
+    default:
+        Response::failure('Method not handled');
 }
 
 ?>

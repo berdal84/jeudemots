@@ -1,28 +1,27 @@
 <?php
+/*
+    Get a set of N jokes
+*/
 
-require_once 'joke.php';
+require_once 'core/joke-crud.php';
+require_once 'core/url-params.php';
+require_once 'core/response.php';
 
-class Pages
+header("Access-Control-Allow-Origin: ".ACCESS_CONTROL_ALLOW_ORIGIN);
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+
+$id     = UrlParams::requireInt('id');
+$size   = UrlParams::getInt('size', 10);
+$filter = UrlParams::getString('filter', '');
+$page   = JokeCRUD::read_page($id, $size, $filter);
+
+if( $page === NULL )
 {
-    public $size  = 0;
-    public $count = 0;
+    http_response_code(500);
+    Response::failure("Unable to get the page");
 }
 
-/**
- * Simple class to wrap a joke array with some info about the page
- */
-class Page
-{
-    public $jokes;
-    public $id;
-    public $size ;
-
-    function __construct(int $id, int $size)
-    {
-        $this->id    = $id;
-        $this->size  = $size;
-        $this->jokes = array();
-    }
-}
+Response::success($page);
 
 ?>

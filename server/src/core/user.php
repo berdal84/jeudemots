@@ -1,6 +1,7 @@
 <?php
 
-require_once('config.php');
+require_once __DIR__.'/../config.php';
+require_once __DIR__.'/response.php';
 
 class User
 {
@@ -11,7 +12,7 @@ class User
       return false;
     }
 
-    $is_admin = $username === ADMIN_USER && hash('sha256', $password ) === ADMIN_PASS;
+    $is_admin = $username === ADMIN_USER && $password === ADMIN_PASS; // password is sha256 hashed on client side
 
     if( $is_admin )
     {
@@ -44,7 +45,7 @@ class User
     if( !User::is_logged() )
     {
       http_response_code(403);
-      exit;
+      Response::failure("Forbidden");
     }
   }
 }

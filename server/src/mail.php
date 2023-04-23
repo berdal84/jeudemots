@@ -1,8 +1,11 @@
 
 <?php
 
+require_once('core/config.php');
+require_once('core/response.php');
+
 /**
- * This scripts send a Joke proposal by mail to contact@dalle-cort.fr
+ * This scripts send a Joke proposal by mail to ADMIN_EMAIL (cf. config.php)
  * 
  * Prerequisites:
  * ==============
@@ -20,9 +23,9 @@
  * }
  * 
  */
-
-require_once('config.php');
-require_once('response.php');
+header("Access-Control-Allow-Origin: ".ACCESS_CONTROL_ALLOW_ORIGIN);
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
 // Get the JSON from the body of the post request
 $rawData 	= file_get_contents('php://input');                   // Takes raw data from the request
@@ -62,8 +65,8 @@ $headers = array(
 
 if ( !mail($to, $subject, $message, $headers) ) {
     http_response_code(500);
-    die(Response::failed("Joke couldn't be submitted"));
+    Response::failure("Joke couldn't be submitted");
 }
-die(Response::success("Joke submitted"));
+Response::success("Joke submitted");
 
 ?>

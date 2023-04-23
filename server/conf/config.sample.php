@@ -8,5 +8,5 @@ define('DB_PASS', 'database_pass');
 define('ADMIN_USER', 'admin_user');
 define('ADMIN_PASS', 'admin_pass'); // sha256
 define('ADMIN_EMAIL', 'me@domain.com'); // to get notified
-
+define('ACCESS_CONTROL_ALLOW_ORIGIN', 'https://jeudemots.42borgata.com');
 ?>
