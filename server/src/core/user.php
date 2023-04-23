@@ -5,6 +5,15 @@ require_once __DIR__.'/response.php';
 
 class User
 {
+  static public function session_start(): bool
+  {
+    session_set_cookie_params([
+      'lifetime' => 0,
+      'domain' => COOKIE_DOMAIN,
+    ]);
+    return session_start();
+  }
+
   static public function login(string $username, string $password): bool
   {
     if(session_status() !== PHP_SESSION_ACTIVE)

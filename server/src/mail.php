@@ -3,6 +3,9 @@
 
 require_once('core/config.php');
 require_once('core/response.php');
+require_once('core/user.php');
+  
+User::session_start();
 
 /**
  * This scripts send a Joke proposal by mail to ADMIN_EMAIL (cf. config.php)

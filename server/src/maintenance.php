@@ -1,7 +1,5 @@
 <?php
 
-session_start();
-
 require_once('core/db.php');
 require_once('core/response.php');
 require_once('core/user.php');
@@ -11,6 +9,7 @@ header("Access-Control-Allow-Origin: ".ACCESS_CONTROL_ALLOW_ORIGIN);
 header("Access-Control-Allow-Methods: GET, POST, PATCH, OPTIONS");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
+User::session_start();
 User::exit_if_not_logged();
 
 $action = UrlParams::getString('action');

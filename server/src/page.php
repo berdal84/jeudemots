@@ -7,6 +7,8 @@ require_once 'core/joke-crud.php';
 require_once 'core/url-params.php';
 require_once 'core/response.php';
 
+User::session_start();
+
 header("Access-Control-Allow-Origin: ".ACCESS_CONTROL_ALLOW_ORIGIN);
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
