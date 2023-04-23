@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BackendService } from '@services/backend.service';
 
 @Component({
@@ -7,27 +7,21 @@ import { BackendService } from '@services/backend.service';
   templateUrl: './install.component.html',
   styleUrls: ['./install.component.css']
 })
-export class InstallComponent implements OnInit {
-  status: null | 'pending' | 'ok' | 'ko';
-  /** main form group */
-  form: UntypedFormGroup;
-  /** display form errors */
+export class InstallComponent {
+  status: 'idle' | 'pending' | 'ok' | 'ko';
+  form = new FormGroup({
+    agree: new FormControl(
+    false,
+    {
+      validators: [Validators.required],
+      updateOn: 'change',
+      nonNullable: false
+    })});
   displayErrors: boolean;
 
-  constructor(
-    private jokeService: BackendService) {}
-
-  ngOnInit() {
+  constructor(private jokeService: BackendService) {
     this.displayErrors  = false;
-    this.status         = null;
-    this.form           = new UntypedFormGroup({});
-    const agreeControl = new UntypedFormControl(
-      null,
-      {
-        validators: [Validators.required],
-        updateOn: 'change'
-      });
-    this.form.addControl('agree', agreeControl);
+    this.status         = 'idle';
   }
 
   /**
@@ -60,7 +54,7 @@ export class InstallComponent implements OnInit {
    * Reset form
    */
   onReset() {
-    this.status = null;
+    this.status = 'idle';
     this.form.reset();
   }
 

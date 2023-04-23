@@ -1,77 +1,97 @@
 <div>
-    <h2>Liste complète des jeu de mots :</h2>
-        <form class="filter" [formGroup]="form">
-            <label>Recherche: </label>
-            <input title="saisissez ici des mots clés séparés par des espaces"
-                   formControlName="filter"
-                   size="50" >
-        </form>
+  <h2>Liste complète des jeu de mots :</h2>
+  <form class="filter" [formGroup]="form">
+    <label>Recherche: </label>
+    <input
+      title="saisissez ici des mots clés séparés par des espaces"
+      formControlName="filter"
+      size="50"
+    />
+  </form>
 </div>
 
 <div>
-    <table>
-        <tr style="padding:0px;">
-            <th>
-                <p>Catégorie</p>
-            </th>
-            <th>
-                <p>Jeu de mot</p>
-            </th>
-            <th>
-                <p>Auteur</p>
-            </th>
-            <th>
-                <p>Date</p>
-            </th>
-            <th *ngIf="canShowActions()">
-                <p >Actions</p>
-            </th>
-        </tr>
-        <tr *ngFor="let joke of page.jokes" [class]="{'masked': !joke.visible }">
+  <table>
+    <tr style="padding: 0px">
+      <th>
+        <p>Catégorie</p>
+      </th>
+      <th>
+        <p>Jeu de mot</p>
+      </th>
+      <th>
+        <p>Auteur</p>
+      </th>
+      <th>
+        <p>Date</p>
+      </th>
+      <th *ngIf="canShowActions()">
+        <p>Actions</p>
+      </th>
+    </tr>
+    <tr *ngFor="let joke of page.jokes" [class]="{ masked: !joke.visible }">
+      <!-- Reading -->
+      <ng-container *ngIf="!isEditing(joke)">
+        <td>
+          <p style="text-align: left">{{ joke.category }}</p>
+        </td>
+        <td>
+          <p class="justified">{{ joke.text }}</p>
+        </td>
+        <td>
+          <p>{{ joke.author }}</p>
+        </td>
+        <td>
+          <p>{{ joke.date }}</p>
+        </td>
+      </ng-container>
 
-            <!-- Reading -->
-            <ng-container *ngIf="!isEditing(joke)">
-                <td>
-                    <p style="text-align:left;">{{ joke.category }}</p>
-                </td>
-                <td>
-                    <p class="justified">{{ joke.text }}</p>
-                </td>
-                <td>
-                    <p>{{ joke.author }}</p>
-                </td>
-                <td>
-                    <p>{{ joke.date }}</p>
-                </td>
-            </ng-container>
+      <!-- Editing -->
+      <ng-container *ngIf="isEditing(joke)">
+        <td>
+          <input
+            style="text-align: left"
+            type="text"
+            [(ngModel)]="joke.category"
+          />
+        </td>
+        <td>
+          <textarea
+            class="justified"
+            cols="50"
+            rows="5"
+            [(ngModel)]="joke.text"
+          ></textarea>
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="joke.author" />
+        </td>
+        <td>
+          <input type="date" [(ngModel)]="joke.date" />
+        </td>
+      </ng-container>
 
-            <!-- Editing -->
-            <ng-container *ngIf="isEditing(joke)">
-                <td>
-                    <input style="text-align:left;" type="text" [(ngModel)]="joke.category"/>
-                </td>
-                <td>
-                    <textarea class="justified" cols="50" rows="5" [(ngModel)]="joke.text"></textarea>
-                </td>
-                <td>
-                    <input type="text" [(ngModel)]="joke.author"/>
-                </td>
-                <td>
-                    <input type="date" [(ngModel)]="joke.date"/>
-                </td>
-            </ng-container>
-
-            <td *ngIf="canShowActions()">
-                <div class="actions">
-                    <button (click)="toggleVisibility(joke)">{{ joke.visible ? 'masquer' : 'publier'}}</button>
-                    <button *ngIf="!isEditing(joke)" (click)="edit(joke)">éditer</button>
-                    <button *ngIf="isEditing(joke)" (click)="save(joke)">enregistrer</button>
-                    <button *ngIf="isEditing(joke)" (click)="cancel(joke)">annuler</button>
-                    <button (click)="delete(joke)">supprimer</button>
-                </div>
-            </td>
-        </tr>
-    </table>
+      <td *ngIf="canShowActions()">
+        <div class="actions">
+          <button (click)="toggleVisibility(joke)">
+            {{ joke.visible ? "masquer" : "publier" }}
+          </button>
+          <button *ngIf="!isEditing(joke)" (click)="edit(joke)">éditer</button>
+          <button *ngIf="isEditing(joke)" (click)="save(joke)">
+            enregistrer
+          </button>
+          <button *ngIf="isEditing(joke)" (click)="cancel(joke)">
+            annuler
+          </button>
+          <button (click)="delete(joke)">supprimer</button>
+        </div>
+      </td>
+    </tr>
+  </table>
 </div>
 
-<app-pagination [current]="page.id" [count]="pageCount()" (pageChange)="handlePageChange($event)"></app-pagination>
+<app-pagination
+  [pageIndex]="page.id"
+  [count]="pageCount()"
+  (pageChange)="handlePageChange($event)"
+></app-pagination>

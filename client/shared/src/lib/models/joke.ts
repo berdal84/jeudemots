@@ -1,5 +1,5 @@
 export interface Joke {
-    id?:        number;
+    id:         number;
     category:   string;
     text:       string;
     author:     string;

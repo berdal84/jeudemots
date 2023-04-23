@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Page, Joke } from 'jeudemots-shared';
 import { BackendService } from '@services/backend.service';
+import { filter, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-today',
@@ -18,13 +19,14 @@ export class TodayComponent implements OnInit, OnDestroy {
 
   private timePerJokeInSeconds = 5;
   private page: Page;
-  private diaporamaTimer: number;
+  private diaporamaTimer: number = 0;
   private timeElapsedOnCurrentJokeInSeconds = 0;
-  private subscription: Subscription;
+  private subscription: Subscription = new Subscription();
 
   constructor(private backend: BackendService) {
     /* Set a default joke in case service hasn't loaded data before page is displayed */
     this.currentJoke = {
+      id: -1,
       category: '...',
       text: '...',
       author: '...',
@@ -39,21 +41,18 @@ export class TodayComponent implements OnInit, OnDestroy {
     }
   }
 
-  async ngOnInit() {
+  ngOnInit() {
 
     this.backend.resetFilter();
 
-    this.subscription = await this.backend.page$.subscribe(
-      (page) => {
-        this.page = page;
-        if( page.jokes.length )
-        {
-          this.currentJoke = page.jokes[0]; // 1 joke per page, so we display the first
-        }
-      }
-    );
+    this.subscription.add(
+      this.backend.page$
+        .pipe(
+          filter(page => page.jokes.length > 0),
+          tap((page) => this.currentJoke = page.jokes[0]) // 1 joke per page, so we display the first
+        ).subscribe());
 
-    const response = await this.backend.reloadPage(1); // 1 joke at once
+    this.backend.reloadPage(1); // 1 joke at once
   }
 
   ngOnDestroy() {

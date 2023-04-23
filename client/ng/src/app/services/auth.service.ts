@@ -3,8 +3,8 @@ import { BehaviorSubject } from 'rxjs';
 import { BackendService} from './backend.service';
 import { Credentials, Response } from 'jeudemots-shared';
 
-export interface UserStatus {
-  user: string;
+export interface AuthStatus {
+  username: string | null;
   is_logged: boolean;
 }
 
@@ -14,8 +14,8 @@ export interface UserStatus {
 export class AuthService {
 
   /** Current user status */
-  readonly userStatus$ = new BehaviorSubject<UserStatus>({
-    user: null,
+  readonly userStatus$ = new BehaviorSubject<AuthStatus>({
+    username: null,
     is_logged: false,
   });
 
@@ -24,7 +24,7 @@ export class AuthService {
   async login(credentials: Credentials): Promise<Response> {
     const response = await this.backend.login(credentials);
     this.userStatus$.next( {
-      user: credentials.username,
+      username: credentials.username,
       is_logged: response.ok
     })
     return response;
@@ -33,7 +33,7 @@ export class AuthService {
   async logout(): Promise<Response> {
     const response = await this.backend.logout();
     this.userStatus$.next( {
-      user: null,
+      username: null,
       is_logged: response.ok
     })
     return response;

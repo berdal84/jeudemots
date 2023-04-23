@@ -1,91 +1,109 @@
 <h2>Formulaire de contribution</h2>
 
 <p>
-    Soumettez une proposition de jeu de mots grâce à ce formulaire.
-    Votre jeu de mot sera accepté ou non en fonction de l'avis très subjectif de B.
+  Soumettez une proposition de jeu de mots grâce à ce formulaire. Votre jeu de
+  mot sera accepté ou non en fonction de l'avis très subjectif de B.
 </p>
 
 <p>
-    Pour le moment l'ajout n'est pas automatisé et peut nécessiter quelques jours...
+  Pour le moment l'ajout n'est pas automatisé et peut nécessiter quelques
+  jours...
 </p>
 
-<br>
+<br />
 
-<form [formGroup]="contributeForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- Category -->
+  <div class="flex-row">
+    <label class="flex-left">Catégorie*</label>
+    <div class="flex-right">
+      <input type="text" formControlName="category" maxlength="20" />
+      <div
+        *ngIf="displayErrors && invalid && controls.category.errors"
+        class="invalid"
+      >
+        <p *ngIf="controls.category.errors.required">Catégorie requise</p>
+      </div>
+    </div>
+  </div>
 
-    <!-- Category -->
-    <div class="flex-row">
-        <label class="flex-left">Catégorie*</label>
-        <div class="flex-right">
-            <input type="text" formControlName="category" maxlength="20" />
-            <div *ngIf="displayErrors && invalid && controls.category.errors" class="invalid">
-                <p *ngIf="controls.category.errors.required">Catégorie requise</p>
-            </div>
-        </div>
+  <!-- Text -->
+  <div class="flex-row">
+    <label class="flex-left">Texte*</label>
+    <div class="flex-right">
+      <textarea
+        class="joke-text-input"
+        type="text"
+        rows="3"
+        maxlength="250"
+        formControlName="text"
+      ></textarea>
+      <div *ngIf="displayErrors && controls.text.errors" class="invalid">
+        <p *ngIf="controls.text.errors.required">Texte requis</p>
+        <p *ngIf="controls.text.errors.minlength">5 caractères minimum</p>
+      </div>
     </div>
+  </div>
 
-    <!-- Text -->
-    <div class="flex-row">
-        <label class="flex-left">Texte*</label>
-        <div class="flex-right">
-            <textarea class="joke-text-input" type="text" rows="3" maxlength="250"
-                formControlName="text"></textarea>
-            <div *ngIf="displayErrors && controls.text.errors" class="invalid">
-                <p *ngIf="controls.text.errors.required">Texte requis</p>
-                <p *ngIf="controls.text.errors.minlength">5 caractères minimum</p>
-            </div>
-        </div>
+  <!-- Author -->
+  <div class="flex-row">
+    <label class="flex-left">Auteur*</label>
+    <div class="flex-right">
+      <input type="text" formControlName="author" maxlength="20" />
+      <div *ngIf="displayErrors && controls.author.errors" class="invalid">
+        <p *ngIf="controls.author.errors.required">Auteur requis</p>
+      </div>
     </div>
+  </div>
 
-    <!-- Author -->
-    <div class="flex-row">
-        <label class="flex-left">Auteur*</label>
-        <div class="flex-right">
-            <input type="text" formControlName="author" maxlength="20" />
-            <div *ngIf="displayErrors && controls.author.errors" class="invalid">
-                <p *ngIf="controls.author.errors.required">Auteur requis</p>
-            </div>
-        </div>
+  <!-- Checkbox I ACCEPT THE TERMS... -->
+  <div class="flex-row">
+    <label class="flex-left"></label>
+    <div class="flex-right flex-row">
+      <input type="checkbox" formControlName="acceptTerms" id="acceptTerms" />
+      <label for="acceptTerms" class="form-check-label"
+        >Je suis d'accord pour que mon jeu de mot soit hébergé ici pour une
+        durée indéterminée. J'ai compris que je peux à tout moment contacter
+        l'admin par email (berenger@42borgata.com) pour demander son
+        retrait.</label
+      >
     </div>
+  </div>
+  <div
+    class="flex-row invalid"
+    *ngIf="displayErrors && controls.acceptTerms.errors"
+  >
+    <label class="flex-left"></label>
+    <p class="flex-right flex-row">
+      Pour proposer votre jeu de mots vous devez accepter nos conditions
+      d'utilisation.
+    </p>
+  </div>
+  <div>
+    <p style="font-size: 0.7em">*: requis.</p>
+  </div>
+  <!-- Send/Reset buttons -->
+  <div class="flex-row">
+    <div class="flex-left"></div>
+    <div class="flex-right">
+      <button type="reset" (click)="onReset()">Recommencer</button>
+      <button *ngIf="status !== 'ok'">Soumettre</button>
+    </div>
+  </div>
 
-    <!-- Checkbox I ACCEPT THE TERMS... -->
-    <div class="flex-row">
-        <label class="flex-left"></label>
-        <div class="flex-right flex-row">
-            <input type="checkbox" formControlName="acceptTerms" id="acceptTerms" />
-            <label for="acceptTerms" class="form-check-label">Je suis d'accord pour que mon jeu de mot soit hébergé ici
-                pour une durée indéterminée. J'ai compris que je peux à tout moment contacter l'admin par email
-                (berenger@42borgata.com) pour demander son retrait.</label>
-        </div>
+  <!-- Global error message (with a joke inside) -->
+  <div class="flex-row" *ngIf="status === 'ko'">
+    <div class="flex-left"></div>
+    <p class="flex-right flex-row invalid">
+      Oh... Un problème a eu lieu pendant le transfert.
+    </p>
+  </div>
 
-    </div>
-    <div class="flex-row invalid" *ngIf="displayErrors && controls.acceptTerms.errors">
-        <label class="flex-left"></label>
-        <p class="flex-right flex-row">Pour proposer votre jeu de mots vous devez accepter nos conditions d'utilisation.
-        </p>
-    </div>
-    <div>
-        <p style="font-size: 0.7em">*: requis.</p>
-    </div>
-    <!-- Send/Reset buttons -->
-    <div class="flex-row">
-        <div class="flex-left"></div>
-        <div class="flex-right">
-            <button type="reset" (click)="onReset()">Recommencer</button>
-            <button *ngIf="status !== Status.SUCCESS" >Soumettre</button>
-        </div>
-    </div>
-
-    <!-- Global error message (with a joke inside) -->
-    <div class="flex-row" *ngIf="status === Status.ERROR">
-        <div class="flex-left"></div>
-        <p class="flex-right flex-row invalid">Oh... Un problème a eu lieu pendant le transfert.</p>
-    </div>
-
-    <!-- Global confirmation message (with a joke inside) -->
-    <div class="flex-row" *ngIf="status === Status.SUCCESS">
-        <div class="flex-left"></div>
-        <p class="flex-right flex-row valid">Expédition réussie! Votre blague est en attente de validation. Merci ;)</p>
-    </div>
-
+  <!-- Global confirmation message (with a joke inside) -->
+  <div class="flex-row" *ngIf="status === 'ok'">
+    <div class="flex-left"></div>
+    <p class="flex-right flex-row valid">
+      Expédition réussie! Votre blague est en attente de validation. Merci ;)
+    </p>
+  </div>
 </form>

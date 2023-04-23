@@ -1,34 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { BackendService } from '@services/backend.service';
+import { Component, OnInit } from "@angular/core";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { BackendService } from "@services/backend.service";
 
 @Component({
-  selector: 'app-uninstall',
-  templateUrl: './uninstall.component.html',
-  styleUrls: ['./uninstall.component.css']
+  selector: "app-uninstall",
+  templateUrl: "./uninstall.component.html",
+  styleUrls: ["./uninstall.component.css"],
 })
-export class UninstallComponent implements OnInit {
-  status: true | 'pending' | 'ok' | 'ko';
-  /** main form group */
-  form: FormGroup;
-  /** display form errors */
-  displayErrors: boolean;
+export class UninstallComponent {
+  displayErrors: boolean = false;
+  status: "idle" | "pending" | "ok" | "ko" = "idle";
 
-  constructor(
-    private jokeService: BackendService) {}
+  form = new FormGroup({
+    agree: new FormControl<boolean | null>(null, {
+      validators: [Validators.required],
+      updateOn: "change",
+    }),
+  });
 
-  ngOnInit() {
-    this.displayErrors  = false;
-    this.status         = null;
-    this.form           = new FormGroup({});
-    const agreeControl = new FormControl(
-      null,
-      {
-        validators: [Validators.required],
-        updateOn: 'change'
-      });
-    this.form.addControl('agree', agreeControl);
-  }
+  constructor(private jokeService: BackendService) {}
 
   /**
    * Return true if form is invalid, false otherwise.
@@ -40,19 +30,17 @@ export class UninstallComponent implements OnInit {
   /**
    * Submit form content only if form is valid
    */
-  async onSubmit()
-  {
+  async onSubmit() {
     this.displayErrors = this.form.invalid;
-    if ( !this.form.invalid)
-    {
-      this.status = 'pending';
-      const result = await this.jokeService.uninstall();
-      if ( result.ok ) {
-        this.form.reset();
-        this.status = 'ok';
-      } else {
-        this.status = 'ko';
-      }
+    if (this.form.invalid) return;
+
+    this.status = "pending";
+    const result = await this.jokeService.uninstall();
+    if (result.ok) {
+      this.form.reset();
+      this.status = "ok";
+    } else {
+      this.status = "ko";
     }
   }
 
@@ -60,7 +48,7 @@ export class UninstallComponent implements OnInit {
    * Reset form
    */
   onReset() {
-    this.status = null;
+    this.status = "idle";
     this.form.reset();
   }
 
@@ -70,5 +58,4 @@ export class UninstallComponent implements OnInit {
   get controls() {
     return this.form.controls;
   }
-
 }

@@ -25,6 +25,7 @@
     "useDefineForClassFields": false,
     "noImplicitAny": true,
     "noImplicitOverride": true,
+    "strict": true,
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

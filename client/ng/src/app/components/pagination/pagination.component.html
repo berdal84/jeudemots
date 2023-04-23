@@ -1,9 +1,0 @@
-<div class="pagination">
-    <ul>
-        <li *ngFor="let page of range"
-            [class]="{ current: page.id == current }"
-        >
-            <a (click)="pageClicked(page.id)">{{ page.label }}</a>
-        </li>
-    </ul>
-</div>

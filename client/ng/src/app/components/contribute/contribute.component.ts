@@ -1,113 +1,92 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup, Validators, UntypedFormControl } from '@angular/forms';
-import { BackendService } from '@services/backend.service';
-import { Joke } from 'jeudemots-shared';
-
-enum Status {
-  IDLE,
-  ERROR,
-  SUCCESS
-}
+import { Component } from "@angular/core";
+import { Validators, FormControl, FormGroup } from "@angular/forms";
+import { BackendService } from "@services/backend.service";
+import { Joke } from "jeudemots-shared";
 
 @Component({
-  selector: 'app-contribute',
-  templateUrl: './contribute.component.html',
-  styleUrls: ['./contribute.component.css']
+  selector: "app-contribute",
+  templateUrl: "./contribute.component.html",
+  styleUrls: ["./contribute.component.css"],
 })
-export class ContributeComponent implements OnInit {
+export class ContributeComponent {
+  status: "idle" | "pending" | "ok" | "ko" = "idle";
+  displayErrors: boolean = false;
 
-    Status = Status; // expose to html
+  form = new FormGroup({
+    category: new FormControl<string>("", {
+      validators: [Validators.maxLength(20), Validators.required],
+      updateOn: "change",
+      nonNullable: true,
+    }),
 
-    status: Status;
-    /** main form group */
-    contributeForm: UntypedFormGroup;
-    /** display form errors */
-    displayErrors: boolean;
+    text: new FormControl<string>("", {
+      validators: [
+        Validators.required,
+        Validators.maxLength(250),
+        Validators.minLength(5),
+      ],
+      updateOn: "change",
+      nonNullable: true,
+    }),
 
-    constructor( private jokeService: BackendService) {}
+    author: new FormControl<string>("", {
+      validators: Validators.required,
+      updateOn: "change",
+      nonNullable: true,
+    }),
 
-    ngOnInit() {
-      this.displayErrors  = false;
-      this.status         = Status.IDLE;
-      this.contributeForm = new UntypedFormGroup({});
+    acceptTerms: new FormControl<string>("", {
+      validators: Validators.requiredTrue,
+      updateOn: "change",
+      nonNullable: true,
+    }),
+  });
 
-      const categoryControl = new UntypedFormControl(
-        null,
-        {
-          validators: [Validators.maxLength(20), Validators.required],
-          updateOn: 'change'
-        });
-      this.contributeForm.addControl('category', categoryControl);
+  constructor(private jokeService: BackendService) {}
 
-      const textControl = new UntypedFormControl(null, {
-        validators: [
-          Validators.required,
-          Validators.maxLength(250),
-          Validators.minLength(5)],
-        updateOn: 'change'
-      });
-      this.contributeForm.addControl('text', textControl);
+  /**
+   * Return true if form is invalid, false otherwise.
+   */
+  get invalid() {
+    return this.form.invalid;
+  }
 
-      const authorControl = new UntypedFormControl(
-        null,
-        {
-          validators: Validators.required,
-          updateOn: 'change'
-        });        
-      this.contributeForm.addControl('author', authorControl);
+  /**
+   * Submit form content only if form is valid
+   */
+  async onSubmit() {
+    this.displayErrors = this.form.invalid;
+    if (this.form.invalid) return;
 
-      const acceptTermsControl = new UntypedFormControl(
-        null,
-        {
-          validators: Validators.requiredTrue,
-          updateOn: 'change'
-        });
-      this.contributeForm.addControl('acceptTerms', acceptTermsControl);
+    const { category, text, author } = this.form.getRawValue();
+    const joke: Joke = {
+      id: -1,
+      category,
+      text,
+      author,
+    };
 
+    const response = await this.jokeService.create(joke);
+    if (response.ok) {
+      this.form.reset();
+      this.status = "ok";
+    } else {
+      this.status = "ko";
     }
+  }
 
-    /**
-     * Return true if form is invalid, false otherwise.
-     */
-    get invalid() {
-      return this.contributeForm.invalid;
-    }
+  /**
+   * Reset form
+   */
+  onReset() {
+    this.status = "idle";
+    this.form.reset();
+  }
 
-    /**
-     * Submit form content only if form is valid
-     */
-    async onSubmit()
-    {      
-      this.displayErrors = this.contributeForm.invalid;
-      if ( !this.contributeForm.invalid)
-      {
-        const joke: Joke =  {
-            category: this.contributeForm.get( 'category' ).value,
-            text:     this.contributeForm.get( 'text' ).value,
-            author:   this.contributeForm.get( 'author' ).value
-          };
-
-        const result = await this.jokeService.create(joke);
-        if( result ) 
-        {
-          this.contributeForm.reset();
-          this.status = Status.SUCCESS;
-        }
-      }
-    }
-
-    /**
-     * Reset form
-     */
-    onReset() {
-      this.status = Status.IDLE;
-      this.contributeForm.reset();
-    }
-
-    /**
-     * Shortcut to this.contributeForm.controls
-     */
-    get controls() {
-      return this.contributeForm.controls;
-    }
+  /**
+   * Shortcut to this.contributeForm.controls
+   */
+  get controls() {
+    return this.form.controls;
+  }
 }

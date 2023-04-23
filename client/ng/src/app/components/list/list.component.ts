@@ -3,7 +3,7 @@ import { interval, Subscription } from "rxjs";
 import { AuthService } from "@servicesauth.service";
 import { Joke, Page } from "jeudemots-shared";
 import { BackendService } from "@services/backend.service";
-import { debounce, filter } from "rxjs/operators";
+import { debounce, filter, map } from "rxjs/operators";
 import { FormControl, FormGroup } from "@angular/forms";
 import { NULL_PAGE } from "src/app/constants/null-page";
 
@@ -15,28 +15,29 @@ import { NULL_PAGE } from "src/app/constants/null-page";
 export class ListComponent implements OnInit, OnDestroy {
   page: Page = NULL_PAGE;
   readonly form = new FormGroup({
-    filter: new FormControl(""),
+    filter: new FormControl<string>(''),
   });
   readonly editedJokes = new Set<number>();
-  private subscriptions: Subscription;
+  private subscriptions = new Subscription();
 
   constructor(private backend: BackendService, private user: AuthService) {}
 
   ngOnInit() {
     this.backend.setFilter("");
 
-    this.subscriptions = this.backend.page$.subscribe(
-      (page) => (this.page = page)
+    this.subscriptions.add(
+      this.backend.page$.subscribe( page => this.page = page)
     );
 
     this.subscriptions.add(
       this.form.valueChanges
         .pipe(
-          filter((changes) => changes.filter.length > 2),
-          debounce(() => interval(200))
+          map( changes  => changes.filter ?? ''),
+          filter( filter => filter.length > 2),
+          debounce(() => interval(200)),
         )
-        .subscribe((changes) => {
-          this.backend.setFilter(changes.filter);
+        .subscribe( filter => {
+          this.backend.setFilter(filter);
           return this.backend.reloadPage();
         })
     );

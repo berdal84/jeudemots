@@ -1,99 +1,81 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { BackendService } from '@services/backend.service';
+import { Component } from "@angular/core";
+import { FormGroup, Validators, FormControl } from "@angular/forms";
+import { BackendService } from "@services/backend.service";
 
 @Component({
-  selector: 'app-restore',
-  templateUrl: './restore.component.html',
-  styleUrls: ['./restore.component.css']
+  selector: "app-restore",
+  templateUrl: "./restore.component.html",
+  styleUrls: ["./restore.component.css"],
 })
-export class RestoreComponent implements OnInit {
-    status: null | 'pending' | 'ok' | 'ko';
-    /** main form group */
-    form: FormGroup;
-    /** display form errors */
-    displayErrors: boolean;
+export class RestoreComponent {
+  status: 'idle' | "pending" | "ok" | "ko" = 'idle';
+  /** display form errors */
+  displayErrors: boolean = false;
+  form = new FormGroup({
+    file: new FormControl<string | null>(null, {
+      validators: [Validators.required],
+      updateOn: "change",
+    }),
+    agree: new FormControl(false, {
+      validators: [Validators.requiredTrue],
+      updateOn: "change",
+    }),
+    fileSrc: new FormControl<File | null>(null),
+  });
 
-    constructor( private backend: BackendService) {}
+  constructor(private backend: BackendService) {}
 
-    ngOnInit() {
-      this.displayErrors  = false;
-      this.status         = null;
-      this.form           = new FormGroup({});
+  /**
+   * Return true if form is invalid, false otherwise.
+   */
+  get invalid() {
+    return this.form.invalid;
+  }
 
-      const fileControl = new FormControl(
-        null,
-        {
-          validators: [Validators.required],
-          updateOn: 'change'
-        });
-
-      const agreeControl = new FormControl(
-        null,
-        {
-          validators: [Validators.requiredTrue],
-          updateOn: 'change'
-        });
-
-      this.form.addControl('file', fileControl);
-      this.form.addControl('agree', agreeControl);
-      this.form.addControl('fileSrc', new FormControl(''));
-
+  handleFileChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const files = target.files as FileList;
+    if (files.length > 0) {
+      this.form.patchValue({
+        fileSrc: files[0],
+      });
     }
+  }
 
-    /**
-     * Return true if form is invalid, false otherwise.
-     */
-    get invalid() {
-      return this.form.invalid;
-    }
+  /**
+   * Submit form content only if form is valid
+   */
+  async onSubmit() {
+    this.displayErrors = this.form.invalid;
+    const file = this.form.getRawValue().fileSrc;
 
-    handleFileChange(event: Event) {
-      const target = event.target as HTMLInputElement;
-      const files = target.files as FileList;
-      if (files.length > 0) {
-        this.form.patchValue({
-          fileSrc: files[0]
-        });
-      }
-    }
+    if (!this.form.valid || ! file) return;
 
-    /**
-     * Submit form content only if form is valid
-     */
-    async onSubmit()
-    {
-      this.displayErrors = this.form.invalid;
-      if ( this.form.valid)
-      {
-        this.status = 'pending';
-        const formData = new FormData();
-        formData.append('file', this.form.get('fileSrc').value);
+    this.status = "pending";
+    const formData = new FormData();
+    formData.append("file", file);
 
-        const result = await this.backend.restore(formData);
-        if ( result.ok )
-        {
-          this.form.reset();
-          this.status = 'ok';
-        }
-        else {
-          this.status = 'ko';
-        }
-      }
-    }
-
-    /**
-     * Reset form
-     */
-    onReset() {
-      this.status = null;
+    const result = await this.backend.restore(formData);
+    if (result.ok) {
       this.form.reset();
+      this.status = "ok";
+    } else {
+      this.status = "ko";
     }
+  }
 
-    /**
-     * Shortcut to this.contributeForm.controls
-     */
-    get controls() {
-      return this.form.controls;
-    }
+  /**
+   * Reset form
+   */
+  onReset() {
+    this.status = 'idle';
+    this.form.reset();
+  }
+
+  /**
+   * Shortcut to this.contributeForm.controls
+   */
+  get controls() {
+    return this.form.controls;
+  }
 }

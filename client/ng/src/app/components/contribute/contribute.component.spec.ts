@@ -42,7 +42,7 @@ describe('ContributeComponent', () => {
   it('should send a joke when form is valid', () => {
 
     // fill form
-    const f = component.contributeForm;
+    const f = component.form;
     f.get('category').setValue('Unit test');
     f.get('email').setValue('test@unit.fr');
     f.get('text').setValue('This is a unit test.');
@@ -50,7 +50,7 @@ describe('ContributeComponent', () => {
     f.get('acceptTerms').setValue(true);
 
     expect(f.invalid).toBeFalsy();
-    
+
     expect(component.status).not.toBe(Status.SUCCESS);
     component.onSubmit();
     expect(component.status).toBe(Status.SUCCESS);
