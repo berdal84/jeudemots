@@ -6,6 +6,7 @@ import {catchError, retry} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
 import {Response, Credentials} from 'jeudemots-shared';
 import {NULL_PAGE} from '../constants/null-page';
+// @ts-ignore (any)
 import * as sha256 from 'sha256';
 
 const { backend_url } = environment;

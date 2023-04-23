@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BackendService } from '@services/backend.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-backup',
@@ -10,10 +10,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class BackupComponent {
   status: null | 'pending' | 'ok' | 'ko';
   /** URL of the JSON to download */
-  downloadJsonHref;
+  downloadJsonHref: SafeUrl | null = null;
 
   constructor(
-    private jokeService: BackendService,
+    private backend: BackendService,
     private sanitizer: DomSanitizer)
   {
     this.downloadJsonHref = null;
@@ -23,7 +23,7 @@ export class BackupComponent {
   async onBackup()
   {
     this.status = 'pending';
-    const response = await this.jokeService.backup();
+    const response = await this.backend.backup();
     if ( response.ok)
     {
       const json        = JSON.stringify(response.data);

@@ -48,13 +48,12 @@ export class RestoreComponent implements OnInit {
       return this.form.invalid;
     }
 
-    onFileChange(event) {
-
-      if (event.target.files.length > 0)
-      {
-        const file = event.target.files[0];
+    handleFileChange(event: Event) {
+      const target = event.target as HTMLInputElement;
+      const files = target.files as FileList;
+      if (files.length > 0) {
         this.form.patchValue({
-          fileSrc: file
+          fileSrc: files[0]
         });
       }
     }

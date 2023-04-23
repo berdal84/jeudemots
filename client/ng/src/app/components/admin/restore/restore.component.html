@@ -13,7 +13,7 @@
             <input
             type="file"
             formControlName="file"
-            (change)="onFileChange($event)">
+            (change)="handleFileChange($event)">
             <div *ngIf="displayErrors && controls.file.errors" class="invalid">
                 <p *ngIf="controls.file.errors.required">Fichier requis</p>
             </div>
