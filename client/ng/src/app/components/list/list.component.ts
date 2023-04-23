@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { interval, Subscription } from "rxjs";
+import { interval, merge, of, pipe, Subscription } from "rxjs";
 import { AuthService } from "@servicesauth.service";
 import { Joke, Page } from "jeudemots-shared";
 import { BackendService } from "@services/backend.service";
-import { debounce, filter, map } from "rxjs/operators";
+import { debounce, filter, map, tap, throttle } from "rxjs/operators";
 import { FormControl, FormGroup } from "@angular/forms";
 import { NULL_PAGE } from "src/app/constants/null-page";
 
@@ -13,6 +13,8 @@ import { NULL_PAGE } from "src/app/constants/null-page";
   styleUrls: ["./list.component.css"],
 })
 export class ListComponent implements OnInit, OnDestroy {
+  status = '';
+  searching = false;
   page: Page = NULL_PAGE;
   readonly form = new FormGroup({
     filter: new FormControl<string>(''),
@@ -26,20 +28,32 @@ export class ListComponent implements OnInit, OnDestroy {
     this.backend.setFilter("");
 
     this.subscriptions.add(
-      this.backend.page$.subscribe( page => this.page = page)
+      this.backend.page$.subscribe( page => {
+        this.page = page;
+        this.status = `${page.count} résultat(s)`;
+      })
     );
 
     this.subscriptions.add(
-      this.form.valueChanges
-        .pipe(
-          map( changes  => changes.filter ?? ''),
-          filter( filter => filter.length > 2),
-          debounce(() => interval(200)),
-        )
-        .subscribe( filter => {
-          this.backend.setFilter(filter);
-          return this.backend.reloadPage();
-        })
+      this.form.valueChanges.pipe(
+        tap( () => this.status = '' ),
+        map( changes  => changes.filter ?? ''),
+        filter( filter => filter.length > 2 || filter.length === 0),
+        debounce(() => interval(200))
+      )
+      .subscribe( filter => {
+        this.searching = true;
+        this.status = 'Recherche en cours ...';
+        this.backend.setFilter(filter);
+        this.backend
+            .reloadPage()
+            .then( response => {
+              this.searching = false;
+            })
+            .finally( () => {
+              this.searching = false;
+        });
+      })
     );
 
     return this.backend.reloadPage(10); // 10 items per page

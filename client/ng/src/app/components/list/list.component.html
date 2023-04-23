@@ -7,6 +7,7 @@
       formControlName="filter"
       size="50"
     />
+    <span class="status" [ngClass]="{ 'searching': searching}" >{{status}}</span>
   </form>
 </div>
 
@@ -29,7 +30,7 @@
         <p>Actions</p>
       </th>
     </tr>
-    <tr *ngFor="let joke of page.jokes" [class]="{ masked: !joke.visible }">
+    <tr *ngFor="let joke of page.jokes" [ngClass]="{ 'masked': !joke.visible }">
       <!-- Reading -->
       <ng-container *ngIf="!isEditing(joke)">
         <td>

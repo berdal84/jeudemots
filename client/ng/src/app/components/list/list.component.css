@@ -19,3 +19,17 @@ th {
 .filter {
     margin-bottom: 10px;
 }
+
+.status {
+  transition-delay: 1s;
+  transition-duration: 1s;
+  margin-left: 10px;
+  opacity: 0.5;
+
+}
+
+.status.searching {
+  transition-delay: 0s;
+  transition-duration: 0.1s;
+  opacity: 1;
+}
