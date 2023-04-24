@@ -6,8 +6,7 @@
 
 ## Introduction
 
-This is a client-server solution to host jokes using PHP8/MySQL and Angular. Two alternative React/Vue clients are work in
-progress. The project is deployed at [http://art.42borgata.com/jeudemots](http://art.42borgata.com/jeudemots),
+This is a client-server solution to host jokes using Angular and PHP/MySQL. Two alternative React/Vue clients are work in progress. The project is deployed at [https://jeudemots.42borgata.com](https://jeudemots.42borgata.com),
 
 <div align="center">
   <img width="75%" height="75%" src="https://user-images.githubusercontent.com/942052/180222208-a69cdd30-a730-4cb8-907f-27b67ad6e844.png" />
@@ -23,10 +22,10 @@ This repository contains source code for different parts of the project:
 
 WIP:
 
-- `client/react`: alternative React frontend sources (deployed
-  at [http://art.42borgata.com/jeudemots-react](http://art.42borgata.com/jeudemots-react))
+- `client/react-js`: alternative React frontend sources (deployed
+  at [https://jeudemots.42borgata.com/react](https://jeudemots.42borgata.com/react))
 - `client/vue`: alternative Vue frontend sources (deployed
-  at [http://art.42borgata.com/jeudemots-vue](http://art.42borgata.com/jeudemots-vue))
+  at [https://jeudemots.42borgata.com/vue](https://jeudemots.42borgata.com/vue))
 - `client/shared`: shared code and resources.
 
 ## Development
@@ -36,7 +35,7 @@ WIP:
 Launches the build of the subprojects (server, angular/react frontends). Produce a `./build` subfolder in each
 subprojectfolder (see `in client/`).
 
-*note: the first time, before launching the command, you need to duplicate `server/config/config.sample.php`,
+*note: the first time, before launching the command, you need to duplicate `server/config.sample.php`,
 rename it to `config.prod.php` and replace the data inside the file with your credentials (depends on your server
 config). If not, the server build will fail.*
 
