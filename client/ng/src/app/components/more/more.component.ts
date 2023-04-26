@@ -4,7 +4,7 @@ import {Component} from '@angular/core';
   selector: 'app-more',
   template: `
     <h2>A propos...</h2>
-    <section class="indente">
+    <section class="indent">
       <p>Ce site a été créé pour me former. Dans un premier temps il n'était qu'une simple page AngularJS, il a
           depuis beaucoup évolué (avec un backend et une base de données).</p>
       <p>L'objectif secondaire est évidemment de s'amuser en écrivant les jeux de mots...</p>
