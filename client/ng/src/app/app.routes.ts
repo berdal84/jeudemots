@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { TodayComponent } from './components/today/today.component';
+import { SlideshowComponent } from './components/slideshow/slideshow.component';
 import { ListComponent } from './components/list/list.component';
 import { AdvisesComponent } from './components/advises/advises.component';
 import { MoreComponent } from './components/more/more.component';
@@ -9,12 +8,8 @@ import { ContributeComponent } from './components/contribute/contribute.componen
 
 export const ROUTES: Routes = [
     {
-        path: 'presentation',
-        component: HomeComponent
-    },
-    {
-        path: 'today',
-        component: TodayComponent
+        path: 'home',
+        component: SlideshowComponent
     },
     {
         path: 'list',
@@ -34,7 +29,7 @@ export const ROUTES: Routes = [
     },
     {
         path: '',
-        redirectTo: '/today',
+        redirectTo: '/home',
         pathMatch: 'full'
     },
     {

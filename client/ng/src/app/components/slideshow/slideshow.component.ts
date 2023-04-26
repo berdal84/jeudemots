@@ -5,11 +5,11 @@ import { BackendService } from '@services/backend.service';
 import { filter, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-today',
-  templateUrl: './today.component.html',
-  styleUrls: ['./today.component.css']
+  selector: 'app-slideshow',
+  templateUrl: './slideshow.component.html',
+  styleUrls: ['./slideshow.component.css']
 })
-export class TodayComponent implements OnInit, OnDestroy {
+export class SlideshowComponent implements OnInit, OnDestroy {
 
   private static TimePerJokeIncrementInSeconds  = 1;
   private static TimePerJokeTextCharInSeconds   = 0.15;
@@ -80,7 +80,7 @@ export class TodayComponent implements OnInit, OnDestroy {
 
   private resetDiaporamaTime(): void {
     const jokeLength = this.currentJoke.text.length + this.currentJoke.category.length;
-    this.timePerJokeInSeconds = jokeLength * TodayComponent.TimePerJokeTextCharInSeconds;
+    this.timePerJokeInSeconds = jokeLength * SlideshowComponent.TimePerJokeTextCharInSeconds;
     this.timeElapsedOnCurrentJokeInSeconds = 0;
   }
 
@@ -92,14 +92,14 @@ export class TodayComponent implements OnInit, OnDestroy {
     this.diaporamaTimer = window.setInterval( () => {
 
       // we increment elapsed time at each interval
-      this.timeElapsedOnCurrentJokeInSeconds += TodayComponent.TimePerJokeIncrementInSeconds;
+      this.timeElapsedOnCurrentJokeInSeconds += SlideshowComponent.TimePerJokeIncrementInSeconds;
 
       const isTimeElapsed = this.timeElapsedOnCurrentJokeInSeconds >= this.timePerJokeInSeconds;
       if ( isTimeElapsed ) {
 
         this.onNextButtonClicked();
 
-        // We pause the diaporama if there is no next
+        // We pause the slideshow if there is no next
         if (!this.hasNext()) {
           this.onPauseButtonClicked();
         }
@@ -107,7 +107,7 @@ export class TodayComponent implements OnInit, OnDestroy {
       }
 
     },
-    TodayComponent.TimePerJokeIncrementInSeconds * 1000 // 1 sec. DO NOT touch !
+    SlideshowComponent.TimePerJokeIncrementInSeconds * 1000 // 1 sec. DO NOT touch !
     );
 
     this.isDiaporamaPlaying = true;

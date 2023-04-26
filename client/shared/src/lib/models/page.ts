@@ -1,6 +1,6 @@
 import { Joke } from './joke';
 
-interface Page {
+export interface Page {
     id: number;
     /** item count max on this page */
     size: number;
@@ -9,5 +9,3 @@ interface Page {
     /** the actual page content */
     jokes: Array<Joke>;
 }
-
-export { Page }

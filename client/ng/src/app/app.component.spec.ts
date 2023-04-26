@@ -9,25 +9,21 @@ import { ROUTES } from './app.routes';
 import { AdvisesComponent } from './components/advises/advises.component';
 import { ContributeComponent } from './components/contribute/contribute.component';
 import { Error404Component } from './components/error404/error404.component';
-import { HomeComponent } from './components/home/home.component';
 import { ListComponent } from './components/list/list.component';
 import { MoreComponent } from './components/more/more.component';
-import { TodayComponent } from './components/today/today.component';
-import { JokeFilterPipe } from './pipes/jokefilter.pipe';
+import { SlideshowComponent } from './components/slideshow/slideshow.component';
 
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        HomeComponent,
-        TodayComponent,
+        SlideshowComponent,
         ListComponent,
         ContributeComponent,
         AdvisesComponent,
         MoreComponent,
         Error404Component,
-        JokeFilterPipe
       ],
       imports: [
         BrowserModule,

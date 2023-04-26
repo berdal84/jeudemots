@@ -11,7 +11,7 @@ import { Error404Component } from '../error404/error404.component';
 import { HomeComponent } from '../home/home.component';
 import { ListComponent } from '../list/list.component';
 import { MoreComponent } from '../more/more.component';
-import { TodayComponent } from '../today/today.component';
+import { SlideshowComponent } from '../slideshow/slideshow.component';
 import { MenuComponent } from './menu.component';
 
 describe('MenuComponent', () => {
@@ -23,7 +23,7 @@ describe('MenuComponent', () => {
       declarations: [
         MenuComponent,
         HomeComponent,
-        TodayComponent,
+        SlideshowComponent,
         ListComponent,
         AdvisesComponent,
         MoreComponent,

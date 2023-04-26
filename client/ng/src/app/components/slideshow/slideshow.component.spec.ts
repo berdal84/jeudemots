@@ -2,16 +2,16 @@ import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from
 import { PAGE_MOCK } from 'src/app/mocks/page.mock';
 import { BackendServiceMock } from 'src/app/mocks/backend-service.mock';
 import { BackendService } from '../../services/backend.service';
-import { TodayComponent } from './today.component';
+import { SlideshowComponent } from './slideshow.component';
 
-describe(TodayComponent.name, () => {
-  let component: TodayComponent;
-  let fixture: ComponentFixture<TodayComponent>;
+describe(SlideshowComponent.name, () => {
+  let component: SlideshowComponent;
+  let fixture: ComponentFixture<SlideshowComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
-        TodayComponent
+        SlideshowComponent
       ],
       providers: [
         {
@@ -24,7 +24,7 @@ describe(TodayComponent.name, () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TodayComponent);
+    fixture = TestBed.createComponent(SlideshowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -71,7 +71,7 @@ describe(TodayComponent.name, () => {
       expect( component['currentJokeId']).toBe(component['jokes'].length-1);
     });
 
-    it('should be able to play diaporama', <any>fakeAsync((): void => {
+    it('should be able to play slideshow', <any>fakeAsync((): void => {
       spyOn(component, 'onNextButtonClicked');
       component.onPlayButtonClicked();
       tick(10000);
