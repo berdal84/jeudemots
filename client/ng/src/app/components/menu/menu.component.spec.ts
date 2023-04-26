@@ -4,11 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { ROUTES } from 'src/app/app.routes';
-import { JokeFilterPipe } from 'src/app/pipes/jokefilter.pipe';
 import { AdvisesComponent } from '../advises/advises.component';
 import { ContributeComponent } from '../contribute/contribute.component';
 import { Error404Component } from '../error404/error404.component';
-import { HomeComponent } from '../home/home.component';
 import { ListComponent } from '../list/list.component';
 import { MoreComponent } from '../more/more.component';
 import { SlideshowComponent } from '../slideshow/slideshow.component';
@@ -22,13 +20,11 @@ describe('MenuComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         MenuComponent,
-        HomeComponent,
         SlideshowComponent,
         ListComponent,
         AdvisesComponent,
         MoreComponent,
         Error404Component,
-        JokeFilterPipe,
         ContributeComponent
       ],
       imports: [

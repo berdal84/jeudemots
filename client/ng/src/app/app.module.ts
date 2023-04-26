@@ -15,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { AdminModule } from './components/admin/admin.module';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import {NgOptimizedImage} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { PaginationComponent } from './components/pagination/pagination.componen
       ROUTES, {
         enableTracing: !environment.production,
         useHash: true
-      })
+      }),
+    NgOptimizedImage
   ],
   bootstrap: [AppComponent]
 })

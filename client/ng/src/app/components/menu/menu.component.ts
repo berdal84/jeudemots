@@ -1,59 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService as AuthService } from '@servicesauth.service';
-
-interface Link {
-  label: string;
-  url: string;
-  private?: true;
-}
+import {concatMap, map, mergeMap} from 'rxjs/operators';
+import {LINKS} from './menu.data';
+import {combineLatest, Observable, of} from 'rxjs';
+import {Link} from './menu.models';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
-export class MenuComponent implements OnInit {
-  readonly links: Array<Link> = [
-    {
-      label: `AUJOURD'HUI`,
-      url: '/today'
-    },
-    {
-      label: `LISTE`,
-      url: '/list'
-    },
-    {
-      label: 'CONSEILS',
-      url: '/advises'
-    },
-    {
-      label: 'CONTRIBUER',
-      url: '/contribute'
-    },
-    {
-      label: 'ADMIN',
-      url: '/admin',
-      private: true
-    },
-    {
-      label: '?',
-      url: '/more'
-    }
-  ];
-  showPrivateLinks = false;
+export class MenuComponent {
 
-  constructor(private router: Router, private auth: AuthService) {}
+  /** A state of links depending on user state and current route */
+  links$: Observable<Link[]> = combineLatest([
+    // starts from a given link list
+    of(LINKS),
+    // depends on user status change
+    this.auth.userStatus$.pipe(map(status => status.is_logged)),
+    // depends on route change
+    this.router.events.pipe(map( event => this.router.url )),
+  ]).pipe( map(([links, is_logged, router_url]) => {
+    return links
+      // discard private links if not logged
+      .filter( link => !link.private || is_logged)
+      .map( link => {
+        // disable current link
+        link.disabled = router_url === link.url;
+        // debug
+        // console.debug(`${link.label} disable = ${link.disabled}`);
+        return link;
+    });
+  }));
 
-  ngOnInit() {
-    // hide/show private links if user is unloggeg/logged
-    this.auth.userStatus$.subscribe( user => this.showPrivateLinks = user.is_logged);
-  }
-
-  /* Return a class name for url depending on current route.url */
-  getClassFor(link: Link): string {
-
-    return this.router.url === link.url ? 'itemEnable' : 'itemDisable';
-
-  }
+  constructor(private router: Router, private auth: AuthService) { }
 }

@@ -1,20 +1,16 @@
 <div id="header">
-  <div id="div_menu">
+  <a href="" routerLink="/home" title="Accueil">
+    <img id="logo" ngSrc="assets/logo.png" alt="Logo" title="Accueil" height="180" width="110"/>
+  </a>
 
-    <a href="" routerLink="/presentation" title="Accueil">
-      <img id="logo" src="assets/logo.png" alt="Logo" title="Accueil" />
-    </a>
-
-    <ul>
-      <li *ngFor="let link of links" [class]="getClassFor(link)">
-        <a
-          [hidden]="link.private && !showPrivateLinks"
-          [routerLink]="link.url"
-          >
-          {{ link.label }}
-        </a>
-      </li>
-    </ul>
-
+  <div class="links">
+    <button
+      class="link"
+      *ngFor="let link of links$ | async"
+      [disabled]="link.disabled"
+      [routerLink]="link.url"
+    >
+      {{ link.label }}
+    </button>
   </div>
 </div>
