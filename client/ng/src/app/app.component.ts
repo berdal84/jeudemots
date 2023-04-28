@@ -8,7 +8,7 @@ import {environment} from '../environments/environment.prod';
 })
 export class AppComponent{
   title = environment.app.title;
-  supportEmail = environment.supportEmail;
+  emailHref = `mailto:${environment.supportEmail}`;
 
   getCurrentYear(): number {
     const now = new Date();
