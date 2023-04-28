@@ -16,8 +16,38 @@ th {
     font-size: 0.75em;
 }
 
+.search > * {
+    flex: 1;
+}
+
+input {
+    height: 30px;
+    border: solid 1px #a6a6a6;
+    box-shadow: #a6a6a6 inset 1px 1px 3px;
+    border-radius: 4px;
+}
+
+input:active, input:focus {
+    outline: none !important;
+    box-shadow: var(--input-highlight-color) 0 0 10px 2px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search {
+    display: flex;
+    align-items: flex-end;
+}
+
 .filter {
+    flex-direction: column;
     margin-bottom: 10px;
+    display: flex;
+    gap: 5px;
 }
 
 .status {
@@ -25,7 +55,6 @@ th {
   transition-duration: 1s;
   margin-left: 10px;
   opacity: 0.5;
-
 }
 
 .status.searching {

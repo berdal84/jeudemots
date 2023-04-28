@@ -1,37 +1,24 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from "@angular/core";
-
-interface PageItem {
-  id: number;
-  label: string;
-}
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,} from "@angular/core";
+import {PageBtn} from "./pagination.models";
 
 @Component({
   selector: "app-pagination",
   styles: [
     `
-      div.pagination {
+      :host {
+        margin: 5px;
         display: flex;
         justify-content: center;
+        flex-wrap: nowrap;
       }
 
-      .pagination ul {
-        display: block;
-      }
-
-      .pagination li {
+      button {
         display: inline;
         margin: 2px;
+        padding: 6px 8px;
       }
 
-      .pagination li:not(.current) > a {
+      button:not(:disabled) {
         opacity: 0.75;
         text-decoration: underline;
         cursor: pointer;
@@ -39,15 +26,14 @@ interface PageItem {
     `,
   ],
   template: `
-    <div class="pagination">
-      <ul>
-        <li
-          *ngFor="let page of range"
-          [class]="{ current: page.id == pageIndex }"
-        >
-          <a (click)="handlePageClick(page.id)">{{ page.label }}</a>
-        </li>
-      </ul>
+    <div>
+      <button
+        *ngFor="let page of pages"
+        [disabled]="page.id == pageIndex"
+        (click)="handlePageClick(page.id)" [title]="page.tooltip"
+      >
+        {{ page.label }}
+      </button>
     </div>`,
 })
 export class PaginationComponent implements OnInit, OnChanges {
@@ -60,22 +46,23 @@ export class PaginationComponent implements OnInit, OnChanges {
   @Output()
   pageChange = new EventEmitter<number>();
 
-  range: Array<PageItem> = [];
+  pages: Array<PageBtn> = [];
 
   ngOnInit(): void {
-    this.refresh();
+    this.refreshPages();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.refresh();
+    this.refreshPages();
   }
 
-  private refresh() {
-    this.range = new Array<PageItem>(this.count);
-    for(let index = 0; index < this.count; index++){
-      this.range[index] = {
+  private refreshPages() {
+    this.pages = new Array<PageBtn>(this.count);
+    for (let index = 0; index < this.count; index++) {
+      this.pages[index] = {
         id: index,
-        label: `${index + 1}`
+        label: `${index + 1}`,
+        tooltip: `Se rendre sur la page ${index}`
       };
     }
   }

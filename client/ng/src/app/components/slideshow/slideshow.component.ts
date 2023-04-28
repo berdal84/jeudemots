@@ -3,6 +3,9 @@ import { Subscription } from 'rxjs';
 import { Page, Joke } from 'jeudemots-shared';
 import { BackendService } from '@services/backend.service';
 import { filter, tap } from 'rxjs/operators';
+import {environment} from "src/environments/environment";
+
+const config = environment.slideshow;
 
 @Component({
   selector: 'app-slideshow',
@@ -11,16 +14,14 @@ import { filter, tap } from 'rxjs/operators';
 })
 export class SlideshowComponent implements OnInit, OnDestroy {
 
-  private static TimePerJokeIncrementInSeconds  = 1;
-  private static TimePerJokeTextCharInSeconds   = 0.15;
-
   currentJoke: Joke;
-  isDiaporamaPlaying = false;
+  isPlaying = false;
 
-  private timePerJokeInSeconds = 5;
+  private initialTimeForCurrentJoke = config.minimumTimePerJoke;
   private page: Page;
-  private diaporamaTimer: number = 0;
-  private timeElapsedOnCurrentJokeInSeconds = 0;
+  private timer: number = 0;
+  private initialEggTimer = 0;
+  private eggTimer = 0;
   private subscription: Subscription = new Subscription();
 
   constructor(private backend: BackendService) {
@@ -38,7 +39,7 @@ export class SlideshowComponent implements OnInit, OnDestroy {
       jokes: [this.currentJoke],
       size: 1,
       count: 0
-    }
+    };
   }
 
   ngOnInit() {
@@ -53,7 +54,15 @@ export class SlideshowComponent implements OnInit, OnDestroy {
           tap((page) => this.currentJoke = page.jokes[0]) // 1 joke per page, so we display the first
         ).subscribe());
 
-    this.backend.reloadPage(1); // 1 joke at once
+    return this.backend.reloadPage(1); // 1 joke at once
+  }
+
+  getEggTimerStyle() {
+    const progress = 1 - this.eggTimer / this.initialEggTimer;
+    return {
+      width: `${progress * 100}%`,
+      opacity: Math.sin((progress - 0.15) * Math.PI ) // wave with a max opacity when progress is around 85%
+    };
   }
 
   ngOnDestroy() {
@@ -62,7 +71,7 @@ export class SlideshowComponent implements OnInit, OnDestroy {
 
   private async setPage(id: number) {
     await this.backend.setPage(id);
-    this.resetDiaporamaTime();
+    this.resetTimer();
   }
 
   hasNext(): boolean {
@@ -73,60 +82,46 @@ export class SlideshowComponent implements OnInit, OnDestroy {
     return this.page.id > 0;
   }
 
-  getDiaporamaTimerText(): string {
-    const timeLeftInSeconds = this.timePerJokeInSeconds - this.timeElapsedOnCurrentJokeInSeconds;
-    return `Prochain jeu de mots dans ${timeLeftInSeconds.toFixed(0)} sec.`;
-  }
-
-  private resetDiaporamaTime(): void {
+  private resetTimer(): void {
     const jokeLength = this.currentJoke.text.length + this.currentJoke.category.length;
-    this.timePerJokeInSeconds = jokeLength * SlideshowComponent.TimePerJokeTextCharInSeconds;
-    this.timeElapsedOnCurrentJokeInSeconds = 0;
+    this.initialEggTimer = config.minimumTimePerJoke * ( 1 + jokeLength * config.perCharCostFactor);
+    this.eggTimer = this.initialEggTimer;
   }
 
   onPlayButtonClicked(): void {
 
-    this.resetDiaporamaTime();
+    this.resetTimer();
+    this.isPlaying = true;
 
-    // set an interval every seconds
-    this.diaporamaTimer = window.setInterval( () => {
-
-      // we increment elapsed time at each interval
-      this.timeElapsedOnCurrentJokeInSeconds += SlideshowComponent.TimePerJokeIncrementInSeconds;
-
-      const isTimeElapsed = this.timeElapsedOnCurrentJokeInSeconds >= this.timePerJokeInSeconds;
-      if ( isTimeElapsed ) {
-
-        this.onNextButtonClicked();
-
-        // We pause the slideshow if there is no next
-        if (!this.hasNext()) {
-          this.onPauseButtonClicked();
+    // set an interval to update the egg timer
+    const timerPrecisionInMs = 100;
+    this.timer = window.setInterval( async () => {
+      this.eggTimer -= timerPrecisionInMs / 1000;
+      if ( this.eggTimer < 0 ) {
+        this.eggTimer = 0;
+        if (this.hasNext()) {
+          return this.onNextButtonClicked();
         }
-
+        // loop back
+        return this.setPage(0);
       }
-
-    },
-    SlideshowComponent.TimePerJokeIncrementInSeconds * 1000 // 1 sec. DO NOT touch !
-    );
-
-    this.isDiaporamaPlaying = true;
+    }, timerPrecisionInMs );
   }
 
   onPauseButtonClicked(): void {
-    clearInterval(this.diaporamaTimer);
-    this.isDiaporamaPlaying = false;
+    clearInterval(this.timer);
+    this.isPlaying = false;
   }
 
-  onPreviousButtonClicked(): void {
+  async onPreviousButtonClicked() {
     if (this.hasPrevious()) {
-      this.setPage(this.page.id - 1);
+      return this.setPage(this.page.id - 1);
     }
   }
 
-  onNextButtonClicked(): void {
+  async onNextButtonClicked() {
     if (this.hasNext()) {
-      this.setPage(this.page.id + 1);
+      return this.setPage(this.page.id + 1);
     }
   }
 

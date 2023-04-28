@@ -12,21 +12,25 @@
     color: #3f3f3f;
     padding: 0.8rem 1rem;
     border-radius: 10px;
-    border: 1px solid #eee;
+    border: 1px solid rgba(255,255,255,0.5);
     margin: 2px 2px 2px 1rem;
     cursor: pointer;
     background: linear-gradient(#bbb, #888);
     text-underline: thick;
     font-weight: bolder;
     font-size: 1rem;
+    box-shadow: rgba(50,0,50,0.05) 2px 2px;
+    transition-duration: 0.2s;
 }
 
-.link:disabled {
+.link:disabled { /* disabled means the one selected */
     background: linear-gradient(#bbb, #888);
+    box-shadow: rgba(255,255,255,0.9) 0 0 10px 2px;
     color: white;
-    text-shadow: none;
+    text-shadow: rgba(0,0,0,0.1) 2px 2px;
     text-decoration: none;
     pointer-events: none;
+    transition-duration: 0.5s;
 }
 
 .link:hover {
@@ -35,7 +39,7 @@
 
 #logo {
     padding-top: 20px;
-    height: 80px;
+    height: 100px;
     transition-duration: 0.5s;
 }
 
@@ -52,7 +56,7 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 56px;
+    height: 70px;
     box-shadow: 0px 10px 20px rgb(200, 200, 200);
     border-bottom: 1px solid rgb(223, 223, 223);
     background: #DDD linear-gradient(#aaa, #bfbfbf);

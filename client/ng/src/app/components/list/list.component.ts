@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { interval, merge, of, pipe, Subscription } from "rxjs";
+import { interval, Subscription } from "rxjs";
 import { AuthService } from "@servicesauth.service";
 import { Joke, Page } from "jeudemots-shared";
 import { BackendService } from "@services/backend.service";
-import { debounce, filter, map, tap, throttle } from "rxjs/operators";
+import { debounce, filter, map, tap } from "rxjs/operators";
 import { FormControl, FormGroup } from "@angular/forms";
 import { NULL_PAGE } from "src/app/constants/null-page";
 
@@ -17,7 +17,7 @@ export class ListComponent implements OnInit, OnDestroy {
   searching = false;
   page: Page = NULL_PAGE;
   readonly form = new FormGroup({
-    filter: new FormControl<string>(''),
+    filter: new FormControl<string>('', { nonNullable: true}),
   });
   readonly editedJokes = new Set<number>();
   private subscriptions = new Subscription();
@@ -25,8 +25,8 @@ export class ListComponent implements OnInit, OnDestroy {
   constructor(private backend: BackendService, private user: AuthService) {}
 
   ngOnInit() {
-    this.backend.setFilter("");
 
+    // Update page and status when a new page comes
     this.subscriptions.add(
       this.backend.page$.subscribe( page => {
         this.page = page;
@@ -34,28 +34,31 @@ export class ListComponent implements OnInit, OnDestroy {
       })
     );
 
+    // Search when user is typing
     this.subscriptions.add(
       this.form.valueChanges.pipe(
+        // clear status
         tap( () => this.status = '' ),
-        map( changes  => changes.filter ?? ''),
-        filter( filter => filter.length > 2 || filter.length === 0),
-        debounce(() => interval(200))
-      )
-      .subscribe( filter => {
-        this.searching = true;
-        this.status = 'Recherche en cours ...';
-        this.backend.setFilter(filter);
-        this.backend
+        map( changes => changes.filter ?? ''),
+        // ensure text is larger than 2 chars or is empty
+        filter( newFilter => newFilter.length > 2 || newFilter.length === 0),
+        debounce(() => interval(200)),
+        tap( newFilter => {
+          this.searching = true;
+          this.status = 'Recherche en cours ...';
+          this.backend.setFilter(newFilter);
+          this.backend
             .reloadPage()
-            .then( response => {
-              this.searching = false;
-            })
             .finally( () => {
               this.searching = false;
-        });
-      })
+            });
+        })
+      )
+      .subscribe()
     );
 
+    // Reload current page
+    this.backend.setFilter("");
     return this.backend.reloadPage(10); // 10 items per page
   }
 

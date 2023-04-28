@@ -3,9 +3,11 @@
 /* Common */
 
 * {
-  color: rgb(91, 91, 91);
+	color: rgb(91, 91, 91);
 	text-shadow: 1px 1px rgba(255, 255, 255, 0.9);
 	font-family: 'Lucida Console', Monaco, monospace;
+	--input-highlight-color: rgba(255, 255, 255, 0.80);
+	--text-highlight-color: #1aff1a;
 }
 
 p {
@@ -40,7 +42,6 @@ button {
 	border-radius: 5px;
 	border: 1px solid #aaa;
 	margin: 2px;
-	margin-left: 2px;
 	background: linear-gradient(#fff, #ddd);
 	text-shadow: 1px 1px rgba(255, 255, 255, 0.9);
 }
@@ -50,7 +51,7 @@ button:active {
 }
 
 button:hover {
-	box-shadow: 0px 0px 10px 5px rgba(255, 255, 255, 0.3);
+	box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.3);
 }
 
 table {
@@ -104,7 +105,7 @@ p.justified {
 /* Background color for selections */
 
 ::selection {
-	background: #1aff1a;
+	background: var(--text-highlight-color);
 }
 
 /* Elements identified by and ID */

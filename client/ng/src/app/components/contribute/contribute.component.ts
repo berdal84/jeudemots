@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { Validators, FormControl, FormGroup } from "@angular/forms";
 import { BackendService } from "@services/backend.service";
 import { Joke } from "jeudemots-shared";
+import {environment} from "src/environments/environment";
 
 @Component({
   selector: "app-contribute",
@@ -10,7 +11,8 @@ import { Joke } from "jeudemots-shared";
 })
 export class ContributeComponent {
   status: "idle" | "pending" | "ok" | "ko" = "idle";
-  displayErrors: boolean = false;
+  displayErrors = false;
+  email = environment.supportEmail;
 
   form = new FormGroup({
     category: new FormControl<string>("", {

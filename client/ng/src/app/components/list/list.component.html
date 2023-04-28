@@ -1,13 +1,23 @@
 <div>
-  <h2>Liste complète des jeu de mots :</h2>
-  <form class="filter" [formGroup]="form">
-    <label>Recherche: </label>
-    <input
-      title="saisissez ici des mots clés séparés par des espaces"
-      formControlName="filter"
-      size="50"
-    />
-    <span class="status" [ngClass]="{ 'searching': searching}" >{{status}}</span>
+  <h2>Liste complète des jeu de mots:</h2>
+  <form class="header" [formGroup]="form">
+    <div class="search">
+      <div class="filter">
+        <label>Recherche:</label>
+        <input
+          title="saisissez ici des mots clés séparés par des espaces"
+          formControlName="filter"
+          placeholder="Saisissez qqch ici ..."
+          size="50"
+        />
+      </div>
+      <p class="status" [ngClass]="{ 'searching': searching}" >{{status}}</p>
+    </div>
+    <app-pagination
+      [pageIndex]="page.id"
+      [count]="pageCount()"
+      (pageChange)="handlePageChange($event)"
+    ></app-pagination>
   </form>
 </div>
 
@@ -32,7 +42,7 @@
     </tr>
     <tr *ngFor="let joke of page.jokes" [ngClass]="{ 'masked': !joke.visible }">
       <!-- Reading -->
-      <ng-container *ngIf="!isEditing(joke)">
+      <ng-container *ngIf="!isEditing(joke) else editor">
         <td>
           <p style="text-align: left">{{ joke.category }}</p>
         </td>
@@ -48,7 +58,7 @@
       </ng-container>
 
       <!-- Editing -->
-      <ng-container *ngIf="isEditing(joke)">
+      <ng-template #editor>
         <td>
           <input
             style="text-align: left"
@@ -70,7 +80,7 @@
         <td>
           <input type="date" [(ngModel)]="joke.date" />
         </td>
-      </ng-container>
+      </ng-template>
 
       <td *ngIf="canShowActions()">
         <div class="actions">

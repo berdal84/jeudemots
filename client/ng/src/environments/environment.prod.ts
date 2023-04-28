@@ -1,4 +1,8 @@
+import {Environment} from './environment.model';
+import {environmentBase} from './environment.base';
+
 export const environment = {
+  ...environmentBase,
   production: true,
-  backend_url: 'https://jeudemots.42borgata.com/api',
-};
+
+} satisfies Environment;

@@ -3,13 +3,17 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-error404',
-  templateUrl: './error404.component.html'
+  template: `
+    <h1 style="font-size: 2em;">OUPS ! ERREUR 404</h1>
+    <p>Il semblerait que <b>la page que vous cherchez n'est pas disponible actuellement</b>.
+        Il se pourrait aussi que cette page n'existe vraiment pas. Vérifiez l'adresse de votre navigateur.</p>
+    <p>Souhaitez vous réellement vous rendre ici ?</p>
+    <p style="font-size: 1.5em;">{{ router_url }}</p>
+  `
 })
 export class Error404Component {
-
-  constructor( private router: Router) {}
-
-  getRouterUrl(): string {
-    return this.router.url;
+  router_url: string;
+  constructor( router: Router) {
+    this.router_url = router.url;
   }
 }

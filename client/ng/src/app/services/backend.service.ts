@@ -9,15 +9,7 @@ import {NULL_PAGE} from '../constants/null-page';
 // @ts-ignore (any)
 import * as sha256 from 'sha256';
 
-const { backend_url } = environment;
-
-const URL = {
-  AUTH:         `${backend_url}/authentication.php`,
-  MAIL:         `${backend_url}/mail.php`,
-  JOKE:         `${backend_url}/joke.php`,
-  MAINTENANCE:  `${backend_url}/maintenance.php`,
-  PAGE:         `${backend_url}/page.php`,
-};
+const { api } = environment;
 
 @Injectable({
   providedIn: 'root'
@@ -58,24 +50,29 @@ export class BackendService {
   /**
    * Generic request using a local cache system.
    *
+   * @param method
+   * @param path a path relative to the api base url
+   * @param headers
+   * @private
    */
   private async _requestWithCache<TResponse extends Response>(
     method: 'GET' | 'POST' | 'DELETE' | 'PATCH',
-    url: string,
+    path: `/${string}`,
     headers?: {
       params?: Record<string, number | string>,
       body?: any
     }): Promise<TResponse> {
 
     // Try to get response from cache
-    const cache_key = `${method}:${url}:${JSON.stringify(headers)}`;
+    const full_url = `${api.baseUrl}${path}`;
+    const cache_key = `${method}:${full_url}:${JSON.stringify(headers)}`;
     if (this.cache.has(cache_key)) {
       const cache_response = this.cache.get(cache_key) as TResponse;
       return structuredClone(cache_response);
     }
 
     // Fetch
-    const response = await this._request<TResponse>(method, url, headers);
+    const response = await this._request<TResponse>(method, full_url, headers);
 
     // Update cache
     if (response.ok) {
@@ -123,25 +120,25 @@ export class BackendService {
       username: credentials.username,
       password: sha256(credentials.password)
     };
-    return this._request<Response>('POST', URL.AUTH, {body: safeCredentials});
+    return this._request<Response>('POST', api.path.auth, {body: safeCredentials});
   }
 
   logout(): Promise<Response> {
-    return this._request<Response>('GET', URL.AUTH);
+    return this._request<Response>('GET', api.path.auth);
   }
 
   /**
    * Install the necessary tables
    */
   install(): Promise<Response<string>> {
-    return this._request<Response<string>>('GET', `${URL.MAINTENANCE}?action=install`);
+    return this._request<Response<string>>('GET', `${api.path.maintenance}?action=install`);
   }
 
   /**
    * Do the exact opposite of install()
    */
   uninstall(): Promise<Response<string>> {
-    return this._request<Response<string>>('GET', `${URL.MAINTENANCE}?action=uninstall` );
+    return this._request<Response<string>>('GET', `${api.path.maintenance}?action=uninstall` );
   }
 
   /**
@@ -150,7 +147,7 @@ export class BackendService {
    * that json must contain a Joke array.
    */
   restore(formData: FormData): Promise<Response> {
-    return this._request<Response>('POST', `${URL.MAINTENANCE}?action=restore`, {body: formData});
+    return this._request<Response>('POST', `${api.path.maintenance}?action=restore`, {body: formData});
   }
 
   /**
@@ -158,7 +155,7 @@ export class BackendService {
    * @returns an array of jokes with all information to restore it.
    */
   backup(): Promise<Response<Joke[]>> {
-    return this._request<Response<Joke[]>>('GET', `${URL.MAINTENANCE}?action=backup`);
+    return this._request<Response<Joke[]>>('GET', `${api.path.maintenance}?action=backup`);
   }
 
   /**
@@ -167,7 +164,7 @@ export class BackendService {
    * @returns a joke with a unique id
    */
   create(joke: Joke): Promise<Response<Joke>> {
-    return this._request<Response<Joke>>('POST', URL.JOKE, {body: joke});
+    return this._request<Response<Joke>>('POST', api.path.joke, {body: joke});
   }
 
   /**
@@ -183,7 +180,7 @@ export class BackendService {
       filter: this.filterStr
     };
 
-    const response = await this._requestWithCache<Response<Page>>('GET', URL.PAGE, {params});
+    const response = await this._requestWithCache<Response<Page>>('GET', api.path.page, {params});
 
     if (response.ok) {
       this.page$.next(response.data);
@@ -197,7 +194,7 @@ export class BackendService {
    * @param joke the joke to update (must have a valid id)
    */
   async update(joke: Joke): Promise<Response> {
-    const response = await this._request<Response>('PATCH', URL.JOKE, {body: joke});
+    const response = await this._request<Response>('PATCH', api.path.joke, {body: joke});
     if (response.ok) this.cache.clear();
     return response;
   }
@@ -206,7 +203,7 @@ export class BackendService {
    * Delete an existing joke * @param id the joke id
    */
   async delete(id: number): Promise<Response> {
-    const response = await this._request<Response>('DELETE', URL.JOKE, {params: {id}});
+    const response = await this._request<Response>('DELETE', api.path.joke, {params: {id}});
     if (response.ok) this.cache.clear();
     return response;
   }

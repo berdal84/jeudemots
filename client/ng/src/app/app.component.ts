@@ -1,18 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import {environment} from '../environments/environment.prod';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-  title = 'Jeu de mots';
-
-  constructor(private router: Router) {}
-
-  ngOnInit(): void {
-  }
+export class AppComponent{
+  title = environment.app.title;
+  supportEmail = environment.supportEmail;
 
   getCurrentYear(): number {
     const now = new Date();

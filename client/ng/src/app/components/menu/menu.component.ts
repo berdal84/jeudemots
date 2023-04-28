@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService as AuthService } from '@servicesauth.service';
-import {concatMap, map, mergeMap} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {LINKS} from './menu.data';
 import {combineLatest, Observable, of} from 'rxjs';
 import {Link} from './menu.models';
