@@ -30,20 +30,21 @@ export class BackendService {
    */
   private async _request<TResponse extends Response>(
     method: 'GET' | 'POST' | 'DELETE' | 'PATCH',
-    url: string,
+    path: string,
     headers?: {
       params?: Record<string, number | string>,
       body?: any
     }): Promise<TResponse> {
+    const full_url = `${api.baseUrl}${path}`;
 
     return firstValueFrom( this.httpClient
-      .request<TResponse>(method, url, headers)
+      .request<TResponse>(method, full_url, headers)
       .pipe(
         retry(3),
         catchError(() => of({
           ok: false,
           data: null,
-          error: `${method} with ${url} failed 3 times`
+          error: `${method} with ${full_url} failed 3 times`
         } as TResponse)),
         first()
       ));
@@ -66,15 +67,14 @@ export class BackendService {
     }): Promise<TResponse> {
 
     // Try to get response from cache
-    const full_url = `${api.baseUrl}${path}`;
-    const cache_key = `${method}:${full_url}:${JSON.stringify(headers)}`;
+    const cache_key = `${method}:${path}:${JSON.stringify(headers)}`;
     if (this.cache.has(cache_key)) {
       const cache_response = this.cache.get(cache_key) as TResponse;
       return structuredClone(cache_response);
     }
 
     // Fetch
-    const response = await this._request<TResponse>(method, full_url, headers);
+    const response = await this._request<TResponse>(method, path, headers);
 
     // Update cache
     if (response.ok) {
