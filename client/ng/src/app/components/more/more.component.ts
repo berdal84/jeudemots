@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'app-more',
   template: `
-    <h2>A propos...</h2>
+    <h3>A propos...</h3>
     <section class="indent">
       <p>Ce site a été créé pour me former. Dans un premier temps il n'était qu'une simple page AngularJS, il a
           depuis beaucoup évolué (avec un backend et une base de données).</p>
