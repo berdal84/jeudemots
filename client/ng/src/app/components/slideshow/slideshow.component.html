@@ -5,27 +5,25 @@
     <div id="navbar">
       <img
         src="assets/rewind.svg"
+        class="navbar-btn"
         [ngClass]="{
-          'navbar-btn': true,
-          'navbar-btn-disable': !hasPrevious()
+          'disable': !hasPrevious()
         }"
         (click)="handleRewindButtonClick()"
-        [title]="hasPrevious() ? 'précédent' : 'plus rien par ici...'"
+        [title]="hasPrevious() ? 'Se rendre au début' : 'Vous y êtes déjà'"
       />
       <img
         src="assets/arrow-left.svg"
         [ngClass]="{
-          'navbar-btn': true,
-          'navbar-btn-disable': !hasPrevious()
+          'disable': !hasPrevious()
         }"
         (click)="handlePreviousButtonClick()"
-        [title]="hasPrevious() ? 'précédent' : 'plus rien par ici...'"
+        [title]="hasPrevious() ? 'précédent' : 'Vous y êtes déjà'"
       />
 
       <img
         *ngIf="!isPlaying"
         src="assets/play.svg"
-        class="navbar-btn"
         (click)="handlePlayButtonClick()"
         title="Démarrer le diaporama"
       />
@@ -33,19 +31,28 @@
       <img
         *ngIf="isPlaying"
         src="assets/pause.svg"
-        class="navbar-btn"
         (click)="handlePauseButtonClick()"
         title="Mettre le diaporama en pause"
       />
 
       <img
-        src="assets/arrow-right.svg"
+        src="assets/arrow-left.svg"
+        class="mirror-x"
         [ngClass]="{
-          'navbar-btn': true,
-          'navbar-btn-disable': !hasNext()
+          'disable': !hasNext()
         }"
         (click)="handleNextButtonClick()"
-        [title]="hasNext() ? 'suivant' : 'plus rien par là...'"
+        [title]="hasNext() ? 'suivant' : 'Vous y êtes déjà'"
+      />
+
+      <img
+        src="assets/rewind.svg"
+        class="mirror-x"
+        [ngClass]="{
+          'disable': !hasNext()
+        }"
+        (click)="handleForwardButtonClick()"
+        [title]="hasNext() ? 'Se rendre à la fin' : 'Vous y êtes déjà'"
       />
     </div>
   </div>

@@ -124,4 +124,8 @@ export class SlideshowComponent implements OnInit, OnDestroy {
   handleRewindButtonClick(){
     this.setPage(0);
   }
+
+  handleForwardButtonClick() {
+    this.setPage(this.page.count - 1);
+  }
 }
