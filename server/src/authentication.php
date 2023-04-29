@@ -2,10 +2,12 @@
   require_once('core/user.php');
   require_once('core/response.php');
   require_once('core/user.php');
-  
-  User::session_start();
+  require_once('core/header.php');
 
-  header("Access-Control-Allow-Origin: ".ACCESS_CONTROL_ALLOW_ORIGIN);
+  User::session_start();
+  
+  Header::access_control_allow_origin(...ACCESS_CONTROL_ALLOW_ORIGIN);
+  header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
   header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
   header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 

@@ -22,10 +22,11 @@ define('DB_PASS', '');
 define('ADMIN_USER', '');
 define('ADMIN_PASS', '');
 define('ADMIN_EMAIL', '');
-define('ACCESS_CONTROL_ALLOW_ORIGIN', '');
+define('ACCESS_CONTROL_ALLOW_ORIGIN', array('domain.com', 'alternative-domain.com') );
 define('COOKIE_DOMAIN', '');
 define('DEBUG', false);
 
-if( DEBUG) ini_set('display_errors', 1);
+ini_set('session.use_strict_mode', 1); // see https://www.php.net/manual/en/features.session.security.management.php#features.session.security.management.non-adaptive-session
+if(DEBUG) ini_set('display_errors', 1);
 
 ?>
