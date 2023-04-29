@@ -53,7 +53,7 @@ export class PaginationComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.refreshPages();
+    if( changes.count || changes.pageIndex ) this.refreshPages();
   }
 
   private refreshPages() {
