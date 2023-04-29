@@ -92,11 +92,6 @@ export class BackendService {
     return this.readPage({id, size});
   }
 
-  async reloadPage(params?: Partial<{new_size: number, filter: string}>): Promise<Response<Page>> {
-    const { id, size } = this.page;
-    return await this.readPage({id, size, ...params});
-  }
-
   login(credentials: Credentials): Promise<Response> {
     const safeCredentials: Credentials = {
       username: credentials.username,
@@ -154,9 +149,8 @@ export class BackendService {
    * @param id a page index
    * @param size a page size (item count per page)
    */
-  private async readPage(params: {id: number, size: number, filter?: string}): Promise<Response<Page>> {
-
-    const response = await this._requestWithCache<Response<Page>>('GET', api.path.page, {params});
+  async readPage(params: {id: number, size: number, filter?: string}): Promise<Response<Page>> {
+    const response = await this._requestWithCache<Response<Page>>('GET', api.path.page, { params });
 
     if (response.ok) {
       this.page$.next(response.data);

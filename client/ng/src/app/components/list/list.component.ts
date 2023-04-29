@@ -47,7 +47,7 @@ export class ListComponent implements OnInit, OnDestroy {
           this.searching = true;
           this.status = 'Recherche en cours ...';
           this.backend
-            .reloadPage({filter: newFilter})
+            .readPage({id: 0, size: 10, filter: newFilter})
             .finally( () => {
               this.searching = false;
             });
@@ -55,7 +55,12 @@ export class ListComponent implements OnInit, OnDestroy {
       )
       .subscribe()
     );
-    return this.backend.reloadPage({ new_size: 10});
+    return this.backend.readPage({ id: 0, size: 10});
+  }
+
+  private refreshPage() {
+    const { id, size } = this.page;
+    return this.backend.readPage({id, size, filter: this.form.value.filter});
   }
 
   ngOnDestroy() {
@@ -75,7 +80,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   async cancel(joke: Joke) {
-    const response = await this.backend.reloadPage();
+    const response = await this.refreshPage();
     if (response.ok) {
       this.editedJokes.delete(joke.id);
     } else {
@@ -95,7 +100,7 @@ export class ListComponent implements OnInit, OnDestroy {
   async delete(joke: Joke) {
     const response = await this.backend.delete(joke.id);
     if (response.ok) {
-      await this.backend.reloadPage();
+      await this.refreshPage();
     } else {
       alert("Nothing changed!");
     }
@@ -105,7 +110,7 @@ export class ListComponent implements OnInit, OnDestroy {
     joke.visible = !joke.visible;
     const response = await this.backend.update(joke);
     if (response.ok) {
-      await this.backend.reloadPage();
+      await this.refreshPage();
     } else {
       alert("Oups, update failed!");
     }

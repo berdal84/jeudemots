@@ -50,7 +50,7 @@ export class SlideshowComponent implements OnInit, OnDestroy {
           tap((page) => this.currentJoke = page.jokes[0]) // 1 joke per page, so we display the first
         ).subscribe());
 
-    return this.backend.reloadPage({new_size: 1});
+    return this.backend.readPage({id: 0, size: 1});
   }
 
   getEggTimerStyle() {
