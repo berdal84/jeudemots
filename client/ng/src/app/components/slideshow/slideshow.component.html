@@ -4,12 +4,21 @@
 
     <div id="navbar">
       <img
+        src="assets/rewind.svg"
+        [ngClass]="{
+          'navbar-btn': true,
+          'navbar-btn-disable': !hasPrevious()
+        }"
+        (click)="handleRewindButtonClick()"
+        [title]="hasPrevious() ? 'précédent' : 'plus rien par ici...'"
+      />
+      <img
         src="assets/arrow-left.svg"
         [ngClass]="{
           'navbar-btn': true,
           'navbar-btn-disable': !hasPrevious()
         }"
-        (click)="onPreviousButtonClicked()"
+        (click)="handlePreviousButtonClick()"
         [title]="hasPrevious() ? 'précédent' : 'plus rien par ici...'"
       />
 
@@ -17,7 +26,7 @@
         *ngIf="!isPlaying"
         src="assets/play.svg"
         class="navbar-btn"
-        (click)="onPlayButtonClicked()"
+        (click)="handlePlayButtonClick()"
         title="Démarrer le diaporama"
       />
 
@@ -25,7 +34,7 @@
         *ngIf="isPlaying"
         src="assets/pause.svg"
         class="navbar-btn"
-        (click)="onPauseButtonClicked()"
+        (click)="handlePauseButtonClick()"
         title="Mettre le diaporama en pause"
       />
 
@@ -35,7 +44,7 @@
           'navbar-btn': true,
           'navbar-btn-disable': !hasNext()
         }"
-        (click)="onNextButtonClicked()"
+        (click)="handleNextButtonClick()"
         [title]="hasNext() ? 'suivant' : 'plus rien par là...'"
       />
     </div>

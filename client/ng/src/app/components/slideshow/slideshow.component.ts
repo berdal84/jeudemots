@@ -84,7 +84,7 @@ export class SlideshowComponent implements OnInit, OnDestroy {
     this.eggTimer = this.initialEggTimer;
   }
 
-  onPlayButtonClicked(): void {
+  handlePlayButtonClick(): void {
 
     this.resetTimer();
     this.isPlaying = true;
@@ -96,7 +96,7 @@ export class SlideshowComponent implements OnInit, OnDestroy {
       if ( this.eggTimer < 0 ) {
         this.eggTimer = 0;
         if (this.hasNext()) {
-          return this.onNextButtonClicked();
+          return this.handleNextButtonClick();
         }
         // loop back
         return this.setPage(0);
@@ -104,21 +104,24 @@ export class SlideshowComponent implements OnInit, OnDestroy {
     }, timerPrecisionInMs );
   }
 
-  onPauseButtonClicked(): void {
+  handlePauseButtonClick(): void {
     clearInterval(this.timer);
     this.isPlaying = false;
   }
 
-  async onPreviousButtonClicked() {
+  async handlePreviousButtonClick() {
     if (this.hasPrevious()) {
       return this.setPage(this.page.id - 1);
     }
   }
 
-  async onNextButtonClicked() {
+  async handleNextButtonClick() {
     if (this.hasNext()) {
       return this.setPage(this.page.id + 1);
     }
   }
 
+  handleRewindButtonClick(){
+    this.setPage(0);
+  }
 }
