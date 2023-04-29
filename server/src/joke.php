@@ -4,6 +4,7 @@ require_once('./core/joke-crud.php');
 require_once('./core/response.php');
 require_once('./core/url-params.php');
 require_once('./core/user.php');
+require_once('./core/mail.php');
 
 User::session_start();
 
@@ -48,6 +49,11 @@ switch( $_SERVER['REQUEST_METHOD'] )
         {
             http_response_code(500);
             Response::failure("Unable to create the joke!");
+        }
+        if( !Mail::sendJokeToModerator($joke))
+        {
+            http_response_code(500);
+            Response::failure("Your joke has been inserted in the database, but we were unable to notify the moderator");
         }
         Response::success($joke);
 
