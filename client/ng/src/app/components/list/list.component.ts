@@ -46,9 +46,8 @@ export class ListComponent implements OnInit, OnDestroy {
         tap( newFilter => {
           this.searching = true;
           this.status = 'Recherche en cours ...';
-          this.backend.setFilter(newFilter);
           this.backend
-            .reloadPage()
+            .reloadPage({filter: newFilter})
             .finally( () => {
               this.searching = false;
             });
@@ -56,10 +55,7 @@ export class ListComponent implements OnInit, OnDestroy {
       )
       .subscribe()
     );
-
-    // Reload current page
-    this.backend.setFilter("");
-    return this.backend.reloadPage(10); // 10 items per page
+    return this.backend.reloadPage({ new_size: 10});
   }
 
   ngOnDestroy() {

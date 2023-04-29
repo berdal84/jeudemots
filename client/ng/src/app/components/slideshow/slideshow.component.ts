@@ -4,6 +4,7 @@ import { Page, Joke } from 'jeudemots-shared';
 import { BackendService } from '@services/backend.service';
 import { filter, tap } from 'rxjs/operators';
 import {environment} from "src/environments/environment";
+import { FormControl, FormGroup } from '@angular/forms';
 
 const config = environment.slideshow;
 
@@ -16,8 +17,6 @@ export class SlideshowComponent implements OnInit, OnDestroy {
 
   currentJoke: Joke;
   isPlaying = false;
-
-  private initialTimeForCurrentJoke = config.minimumTimePerJoke;
   private page: Page;
   private timer: number = 0;
   private initialEggTimer = 0;
@@ -43,9 +42,6 @@ export class SlideshowComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
-    this.backend.resetFilter();
-
     this.subscription.add(
       this.backend.page$
         .pipe(
@@ -54,7 +50,7 @@ export class SlideshowComponent implements OnInit, OnDestroy {
           tap((page) => this.currentJoke = page.jokes[0]) // 1 joke per page, so we display the first
         ).subscribe());
 
-    return this.backend.reloadPage(1); // 1 joke at once
+    return this.backend.reloadPage({new_size: 1});
   }
 
   getEggTimerStyle() {

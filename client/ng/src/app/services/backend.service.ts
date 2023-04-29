@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Joke, Page} from 'jeudemots-shared';
 import {HttpClient} from '@angular/common/http';
-import {ReplaySubject, of} from 'rxjs';
-import {catchError, retry} from 'rxjs/operators';
+import {ReplaySubject, of, firstValueFrom} from 'rxjs';
+import {catchError, first, retry} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
 import {Response, Credentials} from 'jeudemots-shared';
 import {NULL_PAGE} from '../constants/null-page';
@@ -18,7 +18,6 @@ export class BackendService {
 
   readonly page$ = new ReplaySubject<Page>();
   private page: Page = NULL_PAGE;
-  private filterStr: string = '';
   private cache = new Map<string, Response>();
 
   constructor(private httpClient: HttpClient) {
@@ -37,14 +36,17 @@ export class BackendService {
       body?: any
     }): Promise<TResponse> {
 
-    return this.httpClient
+    return firstValueFrom( this.httpClient
       .request<TResponse>(method, url, headers)
-      .pipe(retry(3), catchError(() => of({
-        ok: false,
-        data: null,
-        error: `Unable to get request response from ${url} (three attempts)`
-      } as TResponse)))
-      .toPromise();
+      .pipe(
+        retry(3),
+        catchError(() => of({
+          ok: false,
+          data: null,
+          error: `${method} with ${url} failed 3 times`
+        } as TResponse)),
+        first()
+      ));
   }
 
   /**
@@ -81,38 +83,18 @@ export class BackendService {
     return response;
   }
 
-  setFilter(filterStr: string) {
-    this.filterStr = filterStr;
-  }
-
-  getFilter() {
-    return this.filterStr;
-  }
-
-  resetFilter() {
-    this.filterStr = '';
-  }
-
   /**
    * Set current page
    * @param id zero-based index of the page, must be < pages count
    */
   setPage(id: number): Promise<Response<Page>> {
-    return this.readPage(id, this.page.size);
+    const { size } = this.page;
+    return this.readPage({id, size});
   }
 
-  async reloadPage(new_size?: number): Promise<Response<Page>> {
-    const current_page_id = this.page.id;
-    const new_page_id = Math.min(this.page.size - 1, current_page_id); // avoid overflow
-    return await this.readPage(new_page_id, new_size ?? this.page.size);
-  }
-
-  /**
-   * Change the page size
-   * @param size the element count per page
-   */
-  setPageSize(size: number): Promise<Response<Page>> {
-    return this.reloadPage(size);
+  async reloadPage(params?: Partial<{new_size: number, filter: string}>): Promise<Response<Page>> {
+    const { id, size } = this.page;
+    return await this.readPage({id, size, ...params});
   }
 
   login(credentials: Credentials): Promise<Response> {
@@ -172,13 +154,7 @@ export class BackendService {
    * @param id a page index
    * @param size a page size (item count per page)
    */
-  private async readPage(id: number, size: number): Promise<Response<Page>> {
-
-    const params = {
-      size,
-      id,
-      filter: this.filterStr
-    };
+  private async readPage(params: {id: number, size: number, filter?: string}): Promise<Response<Page>> {
 
     const response = await this._requestWithCache<Response<Page>>('GET', api.path.page, {params});
 
