@@ -25,6 +25,8 @@ export type Environment = {
      * @example The total time per joke is: minimumTimePerJoke * ( 1 + charCount * perCharCostFactor);
      */
     perCharCostFactor: number,
+    /** Time precision in milliseconds */
+    timerPrecision: number,
   },
   /** support email, used in the footer and in the contribute form */
   supportEmail: `${string}@${string}.${string}`;

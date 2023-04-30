@@ -17,6 +17,7 @@ export const environmentBase = {
   slideshow: {
     minimumTimePerJoke: 5,
     perCharCostFactor: 0.01,
+    timerPrecision: 100,
   },
   supportEmail: 'jeudemots@42borgata.com',
 } satisfies Omit<Environment, 'production'>;

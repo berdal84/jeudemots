@@ -4,7 +4,6 @@ import { Page, Joke } from 'jeudemots-shared';
 import { BackendService } from '@services/backend.service';
 import { filter, tap } from 'rxjs/operators';
 import {environment} from "src/environments/environment";
-import { FormControl, FormGroup } from '@angular/forms';
 
 const config = environment.slideshow;
 
@@ -89,19 +88,23 @@ export class SlideshowComponent implements OnInit, OnDestroy {
     this.resetTimer();
     this.isPlaying = true;
 
-    // set an interval to update the egg timer
-    const timerPrecisionInMs = 100;
-    this.timer = window.setInterval( async () => {
-      this.eggTimer -= timerPrecisionInMs / 1000;
+    // Function to increment the egg timer and set a new page when necessary
+    // It relies on setTimeout to be sure next increment cannot happen when page is loading
+    const incrementEggTimer = async () => {
+      this.eggTimer -= config.timerPrecision / 1000;
       if ( this.eggTimer < 0 ) {
         this.eggTimer = 0;
         if (this.hasNext()) {
-          return this.handleNextButtonClick();
+          await this.setPage(this.page.id + 1);
+        } else {
+          await this.setPage(0); // loop back
         }
-        // loop back
-        return this.setPage(0);
       }
-    }, timerPrecisionInMs );
+      window.setTimeout( incrementEggTimer, config.timerPrecision);
+    };
+
+    // Bootstrap the first increment
+    window.setTimeout( incrementEggTimer );
   }
 
   handlePauseButtonClick(): void {
