@@ -1,5 +1,4 @@
 .links {
-    border: unset;
     display: flex;
     flex-direction: row;
     align-content: flex-start;
@@ -10,6 +9,7 @@
 }
 
 button.link {
+    border: unset; /** reset button behavior */
     color: #3f3f3f;
     padding: 10px 12px;
     border-radius: 10px;
