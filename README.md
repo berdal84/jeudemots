@@ -9,7 +9,7 @@
 This is a client-server solution to host jokes using Angular and PHP/MySQL. Two alternative React/Vue clients are work in progress. The project is deployed at [https://jeudemots.42borgata.com](https://jeudemots.42borgata.com),
 
 <div align="center">
-  <img width="75%" height="75%" src="./screenshot.png" />
+  <img width="100%" height="100%" src="./screenshot.png" />
   <p>Angular Frontend | Slideshow capture<p/>
 </div>
 
