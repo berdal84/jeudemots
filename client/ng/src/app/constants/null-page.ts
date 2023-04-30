@@ -5,4 +5,4 @@ export const NULL_PAGE: Page = {
   id: 0,
   jokes: [],
   size: 10
-}
+};
