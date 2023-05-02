@@ -35,7 +35,7 @@ export class SlideshowComponent implements OnInit, OnDestroy {
   private currentJoke: Joke = NULL_PAGE.jokes[0];
   private page: Page = NULL_PAGE;
 
-  private browseNextJoke = this.eggTimer.complete$.subscribe( async () => {
+  private browseNextJoke = this.eggTimer.timeout$.subscribe( async () => {
     const nextId = (this.page.id + 1) % this.page.count; // loop
     await this.backend.setPage(nextId);
     this.eggTimer.start(this.computeTimeForCurrentJoke());

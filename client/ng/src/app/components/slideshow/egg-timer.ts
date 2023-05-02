@@ -5,26 +5,41 @@ type EggTimerOptions = {
 };
 
 export class EggTimer {
-
-    timer: number = 0;
-    initialTimer = 0;
+    /** in seconds */
+    private timer: number = 0;
+    /** in seconds */
+    private initialTimer = 0;
+    /** in milliseconds */
+    private readonly precision;
+    /** Triggered when paused or started */
     isPlaying$ = new BehaviorSubject(false);
-    precision = 100;
-    complete$ = new Subject<void>();
+    /** triggered when the egg time expired */
+    timeout$ = new Subject<void>();
 
     constructor({precision = 100}: EggTimerOptions = {}) {
         this.precision = precision;
     }
 
+    /**
+     * Return a number between 0 (just started) and 1 (timeout)
+     */
     get progress(): number {
-        return 1 - this.timer / this.initialTimer;
+        return  1 - this.timer / this.initialTimer;
     }
 
+    /**
+     * Reset the timer (without pausing/playing)
+     * @param time the new time in second
+     */
     reset(time: number) {
         this.timer = time;
         this.initialTimer = time;
     }
 
+    /**
+     * Starts the timer
+     * @param time the new time in second
+     */
     start(time?: number) {
         if ( time ) this.reset(time);
 
@@ -36,9 +51,9 @@ export class EggTimer {
             if ( !this.isPlaying$.value ) return;
             this.timer -= this.precision / 1000;
             if ( this.timer < 0 ) {
-                this.timer = 0;
+                this.timer = 0; // set to 0 to ensure the progress computation won't be negative
                 this.isPlaying$.next(false);
-                this.complete$.next();
+                this.timeout$.next();
             } else {
                 window.setTimeout( incrementEggTimer, this.precision);
             }
