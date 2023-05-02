@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
+  BehaviorSubject,
   combineLatest,
   Observable,
   startWith,
@@ -28,21 +29,20 @@ const config = environment.slideshow;
   templateUrl: './slideshow.component.html',
   styleUrls: ['./slideshow.component.css']
 })
-export class SlideshowComponent implements OnInit {
+export class SlideshowComponent implements OnInit, OnDestroy {
 
-  private eggTimer = new EggTimer({ onTick: async () => {
-    if ( this.page.id + 1 < this.page.count ) {
-      await this.setPage(this.page.id + 1);
-    } else {
-      await this.setPage(0); // loop back
-    }
-  }});
-
+  private eggTimer = new EggTimer();
   private currentJoke: Joke = NULL_PAGE.jokes[0];
   private page: Page = NULL_PAGE;
 
+  private browseNextJoke = this.eggTimer.complete$.subscribe( async () => {
+    const nextId = (this.page.id + 1) % this.page.count; // loop
+    await this.backend.setPage(nextId);
+    this.eggTimer.start(this.computeTimeForCurrentJoke());
+  });
+
   viewModel: Observable<ViewModel> = combineLatest([
-    this.eggTimer.isTicking$,
+    this.eggTimer.isPlaying$,
     this.backend.page$.pipe(filter( page => page !== null)),
   ]).pipe(
     map( ([playing, page]) => ({
@@ -71,6 +71,10 @@ export class SlideshowComponent implements OnInit {
     return this.backend.readPage({id: 0, size: 1});
   }
 
+  ngOnDestroy() {
+    this.browseNextJoke.unsubscribe();
+  }
+
   getEggTimerStyle() {
     const progress = this.eggTimer.progress;
     return {
@@ -79,30 +83,25 @@ export class SlideshowComponent implements OnInit {
     };
   }
 
-  private async setPage(id: number) {
-    await this.backend.setPage(id);
-    if ( this.eggTimer.isTicking ) this.resetEggTimer();
-  }
-
-  private resetEggTimer(): void {
+  private computeTimeForCurrentJoke(): number {
     const jokeLength = this.currentJoke.text.length + this.currentJoke.category.length;
-    this.eggTimer.reset(config.minimumTimePerJoke * ( 1 + jokeLength * config.perCharCostFactor));
+    return config.minimumTimePerJoke * ( 1 + jokeLength * config.perCharCostFactor);
   }
 
   async handleNavBarClick(type: NavBar.ButtonType) {
     switch (type) {
       case "play":
-        return this.eggTimer.start();
+        return this.eggTimer.start(this.computeTimeForCurrentJoke());
       case "pause":
         return this.eggTimer.pause();
       case "previous":
-        return this.setPage(this.page.id - 1);
+        return this.backend.setPage(this.page.id - 1);
       case "next":
-        return this.setPage(this.page.id + 1);
+        return this.backend.setPage(this.page.id + 1);
       case "first":
-        return this.setPage(0);
+        return this.backend.setPage(0);
       case "last":
-        return this.setPage(this.page.count - 1);
+        return this.backend.setPage(this.page.count - 1);
     }
   }
 }

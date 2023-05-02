@@ -1,7 +1,6 @@
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 
 type EggTimerOptions = {
-    onTick: () => Promise<any>;
     precision?: number;
 };
 
@@ -9,17 +8,12 @@ export class EggTimer {
 
     timer: number = 0;
     initialTimer = 0;
-    isTicking$ = new BehaviorSubject(false);
+    isPlaying$ = new BehaviorSubject(false);
     precision = 100;
-    onTick: () => Promise<any>;
+    complete$ = new Subject<void>();
 
-    constructor({onTick, precision = 100}: EggTimerOptions) {
-        this.onTick = onTick;
+    constructor({precision = 100}: EggTimerOptions = {}) {
         this.precision = precision;
-    }
-
-    get isTicking(): boolean {
-        return this.isTicking$.value;
     }
 
     get progress(): number {
@@ -31,20 +25,23 @@ export class EggTimer {
         this.initialTimer = time;
     }
 
+    start(time?: number) {
+        if ( time ) this.reset(time);
 
-    start() {
-        this.isTicking$.next(true);
+        this.isPlaying$.next(true);
 
         // Function to increment the egg timer and set a new page when necessary
         // It relies on setTimeout to be sure next increment cannot happen when page is loading
         const incrementEggTimer = async () => {
-            if ( !this.isTicking$.value ) return;
+            if ( !this.isPlaying$.value ) return;
             this.timer -= this.precision / 1000;
             if ( this.timer < 0 ) {
                 this.timer = 0;
-                return await this.onTick();
+                this.isPlaying$.next(false);
+                this.complete$.next();
+            } else {
+                window.setTimeout( incrementEggTimer, this.precision);
             }
-            window.setTimeout( incrementEggTimer, this.precision);
         };
 
         // Bootstrap the first increment
@@ -52,6 +49,6 @@ export class EggTimer {
     }
 
     pause() {
-        this.isTicking$.next(false);
+        this.isPlaying$.next(false);
     }
 }
