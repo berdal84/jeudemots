@@ -1,7 +1,7 @@
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { PAGE_MOCK } from 'src/app/mocks/page.mock';
-import { BackendServiceMock } from 'src/app/mocks/backend-service.mock';
-import { BackendService } from '../../services/backend.service';
+import { PAGE_MOCK } from '../../mocks/page.mock';
+import { BackendServiceMock } from '../../mocks/backend-service.mock';
+import { BackendService } from '@servicesbackend.service';
 import { SlideshowComponent } from './slideshow.component';
 
 describe(SlideshowComponent.name, () => {
@@ -39,10 +39,10 @@ describe(SlideshowComponent.name, () => {
 
   describe('Advanced', () => {
 
-    beforeEach(<any>fakeAsync((): void => {
+    beforeEach(fakeAsync((): void => {
       component.ngOnInit();
       tick();
-    }));
+    }) as any);
 
 
     it('should get first joke at init', () => {
@@ -50,29 +50,30 @@ describe(SlideshowComponent.name, () => {
     });
 
     it('should not be able to go back at init', () => {
-      const currentJokeId = component['currentJokeId'];
+      const currentJokeId = component.currentJoke.id;
       expect( component.hasPrevious() ).toBeFalsy();
       component.handlePreviousButtonClick();
-      expect( component['currentJokeId']).toBe(currentJokeId);
+      expect( component.currentJoke.id).toBe(currentJokeId);
     });
 
     it('should be able to next at init', () => {
-      const currentJokeId = component['currentJokeId'];
+      const currentJokeId = component.currentJoke.id;
       expect( component.hasNext() ).toBeTruthy();
       component.handleNextButtonClick();
-      expect( component['currentJokeId']).toBe(currentJokeId+1);
+      expect( component.currentJoke.id).toBe(currentJokeId + 1);
     });
 
     it('should not be able to go further joke count', () => {
-      const currentJokeId = component['currentJokeId'];
-      while( component.hasNext() ) {
+      let count = 0;
+      while ( component.hasNext() ) {
         component.handleNextButtonClick();
+        count++;
       }
-      expect( component['currentJokeId']).toBe(component['jokes'].length-1);
+      expect( count ).toBe(component.page.jokes.length - 1);
     });
 
-    it('should be able to play slideshow', <any>fakeAsync((): void => {
-      spyOn(component, 'onNextButtonClicked');
+    it('should be able to play slideshow', fakeAsync((): void => {
+      spyOn(component, 'handlePlayButtonClick');
       component.handlePlayButtonClick();
       tick(10000);
       component.handlePauseButtonClick();

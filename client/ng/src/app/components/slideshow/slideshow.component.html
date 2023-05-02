@@ -1,71 +1,23 @@
-<div class="center">
-  <div id="topBar">
-    <p id="jokeCategory">{{ currentJoke.category }}</p>
-
-    <div id="navbar">
-      <img
-        src="assets/rewind.svg"
-        class="navbar-btn"
-        [ngClass]="{
-          'disable': !hasPrevious()
-        }"
-        (click)="handleRewindButtonClick()"
-        [title]="hasPrevious() ? 'Se rendre au début' : 'Vous y êtes déjà'"
-      />
-      <img
-        src="assets/arrow-left.svg"
-        [ngClass]="{
-          'disable': !hasPrevious()
-        }"
-        (click)="handlePreviousButtonClick()"
-        [title]="hasPrevious() ? 'précédent' : 'Vous y êtes déjà'"
-      />
-
-      <img
-        *ngIf="!isPlaying"
-        src="assets/play.svg"
-        (click)="handlePlayButtonClick()"
-        title="Démarrer le diaporama"
-      />
-
-      <img
-        *ngIf="isPlaying"
-        src="assets/pause.svg"
-        (click)="handlePauseButtonClick()"
-        title="Mettre le diaporama en pause"
-      />
-
-      <img
-        src="assets/arrow-left.svg"
-        class="mirror-x"
-        [ngClass]="{
-          'disable': !hasNext()
-        }"
-        (click)="handleNextButtonClick()"
-        [title]="hasNext() ? 'suivant' : 'Vous y êtes déjà'"
-      />
-
-      <img
-        src="assets/rewind.svg"
-        class="mirror-x"
-        [ngClass]="{
-          'disable': !hasNext()
-        }"
-        (click)="handleForwardButtonClick()"
-        [title]="hasNext() ? 'Se rendre à la fin' : 'Vous y êtes déjà'"
-      />
+<ng-container *ngIf="viewModel | async as vm">
+  <div class="center" >
+    <div id="topBar">
+      <p id="jokeCategory">{{ vm.joke.category }}</p>
+      <app-navbar [playing]="vm.playing"
+                  [enableNext]="vm.hasNext"
+                  [enablePrevious]="vm.hasPrevious"
+                  (onClicked)="handleNavBarClick($event)"
+      ></app-navbar>
+    </div>
+    <div id="joke">
+      <p id="jokeText">{{ vm.joke.text }}</p>
+      <p id="jokeNote">
+        <i>par {{ vm.joke.author }}, le {{ vm.joke.date }}</i>
+      </p>
     </div>
   </div>
-
-  <div id="joke">
-    <p id="jokeText">{{ currentJoke.text }}</p>
-    <p id="jokeNote">
-      <i>par {{ currentJoke.author }}, le {{ currentJoke.date }}</i>
-    </p>
+  <div *ngIf="vm.playing" class="eggTimer" >
+    <div class="background">
+      <div class="bar" [ngStyle]="getEggTimerStyle()"></div>
+    </div>
   </div>
-</div>
-<div *ngIf="isPlaying" class="eggTimer" >
-  <div class="background">
-    <div class="bar" [ngStyle]="getEggTimerStyle()"></div>
-  </div>
-</div>
+</ng-container>

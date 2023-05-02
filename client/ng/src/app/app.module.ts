@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { ROUTES } from './app.routes';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './components/menu/menu.component';
-import { SlideshowComponent } from './components/slideshow/slideshow.component';
 import { ListComponent } from './components/list/list.component';
 import { AdvisesComponent } from './components/advises/advises.component';
 import { MoreComponent } from './components/more/more.component';
@@ -16,18 +15,18 @@ import { environment } from 'src/environments/environment';
 import { AdminModule } from './components/admin/admin.module';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import {NgOptimizedImage} from "@angular/common";
+import {SlideshowModule} from "./components/slideshow/slideshow.module";
 
 @NgModule({
   declarations: [
     AppComponent,
     MenuComponent,
-    SlideshowComponent,
     ListComponent,
     AdvisesComponent,
     MoreComponent,
     Error404Component,
     ContributeComponent,
-    PaginationComponent
+    PaginationComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,6 +34,7 @@ import {NgOptimizedImage} from "@angular/common";
     ReactiveFormsModule,
     HttpClientModule,
     AdminModule,
+    SlideshowModule,
     RouterModule.forRoot(
       ROUTES, {
         enableTracing: !environment.production,
