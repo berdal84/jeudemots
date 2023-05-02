@@ -4,18 +4,18 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { ROUTES } from './app.routes';
 import { AppComponent } from './app.component';
-import { MenuComponent } from './components/menu/menu.component';
-import { ListComponent } from './components/list/list.component';
-import { AdvisesComponent } from './components/advises/advises.component';
-import { MoreComponent } from './components/more/more.component';
-import { ContributeComponent } from './components/contribute/contribute.component';
-import { Error404Component } from './components/error404/error404.component';
+import { MenuComponent } from '@components/menu/menu.component';
+import { ListComponent } from '@components/list/list.component';
+import { AdvisesComponent } from '@components/advises/advises.component';
+import { MoreComponent } from '@components/more/more.component';
+import { ContributeComponent } from '@components/contribute/contribute.component';
+import { Error404Component } from '@components/error404/error404.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
-import { AdminModule } from './components/admin/admin.module';
-import { PaginationComponent } from './components/pagination/pagination.component';
+import { AdminModule } from '@components/admin/admin.module';
+import { PaginationComponent } from '@components/pagination/pagination.component';
 import {NgOptimizedImage} from "@angular/common";
-import {SlideshowModule} from "./components/slideshow/slideshow.module";
+import {SlideshowComponent} from "@components/slideshow/slideshow.component";
 
 @NgModule({
   declarations: [
@@ -34,7 +34,7 @@ import {SlideshowModule} from "./components/slideshow/slideshow.module";
     ReactiveFormsModule,
     HttpClientModule,
     AdminModule,
-    SlideshowModule,
+    SlideshowComponent,
     RouterModule.forRoot(
       ROUTES, {
         enableTracing: !environment.production,

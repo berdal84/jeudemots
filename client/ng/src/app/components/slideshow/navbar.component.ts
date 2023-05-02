@@ -1,11 +1,14 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {NgClass} from '@angular/common';
+import {CommonModule, NgClass, NgIf} from '@angular/common';
 import {ButtonType} from './navbar.types';
 
 @Component({
+  standalone: true,
   selector: 'app-navbar',
   imports: [
     NgClass,
+    CommonModule,
+    NgIf,
   ],
   template: `
     <div>
@@ -63,8 +66,7 @@ import {ButtonType} from './navbar.types';
         alt="go to last"
       />
     </div>
-  `,
-  standalone: true,
+  `
 })
 export class NavBarComponent {
   @Output('onClicked') clickEvent = new EventEmitter<ButtonType>();

@@ -8,7 +8,7 @@ import { Page, Joke } from 'jeudemots-shared';
 import { BackendService } from '@services/backend.service';
 import {filter, map, tap} from 'rxjs/operators';
 import {environment} from "src/environments/environment";
-import {CommonModule} from "@angular/common";
+import {CommonModule, NgIf} from "@angular/common";
 import {NavBarComponent} from "./navbar.component";
 import * as NavBar from "./navbar.types";
 import {NULL_PAGE, NULL_JOKE} from "@constants";
@@ -23,6 +23,7 @@ const config = environment.slideshow;
   imports: [
     CommonModule,
     NavBarComponent,
+    NgIf,
   ],
   templateUrl: './slideshow.component.html',
   styleUrls: ['./slideshow.component.css']
