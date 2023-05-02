@@ -2,7 +2,8 @@
   <div class="center" >
     <div id="topBar">
       <p id="jokeCategory">{{ vm.joke.category }}</p>
-      <app-navbar [playing]="vm.playing"
+      <app-navbar class="navbar"
+                  [playing]="vm.playing"
                   [enableNext]="vm.hasNext"
                   [enablePrevious]="vm.hasPrevious"
                   (onClicked)="handleNavBarClick($event)"
