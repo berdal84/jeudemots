@@ -1,7 +1,7 @@
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { PAGE_MOCK } from '../../mocks/page.mock';
 import { BackendServiceMock } from '../../mocks/backend-service.mock';
-import { BackendService } from '@servicesbackend.service';
+import { BackendService } from '@services/backend.service';
 import { SlideshowComponent } from './slideshow.component';
 
 describe(SlideshowComponent.name, () => {

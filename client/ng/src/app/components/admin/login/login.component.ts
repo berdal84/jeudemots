@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Credentials } from "jeudemots-shared";
-import { AuthService } from "@servicesauth.service";
+import { AuthService } from "@services/auth.service";
 
 @Component({
   selector: "app-login",

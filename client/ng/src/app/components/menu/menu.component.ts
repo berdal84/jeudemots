@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService as AuthService } from '@servicesauth.service';
+import { AuthService as AuthService } from '@services/auth.service';
 import {map} from 'rxjs/operators';
 import {LINKS} from './menu.data';
 import {combineLatest, Observable, of} from 'rxjs';

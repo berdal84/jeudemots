@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { interval, Subscription } from "rxjs";
-import { AuthService } from "@servicesauth.service";
+import { AuthService } from "@services/auth.service";
 import { Joke, Page } from "jeudemots-shared";
 import { BackendService } from "@services/backend.service";
 import { debounce, filter, map, tap } from "rxjs/operators";
