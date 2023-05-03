@@ -37,7 +37,7 @@ export class ContributeComponent {
       nonNullable: true,
     }),
 
-    acceptTerms: new FormControl<string>("", {
+    acceptTerms: new FormControl<boolean>(false, {
       validators: Validators.requiredTrue,
       updateOn: "change",
       nonNullable: true,

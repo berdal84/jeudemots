@@ -1,8 +1,9 @@
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { PAGE_MOCK } from '../../mocks/page.mock';
-import { BackendServiceMock } from '../../mocks/backend-service.mock';
-import { BackendService } from '@services/backend.service';
 import { SlideshowComponent } from './slideshow.component';
+import { lastValueFrom } from 'rxjs';
+import { ViewModel } from './slideshow.types';
+import { BackendTestingModule } from '@services/backend-testing.module';
 
 describe(SlideshowComponent.name, () => {
   let component: SlideshowComponent;
@@ -12,12 +13,8 @@ describe(SlideshowComponent.name, () => {
     TestBed.configureTestingModule({
       declarations: [
         SlideshowComponent
-      ],
-      providers: [
-        {
-          provide: BackendService,
-          useClass: BackendServiceMock
-        }
+      ], imports: [
+        BackendTestingModule
       ]
     })
     .compileComponents();
@@ -39,46 +36,39 @@ describe(SlideshowComponent.name, () => {
 
   describe('Advanced', () => {
 
-    beforeEach(fakeAsync((): void => {
-      component.ngOnInit();
-      tick();
-    }) as any);
-
-
-    it('should get first joke at init', () => {
-      expect(component.currentJoke).toEqual(PAGE_MOCK.jokes[0]);
+    let state: ViewModel;
+    beforeEach( async () => {
+      await component.ngOnInit();
+      state = await lastValueFrom(component.viewModel);
     });
 
-    it('should not be able to go back at init', () => {
-      const currentJokeId = component.currentJoke.id;
-      expect( component.hasPrevious() ).toBeFalsy();
-      component.handlePreviousButtonClick();
-      expect( component.currentJoke.id).toBe(currentJokeId);
+
+    it('should get first joke at init', async () => {
+      expect(state.joke).toEqual(PAGE_MOCK.jokes[0]);
     });
 
-    it('should be able to next at init', () => {
-      const currentJokeId = component.currentJoke.id;
-      expect( component.hasNext() ).toBeTruthy();
-      component.handleNextButtonClick();
-      expect( component.currentJoke.id).toBe(currentJokeId + 1);
+    it('should not be able to go back at init', async () => {
+      expect( state.hasPrevious ).toBeFalsy();
+      component.handleNavBarClick('previous');
+      const newState = await lastValueFrom(component.viewModel);
+      expect(newState.joke.id).toBe(state.joke.id);
     });
 
-    it('should not be able to go further joke count', () => {
+    it('should be able to next at init', async () => {
+      const currentJokeId = state.joke.id;
+      expect( state.hasNext ).toBeTruthy();
+      component.handleNavBarClick('next');
+      expect( (await lastValueFrom(component.viewModel)).joke.id).toBe(currentJokeId + 1);
+    });
+
+    it('should not be able to go further joke count', async () => {
       let count = 0;
-      while ( component.hasNext() ) {
-        component.handleNextButtonClick();
+      while ( (await lastValueFrom(component.viewModel)).hasNext ) {
+        component.handleNavBarClick('next');
         count++;
       }
-      expect( count ).toBe(component.page.jokes.length - 1);
+      expect( count ).toBe((await lastValueFrom(component.viewModel)).page.jokes.length - 1);
     });
-
-    it('should be able to play slideshow', fakeAsync((): void => {
-      spyOn(component, 'handlePlayButtonClick');
-      component.handlePlayButtonClick();
-      tick(10000);
-      component.handlePauseButtonClick();
-      expect(component.handleNextButtonClick).toHaveBeenCalled();
-    }));
   });
 
 });

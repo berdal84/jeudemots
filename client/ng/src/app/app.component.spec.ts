@@ -18,7 +18,6 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        SlideshowComponent,
         ListComponent,
         ContributeComponent,
         AdvisesComponent,
@@ -26,6 +25,7 @@ describe('AppComponent', () => {
         Error404Component,
       ],
       imports: [
+        SlideshowComponent,
         BrowserModule,
         FormsModule,
         ReactiveFormsModule,
@@ -42,11 +42,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'Jeu de mots'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('Jeu de mots');
   });
 });

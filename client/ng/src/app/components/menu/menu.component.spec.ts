@@ -1,16 +1,16 @@
-import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { ROUTES } from 'src/app/app.routes';
-import { AdvisesComponent } from '../advises/advises.component';
-import { ContributeComponent } from '../contribute/contribute.component';
-import { Error404Component } from '../error404/error404.component';
-import { ListComponent } from '../list/list.component';
-import { MoreComponent } from '../more/more.component';
-import { SlideshowComponent } from '../slideshow/slideshow.component';
+import { AdvisesComponent } from '@components/advises/advises.component';
+import { ContributeComponent } from '@components/contribute/contribute.component';
+import { Error404Component } from '@components/error404/error404.component';
+import { ListComponent } from '@components/list/list.component';
+import { MoreComponent } from '@components/more/more.component';
+import { SlideshowComponent } from '@components/slideshow/slideshow.component';
 import { MenuComponent } from './menu.component';
+import { BackendTestingModule } from '@services/backend-testing.module';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -31,7 +31,7 @@ describe('MenuComponent', () => {
         BrowserModule,
         FormsModule,
         ReactiveFormsModule,
-        HttpClientModule,
+        BackendTestingModule,
         RouterModule.forRoot(ROUTES, {})
       ]
     })

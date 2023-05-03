@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BackendServiceMock } from 'src/app/mocks/backend-service.mock';
-import { BackendService, Status } from '../../services/backend.service';
+import { BackendService } from '@services/backend.service';
 import { ContributeComponent } from './contribute.component';
 
 describe('ContributeComponent', () => {
@@ -43,16 +43,17 @@ describe('ContributeComponent', () => {
 
     // fill form
     const f = component.form;
-    f.get('category').setValue('Unit test');
-    f.get('email').setValue('test@unit.fr');
-    f.get('text').setValue('This is a unit test.');
-    f.get('author').setValue('developer');
-    f.get('acceptTerms').setValue(true);
 
+    f.setValue({
+      category: 'Unit test',
+      text: 'This is a unit test.',
+      author: 'developer',
+      acceptTerms: true,
+    });
     expect(f.invalid).toBeFalsy();
 
-    expect(component.status).not.toBe(Status.SUCCESS);
+    expect(component.status).not.toBe('ok');
     component.onSubmit();
-    expect(component.status).toBe(Status.SUCCESS);
+    expect(component.status).toBe('ok');
   });
 });

@@ -1,9 +1,7 @@
-import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgControl } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BackendServiceMock } from 'src/app/mocks/backend-service.mock';
-import { JokeFilterPipe } from 'src/app/pipes/jokefilter.pipe';
 import { BackendService } from '../../services/backend.service';
 
 import { ListComponent } from './list.component';
@@ -16,11 +14,11 @@ describe('ListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ListComponent,
-        JokeFilterPipe
+        NgControl,
       ],
       imports: [
         BrowserModule,
-        FormsModule
+        FormsModule,
       ],
       providers: [
         {
