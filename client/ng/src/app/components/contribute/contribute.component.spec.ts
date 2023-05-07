@@ -26,21 +26,18 @@ describe('ContributeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should send a joke when form is valid', () => {
+  it('should send a joke when form is valid', async () => {
 
     // fill form
-    const f = component.form;
-
-    f.setValue({
+    component.form.setValue({
       category: 'Unit test',
       text: 'This is a unit test.',
       author: 'developer',
       acceptTerms: true,
     });
-    expect(f.invalid).toBeFalsy();
-
+    expect(component.form.invalid).toBeFalsy();
     expect(component.status).not.toBe('ok');
-    component.onSubmit();
+    await component.onSubmit();
     expect(component.status).toBe('ok');
   });
 });

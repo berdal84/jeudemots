@@ -1,7 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginComponent } from './login.component';
-import { BrowserTestingModule } from '@angular/platform-browser/testing';
 import { BackendTestingModule } from '@components/backend/backend-testing.module';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+
+const fakeActivatedRoute = {
+  snapshot: { data: {} }
+} as ActivatedRoute;
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -9,11 +13,16 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [  ],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: fakeActivatedRoute
+        }
+      ],
       imports: [
         BackendTestingModule,
-        BrowserTestingModule,
-        LoginComponent,
+        LoginComponent,     
+        RouterModule,        
       ]
     })
     .compileComponents();

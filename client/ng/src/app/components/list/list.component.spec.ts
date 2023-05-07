@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { ListComponent } from './list.component';
+import { BrowserTestingModule } from '@angular/platform-browser/testing';
+import { BackendTestingModule } from '@components/backend/backend-testing.module';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -10,7 +12,8 @@ describe('ListComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         ListComponent,
-        BrowserModule,
+        BackendTestingModule,
+        BrowserTestingModule,
       ]      
     })
     .compileComponents();

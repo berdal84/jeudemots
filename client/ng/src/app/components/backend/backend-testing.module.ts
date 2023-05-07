@@ -7,7 +7,7 @@ import { APIService } from './api/api.service';
 
 @NgModule({
     imports: [
-        BrowserTestingModule
+        BrowserTestingModule,
     ],
     providers: [
         {

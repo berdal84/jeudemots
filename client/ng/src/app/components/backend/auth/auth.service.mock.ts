@@ -1,4 +1,4 @@
-import { AuthService, AuthStatus } from "@services/auth.service";
+import { AuthService, AuthStatus } from "@components/backend/auth/auth.service";
 import { BehaviorSubject } from "rxjs";
 
 export class AuthServiceMock implements Pick<AuthService, 'isLogged' | 'userStatus$'> {
