@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
-import { BackendService } from '@services/backend.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { APIService } from '@components/backend/api/api.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-backup',
+  standalone: true,
+  imports: [
+    CommonModule,
+  ],
   templateUrl: './backup.component.html',
   styleUrls: ['./backup.component.css']
 })
@@ -13,7 +18,7 @@ export class BackupComponent {
   downloadJsonHref: SafeUrl | null = null;
 
   constructor(
-    private backend: BackendService,
+    private api: APIService,
     private sanitizer: DomSanitizer)
   {
     this.downloadJsonHref = null;
@@ -23,7 +28,7 @@ export class BackupComponent {
   async onBackup()
   {
     this.status = 'pending';
-    const response = await this.backend.backup();
+    const response = await this.api.backup();
     if ( response.ok)
     {
       const json        = JSON.stringify(response.data);

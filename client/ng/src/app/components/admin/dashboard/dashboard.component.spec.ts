@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
-import { BackendTestingModule } from '@services/backend-testing.module';
+import { BackendTestingModule } from '@components/backend/backend-testing.module';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -8,9 +8,9 @@ describe('DashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DashboardComponent ],
       imports: [
-        BackendTestingModule
+        DashboardComponent,
+        BackendTestingModule,
       ]
     })
     .compileComponents();

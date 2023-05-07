@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { UninstallComponent } from './uninstall.component';
-import { BackendTestingModule } from '@services/backend-testing.module';
+import { BackendTestingModule } from '@components/backend/backend-testing.module';
 
 describe('UninstallComponent', () => {
   let component: UninstallComponent;
@@ -9,9 +8,10 @@ describe('UninstallComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UninstallComponent ],
-      imports: [BackendTestingModule]
-  
+      imports: [
+        BackendTestingModule,
+        UninstallComponent
+      ]  
     })
     .compileComponents();
   });

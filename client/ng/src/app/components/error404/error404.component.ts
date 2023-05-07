@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
+  standalone: true,
+  imports: [
+    RouterModule,
+  ],
   selector: 'app-error404',
   template: `
     <h1 style="font-size: 2em;">OUPS ! ERREUR 404</h1>

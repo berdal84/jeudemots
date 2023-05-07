@@ -1,16 +1,25 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit, inject } from "@angular/core";
 import { interval, Subscription } from "rxjs";
-import { AuthService } from "@services/auth.service";
 import { Joke, Page } from "jeudemots-shared";
-import { BackendService } from "@services/backend.service";
 import { debounce, filter, map, tap } from "rxjs/operators";
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NULL_PAGE } from "src/app/constants/null-page";
+import { APIService } from "@components/backend/api/api.service";
+import { AuthService } from "@components/backend/auth/auth.service";
+import { PaginationComponent } from "@components/pagination/pagination.component";
+import { CommonModule } from "@angular/common";
 
 @Component({
+  standalone: true,
   selector: "app-list",
   templateUrl: "./list.component.html",
   styleUrls: ["./list.component.css"],
+  imports: [
+    CommonModule,
+    FormsModule,
+    PaginationComponent,
+    ReactiveFormsModule,
+  ]
 })
 export class ListComponent implements OnInit, OnDestroy {
   status = '';
@@ -22,13 +31,14 @@ export class ListComponent implements OnInit, OnDestroy {
   readonly editedJokes = new Set<number>();
   private subscriptions = new Subscription();
 
-  constructor(private backend: BackendService, private user: AuthService) {}
+  private api = inject(APIService);
+  private auth = inject(AuthService);
 
   ngOnInit() {
 
     // Update page and status when a new page comes
     this.subscriptions.add(
-      this.backend.page$.subscribe( page => {
+      this.api.page$.subscribe( page => {
         this.page = page;
         this.status = `${page.count} résultat(s)`;
       })
@@ -46,7 +56,7 @@ export class ListComponent implements OnInit, OnDestroy {
         tap( newFilter => {
           this.searching = true;
           this.status = 'Recherche en cours ...';
-          this.backend
+          this.api
             .readPage({id: 0, size: 10, filter: newFilter})
             .finally( () => {
               this.searching = false;
@@ -55,12 +65,12 @@ export class ListComponent implements OnInit, OnDestroy {
       )
       .subscribe()
     );
-    return this.backend.readPage({ id: 0, size: 10});
+    return this.api.readPage({ id: 0, size: 10});
   }
 
   private refreshPage() {
     const { id, size } = this.page;
-    return this.backend.readPage({id, size, filter: this.form.value.filter});
+    return this.api.readPage({id, size, filter: this.form.value.filter});
   }
 
   ngOnDestroy() {
@@ -68,7 +78,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   canShowActions(): boolean {
-    return this.user.isLogged();
+    return this.auth.isLogged();
   }
 
   isEditing(joke: Joke): boolean {
@@ -89,7 +99,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   async save(joke: Joke) {
-    const response = await this.backend.update(joke);
+    const response = await this.api.update(joke);
     if (response.ok) {
       this.editedJokes.delete(joke.id);
     } else {
@@ -98,7 +108,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   async delete(joke: Joke) {
-    const response = await this.backend.delete(joke.id);
+    const response = await this.api.delete(joke.id);
     if (response.ok) {
       await this.refreshPage();
     } else {
@@ -108,7 +118,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   async toggleVisibility(joke: Joke) {
     joke.visible = !joke.visible;
-    const response = await this.backend.update(joke);
+    const response = await this.api.update(joke);
     if (response.ok) {
       await this.refreshPage();
     } else {
@@ -117,7 +127,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   handlePageChange(id: number) {
-    return this.backend.setPage(id);
+    return this.api.setPage(id);
   }
 
   pageCount(): number {

@@ -19,7 +19,7 @@
       "@services*": ["./src/app/services*"],
       "@constants": ["./src/app/constants"],
       "@components*": ["./src/app/components*"],
-      "@mocks*": ["./src/app/mocks*"],
+      "@mocks*": ["./src/app/mocks*"],      
     },
     "lib": [
       "es2018",

@@ -1,9 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-import { BackendServiceMock } from 'src/app/mocks/backend-service.mock';
-import { BackendService } from '@services/backend.service';
 import { ContributeComponent } from './contribute.component';
+import { BackendTestingModule } from '@components/backend/backend-testing.module';
 
 describe('ContributeComponent', () => {
   let component: ContributeComponent;
@@ -11,19 +8,9 @@ describe('ContributeComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ContributeComponent
-      ],
       imports: [
-        BrowserModule,
-        FormsModule,
-        ReactiveFormsModule,
-      ],
-      providers: [
-        {
-          provide: BackendService,
-          useClass: BackendServiceMock
-        }
+        ContributeComponent,
+        BackendTestingModule,
       ]
     })
     .compileComponents();

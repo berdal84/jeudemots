@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginComponent } from './login.component';
-import { BackendTestingModule } from '@services/backend-testing.module';
 import { BrowserTestingModule } from '@angular/platform-browser/testing';
-import { ActivatedRoute } from '@angular/router';
+import { BackendTestingModule } from '@components/backend/backend-testing.module';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -10,13 +9,11 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LoginComponent ],
+      declarations: [  ],
       imports: [
         BackendTestingModule,
-        BrowserTestingModule
-      ], 
-      providers: [
-        ActivatedRoute
+        BrowserTestingModule,
+        LoginComponent,
       ]
     })
     .compileComponents();

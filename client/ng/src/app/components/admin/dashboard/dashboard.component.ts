@@ -1,15 +1,20 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '@services/auth.service';
+import { Component, inject } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '@components/backend/auth/auth.service';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
+  imports: [
+    RouterModule,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
 
-  constructor( private auth: AuthService, private route: Router ) { }
+  private auth = inject(AuthService);
+  private route = inject(Router);
 
   async logout() {
     const response = await this.auth.logout();

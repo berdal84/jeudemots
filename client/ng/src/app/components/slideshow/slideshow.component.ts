@@ -1,15 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
-  BehaviorSubject,
   combineLatest,
   Observable,
   startWith,
 } from 'rxjs';
 import { Page, Joke } from 'jeudemots-shared';
-import { BackendService } from '@services/backend.service';
+import { APIService } from '@components/backend/api/api.service';
 import {filter, map, tap} from 'rxjs/operators';
 import {environment} from "src/environments/environment";
-import {CommonModule, NgIf} from "@angular/common";
+import { CommonModule } from "@angular/common";
 import {NavBarComponent} from "./navbar.component";
 import * as NavBar from "./navbar.types";
 import {NULL_PAGE, NULL_JOKE} from "@constants";
@@ -24,10 +23,9 @@ const config = environment.slideshow;
   imports: [
     CommonModule,
     NavBarComponent,
-    NgIf,
   ],
   templateUrl: './slideshow.component.html',
-  styleUrls: ['./slideshow.component.css']
+  styleUrls: ['./slideshow.component.css'],
 })
 export class SlideshowComponent implements OnInit, OnDestroy {
 
@@ -65,7 +63,7 @@ export class SlideshowComponent implements OnInit, OnDestroy {
     })
   );
 
-  constructor(private backend: BackendService) {}
+  constructor(private backend: APIService) {}
 
   ngOnInit() {
     return this.backend.readPage({id: 0, size: 1});

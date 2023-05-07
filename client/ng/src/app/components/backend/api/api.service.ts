@@ -3,9 +3,9 @@ import {Joke, Page} from 'jeudemots-shared';
 import {HttpClient} from '@angular/common/http';
 import {ReplaySubject, of, firstValueFrom} from 'rxjs';
 import {catchError, first, retry} from 'rxjs/operators';
-import {environment} from '../../environments/environment';
+import {environment} from 'src/environments/environment';
 import {Response, Credentials} from 'jeudemots-shared';
-import {NULL_PAGE} from '../constants/null-page';
+import {NULL_PAGE} from '@constants';
 // @ts-ignore (any)
 import * as sha256 from 'sha256';
 
@@ -14,7 +14,7 @@ const { api } = environment;
 @Injectable({
   providedIn: 'root'
 })
-export class BackendService {
+export class APIService {
 
   readonly page$ = new ReplaySubject<Page>();
   private page: Page = NULL_PAGE;

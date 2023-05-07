@@ -1,11 +1,17 @@
-import { Component } from "@angular/core";
-import { Validators, FormControl, FormGroup } from "@angular/forms";
-import { BackendService } from "@services/backend.service";
+import { Component, inject } from "@angular/core";
+import { Validators, FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { APIService } from "@components/backend/api/api.service";
 import { Joke } from "jeudemots-shared";
 import {environment} from "src/environments/environment";
+import { CommonModule } from "@angular/common";
 
 @Component({
   selector: "app-contribute",
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: "./contribute.component.html",
   styleUrls: ["./contribute.component.css"],
 })
@@ -44,7 +50,7 @@ export class ContributeComponent {
     }),
   });
 
-  constructor(private jokeService: BackendService) {}
+  private api = inject(APIService);
 
   /**
    * Return true if form is invalid, false otherwise.
@@ -68,7 +74,7 @@ export class ContributeComponent {
       author,
     };
 
-    const response = await this.jokeService.create(joke);
+    const response = await this.api.create(joke);
     if (response.ok) {
       this.form.reset();
       this.status = "ok";

@@ -1,9 +1,15 @@
-import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { BackendService } from "@services/backend.service";
+import { CommonModule } from "@angular/common";
+import { Component, inject } from "@angular/core";
+import { FormGroup, FormControl, Validators, ReactiveFormsModule } from "@angular/forms";
+import { APIService } from "@components/backend/api/api.service";
 
 @Component({
   selector: "app-uninstall",
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: "./uninstall.component.html",
   styleUrls: ["./uninstall.component.css"],
 })
@@ -18,7 +24,7 @@ export class UninstallComponent {
     }),
   });
 
-  constructor(private jokeService: BackendService) {}
+  private api = inject(APIService);
 
   /**
    * Return true if form is invalid, false otherwise.
@@ -35,7 +41,7 @@ export class UninstallComponent {
     if (this.form.invalid) return;
 
     this.status = "pending";
-    const result = await this.jokeService.uninstall();
+    const result = await this.api.uninstall();
     if (result.ok) {
       this.form.reset();
       this.status = "ok";

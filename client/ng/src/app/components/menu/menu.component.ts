@@ -1,13 +1,19 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService as AuthService } from '@services/auth.service';
+import { Router, RouterModule } from '@angular/router';
 import {map} from 'rxjs/operators';
 import {LINKS} from './menu.data';
 import {combineLatest, Observable, of} from 'rxjs';
 import {Link} from './menu.models';
+import { AuthService } from '@components/backend/auth/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-menu',
+  standalone: true,
+  imports: [
+    RouterModule,
+    CommonModule
+  ],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })

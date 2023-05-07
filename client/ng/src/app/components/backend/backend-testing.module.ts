@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { BackendService } from './backend.service';
-import { AuthService } from './auth.service';
-import { BackendServiceMock } from '@mocks/backend-service.mock';
-import { AuthServiceMock } from '@mocks/auth-service.mock';
+import { APIServiceMock } from '@components/backend/api/api.service.mock';
 import { BrowserTestingModule } from '@angular/platform-browser/testing';
+import { AuthService } from './auth/auth.service';
+import { AuthServiceMock } from './auth/auth.service.mock';
+import { APIService } from './api/api.service';
 
 @NgModule({
     imports: [
@@ -11,8 +11,8 @@ import { BrowserTestingModule } from '@angular/platform-browser/testing';
     ],
     providers: [
         {
-            provide: BackendService,
-            useClass: BackendServiceMock
+            provide: APIService,
+            useClass: APIServiceMock
         },
         {
             provide: AuthService,
