@@ -14,10 +14,10 @@
     <div class="flex-right">
       <input type="text" formControlName="category" maxlength="20" />
       <div
-        *ngIf="displayErrors && invalid && controls.category.errors"
+        *ngIf="category.touched && category.invalid"
         class="invalid"
       >
-        <p *ngIf="controls.category.errors.required">Catégorie requise</p>
+        <p *ngIf="category.errors?.required">Catégorie requise</p>
       </div>
     </div>
   </div>
@@ -33,9 +33,9 @@
         maxlength="250"
         formControlName="text"
       ></textarea>
-      <div *ngIf="displayErrors && controls.text.errors" class="invalid">
-        <p *ngIf="controls.text.errors.required">Texte requis</p>
-        <p *ngIf="controls.text.errors.minlength">5 caractères minimum</p>
+      <div *ngIf="text.touched && text.invalid && text.errors" class="invalid">
+        <p *ngIf="text.errors.required">Texte requis</p>
+        <p *ngIf="text.errors.minlength">5 caractères minimum</p>
       </div>
     </div>
   </div>
@@ -45,8 +45,8 @@
     <label class="flex-left">Auteur*</label>
     <div class="flex-right">
       <input type="text" formControlName="author" maxlength="20" />
-      <div *ngIf="displayErrors && controls.author.errors" class="invalid">
-        <p *ngIf="controls.author.errors.required">Auteur requis</p>
+      <div *ngIf="author.touched && author.invalid" class="invalid">
+        <p *ngIf="author.errors?.required">Auteur requis</p>
       </div>
     </div>
   </div>
@@ -66,7 +66,7 @@
   </div>
   <div
     class="flex-row invalid"
-    *ngIf="displayErrors && controls.acceptTerms.errors"
+    *ngIf="acceptTerms.touched && acceptTerms.invalid"
   >
     <label class="flex-left"></label>
     <p class="flex-right flex-row">
@@ -82,23 +82,27 @@
     <div class="flex-left"></div>
     <div class="flex-right">
       <button type="reset" (click)="onReset()">Recommencer</button>
-      <button *ngIf="status !== 'ok'">Soumettre</button>
+      <button *ngIf="status() === 'idle'">Soumettre</button>
     </div>
   </div>
 
-  <!-- Global error message (with a joke inside) -->
-  <div class="flex-row" *ngIf="status === 'ko'">
-    <div class="flex-left"></div>
-    <p class="flex-right flex-row invalid">
-      Oh... Un problème a eu lieu pendant le transfert.
-    </p>
-  </div>
+  <ng-container *ngSwitch="status()">
 
-  <!-- Global confirmation message (with a joke inside) -->
-  <div class="flex-row" *ngIf="status === 'ok'">
-    <div class="flex-left"></div>
-    <p class="flex-right flex-row valid">
-      Expédition réussie! Votre blague est en attente de validation. Merci ;)
-    </p>
-  </div>
+    <!-- error message -->
+    <div class="flex-row" *ngSwitchCase="'ko'">
+      <div class="flex-left"></div>
+      <p class="flex-right flex-row invalid">
+        Oh... Un problème a eu lieu pendant le transfert.
+      </p>
+    </div>
+
+    <!-- confirmation message -->
+    <div class="flex-row" *ngSwitchCase="'ok'">
+      <div class="flex-left"></div>
+      <p class="flex-right flex-row valid">
+        Expédition réussie! Votre blague est en attente de validation. Merci ;)
+      </p>
+    </div>
+
+  </ng-container>
 </form>

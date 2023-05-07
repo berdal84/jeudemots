@@ -1,24 +1,22 @@
-<ng-container *ngIf="viewModel | async as vm">
-  <div class="center" >
-    <div id="topBar">
-      <p id="jokeCategory">{{ vm.joke.category }}</p>
-      <app-navbar class="navbar"
-                  [playing]="vm.playing"
-                  [enableNext]="vm.hasNext"
-                  [enablePrevious]="vm.hasPrevious"
-                  (onClicked)="handleNavBarClick($event)"
-      ></app-navbar>
-    </div>
-    <div id="joke">
-      <p id="jokeText">{{ vm.joke.text }}</p>
-      <p id="jokeNote">
-        <i>par {{ vm.joke.author }}, le {{ vm.joke.date }}</i>
-      </p>
-    </div>
+<div class="center" >
+  <div id="topBar">
+    <p id="jokeCategory">{{ joke().category }}</p>
+    <app-navbar class="navbar"
+                [playing]="isPlaying()"
+                [enableNext]="hasNext()"
+                [enablePrevious]="hasPrevious()"
+                (onClicked)="handleNavBarClick($event)"
+    ></app-navbar>
   </div>
-  <div *ngIf="vm.playing" class="eggTimer" >
-    <div class="background">
-      <div class="bar" [ngStyle]="getEggTimerStyle()"></div>
-    </div>
+  <div id="joke">
+    <p id="jokeText">{{ joke().text }}</p>
+    <p id="jokeNote">
+      <i>par {{ joke().author }}, le {{ joke().date }}</i>
+    </p>
   </div>
-</ng-container>
+</div>
+<div *ngIf="isPlaying()" class="eggTimer" >
+  <div class="background">
+    <div class="bar" [ngStyle]="eggTimerStyle()"></div>
+  </div>
+</div>

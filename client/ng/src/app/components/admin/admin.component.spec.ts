@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DashboardComponent } from './dashboard.component';
+import { AdminComponent } from './admin.component';
 import { BackendTestingModule } from '@components/backend/backend-testing.module';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
@@ -8,8 +8,8 @@ const fakeActivatedRoute = {
 } as ActivatedRoute;
 
 describe('DashboardComponent', () => {
-  let component: DashboardComponent;
-  let fixture: ComponentFixture<DashboardComponent>;
+  let component: AdminComponent;
+  let fixture: ComponentFixture<AdminComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -18,7 +18,7 @@ describe('DashboardComponent', () => {
         useValue: fakeActivatedRoute
       }],
       imports: [
-        DashboardComponent,
+        AdminComponent,
         BackendTestingModule
       ]
     })
@@ -26,7 +26,7 @@ describe('DashboardComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DashboardComponent);
+    fixture = TestBed.createComponent(AdminComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

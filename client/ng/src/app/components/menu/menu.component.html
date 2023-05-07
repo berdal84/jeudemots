@@ -6,7 +6,7 @@
   <div class="links">
     <button
       class="link"
-      *ngFor="let link of links$ | async"
+      *ngFor="let link of links()"
       [disabled]="link.disabled"
       [routerLink]="link.url"
     >

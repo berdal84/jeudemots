@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit, inject } from "@angular/core";
-import { interval, Subscription } from "rxjs";
-import { Joke, Page } from "jeudemots-shared";
+import { Component, OnInit, computed, effect, inject, signal } from "@angular/core";
+import { interval } from "rxjs";
+import { Joke } from "jeudemots-shared";
 import { debounce, filter, map, tap } from "rxjs/operators";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NULL_PAGE } from "src/app/constants/null-page";
@@ -8,6 +8,7 @@ import { APIService } from "@components/backend/api/api.service";
 import { AuthService } from "@components/backend/auth/auth.service";
 import { PaginationComponent } from "@components/pagination/pagination.component";
 import { CommonModule } from "@angular/common";
+import { toSignal } from "@angular/core/rxjs-interop";
 
 @Component({
   standalone: true,
@@ -21,64 +22,57 @@ import { CommonModule } from "@angular/common";
     ReactiveFormsModule,
   ]
 })
-export class ListComponent implements OnInit, OnDestroy {
-  status = '';
-  searching = false;
-  page: Page = NULL_PAGE;
+export class ListComponent implements OnInit {
+  private auth = inject(AuthService);
+  private api = inject(APIService);
+
+  status = signal('');
+  searching = signal(false);
+  page = toSignal( this.api.page$, {initialValue: NULL_PAGE} );
+  pageCount = computed(() => {
+    const {count, size} = this.page();
+    return Math.ceil(count / size)
+  });
+  isLogged = toSignal(this.auth.userStatus$.pipe( map(status => status.is_logged )));
+
   readonly form = new FormGroup({
     filter: new FormControl<string>('', { nonNullable: true}),
   });
   readonly editedJokes = new Set<number>();
-  private subscriptions = new Subscription();
 
-  private api = inject(APIService);
-  private auth = inject(AuthService);
-
-  ngOnInit() {
-
-    // Update page and status when a new page comes
-    this.subscriptions.add(
-      this.api.page$.subscribe( page => {
-        this.page = page;
-        this.status = `${page.count} résultat(s)`;
-      })
-    );
-
-    // Search when user is typing
-    this.subscriptions.add(
-      this.form.valueChanges.pipe(
+  constructor() {
+    effect((onCleanUp) => {
+      
+      // Search when user is typing
+      const searchSubscribtion = this.form.valueChanges.pipe(
         // clear status
-        tap( () => this.status = '' ),
-        map( changes => changes.filter ?? ''),
+        tap(() => this.status.set('')),
+        map(changes => changes.filter ?? ''),
         // ensure text is larger than 2 chars or is empty
-        filter( newFilter => newFilter.length > 2 || newFilter.length === 0),
+        filter(newFilter => newFilter.length > 2 || newFilter.length === 0),
         debounce(() => interval(200)),
-        tap( newFilter => {
-          this.searching = true;
-          this.status = 'Recherche en cours ...';
+        tap(newFilter => {
+          this.searching.set(true);
+          this.status.set('Recherche en cours ...');
           this.api
-            .readPage({id: 0, size: 10, filter: newFilter})
-            .finally( () => {
-              this.searching = false;
+            .readPage({ id: 0, size: 10, filter: newFilter })
+            .finally(() => {
+              this.searching.set(false);
             });
         })
-      )
-      .subscribe()
-    );
+      ).subscribe();
+
+      onCleanUp(searchSubscribtion.unsubscribe);
+    });
+  }
+
+  ngOnInit() {
     return this.api.readPage({ id: 0, size: 10});
   }
 
   private refreshPage() {
-    const { id, size } = this.page;
+    const { id, size } = this.page();
     return this.api.readPage({id, size, filter: this.form.value.filter});
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
-  }
-
-  canShowActions(): boolean {
-    return this.auth.isLogged();
   }
 
   isEditing(joke: Joke): boolean {
@@ -128,9 +122,5 @@ export class ListComponent implements OnInit, OnDestroy {
 
   handlePageChange(id: number) {
     return this.api.setPage(id);
-  }
-
-  pageCount(): number {
-    return Math.ceil(this.page.count / this.page.size);
   }
 }

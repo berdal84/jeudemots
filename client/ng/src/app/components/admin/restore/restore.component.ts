@@ -1,7 +1,8 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { FormGroup, Validators, FormControl, ReactiveFormsModule } from "@angular/forms";
 import { APIService } from "@components/backend/api/api.service";
+import { FormStatus } from '@models/form-status';
 
 @Component({
   selector: "app-restore",
@@ -14,9 +15,8 @@ import { APIService } from "@components/backend/api/api.service";
   styleUrls: ["./restore.component.css"],
 })
 export class RestoreComponent {
-  status: 'idle' | "pending" | "ok" | "ko" = 'idle';
-  /** display form errors */
-  displayErrors: boolean = false;
+  private api = inject(APIService);
+  status = signal<FormStatus>('idle');
   form = new FormGroup({
     file: new FormControl<string | null>(null, {
       validators: [Validators.required],
@@ -29,14 +29,8 @@ export class RestoreComponent {
     fileSrc: new FormControl<File | null>(null),
   });
 
-  private api = inject(APIService);
-
-  /**
-   * Return true if form is invalid, false otherwise.
-   */
-  get invalid() {
-    return this.form.invalid;
-  }
+  get file() { return this.form.controls.file }
+  get agree() { return this.form.controls.agree }
 
   handleFileChange(event: Event) {
     const target = event.target as HTMLInputElement;
@@ -48,40 +42,30 @@ export class RestoreComponent {
     }
   }
 
-  /**
-   * Submit form content only if form is valid
-   */
-  async onSubmit() {
-    this.displayErrors = this.form.invalid;
+  async handleSubmit() {
     const file = this.form.getRawValue().fileSrc;
 
-    if (!this.form.valid || ! file) return;
+    if (!file || !this.form.valid) {
+      this.form.markAllAsTouched();
+      return;
+    };
 
-    this.status = "pending";
+    this.status.set("pending");
     const formData = new FormData();
     formData.append("file", file);
 
     const result = await this.api.restore(formData);
     if (result.ok) {
       this.form.reset();
-      this.status = "ok";
+      this.status.set("ok");
     } else {
-      this.status = "ko";
+      this.status.set("ko");
     }
   }
 
-  /**
-   * Reset form
-   */
-  onReset() {
-    this.status = 'idle';
+  handleReset() {
+    this.status.set('idle');
     this.form.reset();
   }
 
-  /**
-   * Shortcut to this.contributeForm.controls
-   */
-  get controls() {
-    return this.form.controls;
-  }
 }

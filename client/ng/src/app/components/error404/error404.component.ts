@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -16,8 +16,5 @@ import { Router, RouterModule } from '@angular/router';
   `
 })
 export class Error404Component {
-  router_url: string;
-  constructor( router: Router) {
-    this.router_url = router.url;
-  }
+  router_url = inject(Router).url;
 }

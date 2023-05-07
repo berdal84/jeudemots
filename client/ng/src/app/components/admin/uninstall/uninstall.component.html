@@ -5,7 +5,7 @@
     Si vous désirez conservez les données, procédez d'abord à une sauvegarde.
 </p>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="handleSubmit()">
 
     <!-- Agree -->
     <div class="flex-row">
@@ -16,7 +16,7 @@
         </div>
 
     </div>
-    <div class="flex-row invalid" *ngIf="displayErrors && controls.agree.errors">
+    <div class="flex-row invalid" *ngIf="agree.invalid && agree.errors">
         <label class="flex-left"></label>
         <p class="flex-right flex-row">Lisez et cochez.
         </p>
@@ -33,17 +33,20 @@
         </div>
     </div>
 
-    <!-- Error -->
-    <div class="flex-row" *ngIf="status === 'ko'">
-        <div class="flex-left"></div>
-        <p class="flex-right flex-row invalid">Oh... Un problème a eu lieu pendant la désinstallation.</p>
-    </div>
+    <ng-container *ngSwitch="status()">
 
-    <!-- Confirmation -->
-    <div class="flex-row" *ngIf="status === 'ok'">
-        <div class="flex-left"></div>
-        <p class="flex-right valid">La désinstallation s'est bien déroulée.</p>
-    </div>
+        <!-- Error-->
+        <div class="flex-row" *ngSwitchCase="'ko'">
+            <div class="flex-left"></div>
+            <p class="flex-right flex-row invalid">Oh... Un problème a eu lieu pendant la désinstallation.</p>
+        </div>
 
+        <!-- Success -->
+        <div class="flex-row" *ngSwitchCase="'ok'">
+            <div class="flex-left"></div>
+            <p class="flex-right flex-row valid">La désinstallation s'est bien déroulée.</p>
+        </div>
+
+    </ng-container>
 </form>
 

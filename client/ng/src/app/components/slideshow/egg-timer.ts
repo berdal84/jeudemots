@@ -15,6 +15,8 @@ export class EggTimer {
     isPlaying$ = new BehaviorSubject(false);
     /** triggered when the egg time expired */
     timeout$ = new Subject<void>();
+    /** triggered when the egg time increments */
+    tick$ = new Subject<{progress: number}>();
 
     constructor({precision = 100}: EggTimerOptions = {}) {
         this.precision = precision;
@@ -23,7 +25,7 @@ export class EggTimer {
     /**
      * Return a number between 0 (just started) and 1 (timeout)
      */
-    get progress(): number {
+    private computeProgress(): number {
         return  1 - this.timer / this.initialTimer;
     }
 
@@ -55,6 +57,7 @@ export class EggTimer {
                 this.isPlaying$.next(false);
                 this.timeout$.next();
             } else {
+                this.tick$.next({ progress: this.computeProgress() });
                 window.setTimeout( incrementEggTimer, this.precision);
             }
         };

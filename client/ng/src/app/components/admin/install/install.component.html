@@ -16,7 +16,7 @@
         </div>
 
     </div>
-    <div class="flex-row invalid" *ngIf="displayErrors && controls.agree.errors">
+    <div class="flex-row invalid" *ngIf="agree.invalid && agree.errors">
         <label class="flex-left"></label>
         <p class="flex-right flex-row">Lisez et cochez.
         </p>
@@ -29,20 +29,21 @@
     <div class="flex-row">
         <div class="flex-left"></div>
         <div class="flex-right">
-            <button *ngIf="!status" >Installer</button>
+            <button *ngIf="status() ==='idle'" >Installer</button>
         </div>
     </div>
 
-    <!-- Error -->
-    <div class="flex-row" *ngIf="status === 'ko'">
-        <div class="flex-left"></div>
-        <p class="flex-right flex-row invalid">Oh... Un problème a eu lieu pendant l'installation.</p>
-    </div>
+    <ng-container *ngSwitch="status()">
+        <!-- Error -->
+        <div class="flex-row" *ngSwitchCase="'ko'">
+            <div class="flex-left"></div>
+            <p class="flex-right flex-row invalid">Oh... Un problème a eu lieu pendant l'installation.</p>
+        </div>
 
-    <!-- Confirmation -->
-    <div class="flex-row" *ngIf="status === 'ok'">
-        <div class="flex-left"></div>
-        <p class="flex-right valid">L'installation s'est bien déroulée.</p>
-    </div>
-
+        <!-- Confirmation -->
+        <div class="flex-row" *ngSwitchCase="'ok'">
+            <div class="flex-left"></div>
+            <p class="flex-right valid">L'installation s'est bien déroulée.</p>
+        </div>
+    </ng-container>
 </form>

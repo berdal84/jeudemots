@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {Joke, Page} from 'jeudemots-shared';
 import {HttpClient} from '@angular/common/http';
-import {ReplaySubject, of, firstValueFrom} from 'rxjs';
+import {ReplaySubject, of, firstValueFrom, BehaviorSubject} from 'rxjs';
 import {catchError, first, retry} from 'rxjs/operators';
 import {environment} from 'src/environments/environment';
 import {Response, Credentials} from 'jeudemots-shared';
@@ -16,13 +16,9 @@ const { api } = environment;
 })
 export class APIService {
 
-  readonly page$ = new ReplaySubject<Page>();
-  private page: Page = NULL_PAGE;
+  readonly page$ = new BehaviorSubject<Page>(NULL_PAGE);
   private cache = new Map<string, Response>();
-
-  constructor(private httpClient: HttpClient) {
-    this.page$.subscribe(page => this.page = page);
-  }
+  private httpClient = inject(HttpClient);
 
   /**
    * Generic request, guarantee not to throw.
@@ -88,7 +84,7 @@ export class APIService {
    * @param id zero-based index of the page, must be < pages count
    */
   setPage(id: number): Promise<Response<Page>> {
-    const { size } = this.page;
+    const { size } = this.page$.value;
     return this.readPage({id, size});
   }
 

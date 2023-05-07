@@ -4,7 +4,7 @@
     Restauration de la base de données sous forme de fichier <i>*.json</i>.
 </p>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="handleSubmit()">
 
     <!-- File -->
     <div class="flex-row">
@@ -14,8 +14,8 @@
             type="file"
             formControlName="file"
             (change)="handleFileChange($event)">
-            <div *ngIf="displayErrors && controls.file.errors" class="invalid">
-                <p *ngIf="controls.file.errors.required">Fichier requis</p>
+            <div *ngIf="file.invalid && file.errors" class="invalid">
+                <p *ngIf="file.errors.required">Fichier requis</p>
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
         </div>
 
     </div>
-    <div class="flex-row invalid" *ngIf="displayErrors && controls.agree.errors">
+    <div class="flex-row invalid" *ngIf="agree.invalid && agree.errors">
         <label class="flex-left"></label>
         <p class="flex-right flex-row">Lisez et cochez.
         </p>
@@ -42,21 +42,24 @@
     <div class="flex-row">
         <div class="flex-left"></div>
         <div class="flex-right">
-            <button type="reset" (click)="onReset()">Recommencer</button>
+            <button type="reset" (click)="handleReset()">Recommencer</button>
             <button *ngIf="!status" >Restaurer</button>
         </div>
     </div>
 
-    <!-- Global error message (with a joke inside) -->
-    <div class="flex-row" *ngIf="status === 'ko'">
-        <div class="flex-left"></div>
-        <p class="flex-right flex-row invalid">Oh... Un problème a eu lieu pendant le transfert.</p>
-    </div>
+    <ng-container *ngSwitch="status()">
 
-    <!-- Global confirmation message (with a joke inside) -->
-    <div class="flex-row" *ngIf="status === 'ok'">
-        <div class="flex-left"></div>
-        <p class="flex-right flex-row valid">Expédition réussie! La base de donnée a bien été restaurée.</p>
-    </div>
+        <!-- Global error message (with a joke inside) -->
+        <div class="flex-row" *ngSwitchCase="'ko'">
+            <div class="flex-left"></div>
+            <p class="flex-right flex-row invalid">Oh... Un problème a eu lieu pendant le transfert.</p>
+        </div>
 
+        <!-- Global confirmation message (with a joke inside) -->
+        <div class="flex-row" *ngSwitchCase="'ok'">
+            <div class="flex-left"></div>
+            <p class="flex-right flex-row valid">Expédition réussie! La base de donnée a bien été restaurée.</p>
+        </div>
+
+    </ng-container>
 </form>

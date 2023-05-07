@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { APIService } from '@components/backend/api/api.service';
 import { CommonModule } from '@angular/common';
+import { FormStatus } from 'src/app/models/form-status';
 
 @Component({
   selector: 'app-backup',
@@ -13,31 +14,24 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./backup.component.css']
 })
 export class BackupComponent {
-  status: null | 'pending' | 'ok' | 'ko';
+  status = signal('idle' as FormStatus);
   /** URL of the JSON to download */
-  downloadJsonHref: SafeUrl | null = null;
+  downloadJsonHref = signal<SafeUrl | null>(null);
 
-  constructor(
-    private api: APIService,
-    private sanitizer: DomSanitizer)
-  {
-    this.downloadJsonHref = null;
-    this.status           = null;
-  }
-
-  async onBackup()
-  {
-    this.status = 'pending';
+  private api = inject(APIService);
+  private sanitizer = inject(DomSanitizer)
+  
+  async handleSubmit() {
+    this.status.set('pending');
     const response = await this.api.backup();
-    if ( response.ok)
-    {
+    if ( response.ok) {
       const json        = JSON.stringify(response.data);
       const encodedJson = encodeURIComponent(json);
       const uri         = this.sanitizer.bypassSecurityTrustUrl(`data:text/json;charset=UTF-8,${encodedJson}`);
-      this.downloadJsonHref = uri;
-      this.status = 'ok';
+      this.downloadJsonHref.set(uri);
+      this.status.set('ok');
     } else {
-      this.status = 'ko';
+      this.status.set('ko');
     }
   }
 }

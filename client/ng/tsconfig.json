@@ -20,6 +20,7 @@
       "@constants": ["./src/app/constants"],
       "@components*": ["./src/app/components*"],
       "@mocks*": ["./src/app/mocks*"],      
+      "@models*": ["./src/app/models*"],     
     },
     "lib": [
       "es2018",

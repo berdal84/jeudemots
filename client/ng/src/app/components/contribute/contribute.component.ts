@@ -1,9 +1,10 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { Validators, FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { APIService } from "@components/backend/api/api.service";
 import { Joke } from "jeudemots-shared";
 import {environment} from "src/environments/environment";
 import { CommonModule } from "@angular/common";
+import { FormStatus } from "src/app/models/form-status";
 
 @Component({
   selector: "app-contribute",
@@ -16,8 +17,8 @@ import { CommonModule } from "@angular/common";
   styleUrls: ["./contribute.component.css"],
 })
 export class ContributeComponent {
-  status: "idle" | "pending" | "ok" | "ko" = "idle";
-  displayErrors = false;
+  status = signal("idle" as FormStatus);
+  displayErrors = signal(false);
   email = environment.supportEmail;
 
   form = new FormGroup({
@@ -63,8 +64,10 @@ export class ContributeComponent {
    * Submit form content only if form is valid
    */
   async onSubmit() {
-    this.displayErrors = this.form.invalid;
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    };
 
     const { category, text, author } = this.form.getRawValue();
     const joke: Joke = {
@@ -77,9 +80,9 @@ export class ContributeComponent {
     const response = await this.api.create(joke);
     if (response.ok) {
       this.form.reset();
-      this.status = "ok";
+      this.status.set("ok");
     } else {
-      this.status = "ko";
+      this.status.set("ko");
     }
   }
 
@@ -87,14 +90,12 @@ export class ContributeComponent {
    * Reset form
    */
   onReset() {
-    this.status = "idle";
+    this.status.set("idle");
     this.form.reset();
   }
 
-  /**
-   * Shortcut to this.contributeForm.controls
-   */
-  get controls() {
-    return this.form.controls;
-  }
+  get category() { return this.form.controls.category }
+  get text() { return this.form.controls.text }
+  get author() { return this.form.controls.author }
+  get acceptTerms() { return this.form.controls.acceptTerms }
 }

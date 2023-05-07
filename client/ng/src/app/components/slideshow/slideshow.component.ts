@@ -1,19 +1,14 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {
-  combineLatest,
-  Observable,
-  startWith,
-} from 'rxjs';
-import { Page, Joke } from 'jeudemots-shared';
+import { Component, OnInit, computed, inject } from '@angular/core';
 import { APIService } from '@components/backend/api/api.service';
-import {filter, map, tap} from 'rxjs/operators';
-import {environment} from "src/environments/environment";
+import { map } from 'rxjs/operators';
+import { environment } from "src/environments/environment";
 import { CommonModule } from "@angular/common";
-import {NavBarComponent} from "./navbar.component";
+import { NavBarComponent } from "./navbar.component";
 import * as NavBar from "./navbar.types";
-import {NULL_PAGE, NULL_JOKE} from "@constants";
-import {EggTimer} from "./egg-timer";
-import {ViewModel} from "./slideshow.types";
+import { NULL_PAGE } from "@constants";
+import { EggTimer } from "./egg-timer";
+import { toSignal } from '@angular/core/rxjs-interop';
+import { effect } from '@angular/core';
 
 const config = environment.slideshow;
 
@@ -27,79 +22,60 @@ const config = environment.slideshow;
   templateUrl: './slideshow.component.html',
   styleUrls: ['./slideshow.component.css'],
 })
-export class SlideshowComponent implements OnInit, OnDestroy {
+export class SlideshowComponent implements OnInit {
 
+  private api      = inject(APIService);
   private eggTimer = new EggTimer();
-  private currentJoke: Joke = NULL_PAGE.jokes[0];
-  private page: Page = NULL_PAGE;
-
-  private browseNextJoke = this.eggTimer.timeout$.subscribe( async () => {
-    const nextId = (this.page.id + 1) % this.page.count; // loop
-    await this.backend.setPage(nextId);
-    this.eggTimer.start(this.computeTimeForCurrentJoke());
+  private page     = toSignal( this.api.page$, { initialValue: NULL_PAGE } );
+  joke        = computed(() => this.page().jokes[0] );
+  isPlaying   = toSignal(this.eggTimer.isPlaying$, {initialValue: false });
+  hasPrevious = computed(() => this.page().id > 0);
+  hasNext     = computed(() => this.page().id < this.page().count - 1);
+  eggTimerStyle = toSignal( this.eggTimer.tick$.pipe(
+    map(({progress}) => {
+      return {
+        width: `${progress * 100}%`,
+        opacity: Math.sin((progress - 0.15) * Math.PI ) // wave with a max opacity when progress is around 85%
+      };
+    })
+  ));
+  private timeForCurrentJoke = computed( () => {
+    const { text, category} = this.joke();
+    const jokeLength = text.length + category.length;
+    return config.minimumTimePerJoke * ( 1 + jokeLength * config.perCharCostFactor);
   });
 
-  viewModel: Observable<ViewModel> = combineLatest([
-    this.eggTimer.isPlaying$,
-    this.backend.page$.pipe(filter( page => page !== null)),
-  ]).pipe(
-    map( ([playing, page]) => ({
-      hasNext: page.id < page.count - 1,
-      hasPrevious: page.id > 0,
-      playing,
-      page,
-      joke: page.jokes[0],
-    })),
-    startWith<ViewModel>({
-      hasPrevious: false,
-      hasNext: false,
-      playing: false,
-      page: NULL_PAGE,
-      joke: NULL_JOKE,
-    }),
-    tap( newState => {
-      this.currentJoke = newState.joke;
-      this.page = newState.page;
-    })
-  );
+  constructor() {
+    effect( (onCleanUp) => {
+      // Load next page when eggTimer is timeout
+      const nextPageSubscribtion = this.eggTimer.timeout$.subscribe( async () => {
+        const nextId = (this.page().id + 1) % this.page().count; // loop
+        await this.api.setPage(nextId);
+        this.eggTimer.start(this.timeForCurrentJoke());
+      })
 
-  constructor(private backend: APIService) {}
+      onCleanUp(nextPageSubscribtion.unsubscribe);
+    })
+  }
 
   ngOnInit() {
-    return this.backend.readPage({id: 0, size: 1});
-  }
-
-  ngOnDestroy() {
-    this.browseNextJoke.unsubscribe();
-  }
-
-  getEggTimerStyle() {
-    const progress = this.eggTimer.progress;
-    return {
-      width: `${progress * 100}%`,
-      opacity: Math.sin((progress - 0.15) * Math.PI ) // wave with a max opacity when progress is around 85%
-    };
-  }
-
-  private computeTimeForCurrentJoke(): number {
-    const jokeLength = this.currentJoke.text.length + this.currentJoke.category.length;
-    return config.minimumTimePerJoke * ( 1 + jokeLength * config.perCharCostFactor);
+    return this.api.readPage({id: 0, size: 1});
   }
 
   async handleNavBarClick(type: NavBar.ButtonType) {
     switch (type) {
       case "play":
-        return this.eggTimer.start(this.computeTimeForCurrentJoke());
+        return this.eggTimer.start(this.timeForCurrentJoke());
       case "pause":
         return this.eggTimer.pause();
       case "previous":
-        return this.backend.setPage(this.page.id - 1);
+        return this.api.setPage(this.page().id - 1);
       case "next":
-        return this.backend.setPage(this.page.id + 1);
+        return this.api.setPage(this.page().id + 1);
       case "first":
-        return this.backend.setPage(0);
+        return this.api.setPage(0);
       case "last":
-        return this.backend.setPage(this.page.count - 1);
+        return this.api.setPage(this.page().count - 1);
     }
   }
 }

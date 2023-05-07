@@ -11,10 +11,10 @@
           size="50"
         />
       </div>
-      <p class="status" [ngClass]="{ 'searching': searching}" >{{status}}</p>
+      <p class="status" [ngClass]="{ 'searching': searching}" >{{status()}}</p>
     </div>
     <app-pagination
-      [pageIndex]="page.id"
+      [pageIndex]="page().id"
       [count]="pageCount()"
       (pageChange)="handlePageChange($event)"
     ></app-pagination>
@@ -36,11 +36,11 @@
       <th>
         <p>Date</p>
       </th>
-      <th *ngIf="canShowActions()">
+      <th *ngIf="isLogged()">
         <p>Actions</p>
       </th>
     </tr>
-    <tr *ngFor="let joke of page.jokes" [ngClass]="{ 'masked': !joke.visible }">
+    <tr *ngFor="let joke of page().jokes" [ngClass]="{ 'masked': !joke.visible }">
       <!-- Reading -->
       <ng-container *ngIf="!isEditing(joke) else editor">
         <td>
@@ -82,7 +82,7 @@
         </td>
       </ng-template>
 
-      <td *ngIf="canShowActions()">
+      <td *ngIf="isLogged()">a
         <div class="actions">
           <button (click)="toggleVisibility(joke)">
             {{ joke.visible ? "masquer" : "publier" }}
@@ -102,7 +102,7 @@
 </div>
 
 <app-pagination
-  [pageIndex]="page.id"
+  [pageIndex]="page().id"
   [count]="pageCount()"
   (pageChange)="handlePageChange($event)"
 ></app-pagination>

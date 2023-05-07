@@ -1,9 +1,6 @@
-import {Joke, Page} from "jeudemots-shared";
 
-export type ViewModel = {
+export type NavBarState = {
     playing: boolean;
     hasPrevious: boolean;
     hasNext: boolean;
-    page: Page;
-    joke: Joke;
 };

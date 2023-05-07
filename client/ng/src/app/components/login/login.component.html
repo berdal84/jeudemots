@@ -7,7 +7,7 @@
         <div class="form-field">
             <label>Nom d'utilisateur</label>
             <input formControlName="username" type="text"/>
-            <div class="flex-row invalid" *ngIf="form.controls.username.touched && form.controls.username.errors">
+            <div class="flex-row invalid" *ngIf="username.touched && username.errors">
               <p>Nom d'utilisateur requis</p>
             </div>
         </div>
@@ -15,20 +15,20 @@
         <div class="form-field">
             <label>Mot de passe</label>
             <input formControlName="password" type="password"/>
-            <div class="flex-row invalid" *ngIf="form.controls.password.touched && form.controls.password.errors">
+            <div class="flex-row invalid" *ngIf="password.touched && password.errors">
               <p>Un mot de passe est requis</p>
             </div>
         </div>
 
         <div class="actions" >
-            <button type="reset" (click)="reset()">Annuler</button>
-            <button type="submit" [disabled]="status === 'pending'">OK</button>
+            <button type="reset" (click)="form.reset()">Annuler</button>
+            <button type="submit" [disabled]="status() === 'pending'">OK</button>
         </div>
-        <p *ngIf="status === 'pending'">Connection ...</p>
+        <p *ngIf="status() === 'pending'">Connection ...</p>
 
-        <div class="flex-row invalid" *ngIf="submitted">
+        <div class="flex-row invalid" *ngIf="form.invalid || status() !== 'ok'">
           <p *ngIf="form.invalid">Le formulaire comporte des erreurs</p>
-          <p *ngIf="status === 'ko'">username/password invalide(s)</p>
+          <p *ngIf="status() === 'ko'">username/password invalide(s)</p>
         </div>
       </form>
     </div>

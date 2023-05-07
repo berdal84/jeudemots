@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import {map} from 'rxjs/operators';
-import {LINKS} from './menu.data';
-import {combineLatest, Observable, of} from 'rxjs';
-import {Link} from './menu.models';
+import { map } from 'rxjs/operators';
+import { LINKS } from './menu.data';
 import { AuthService } from '@components/backend/auth/auth.service';
 import { CommonModule } from '@angular/common';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-menu',
@@ -19,26 +18,21 @@ import { CommonModule } from '@angular/common';
 })
 export class MenuComponent {
 
-  /** A state of links depending on user state and current route */
-  links$: Observable<Link[]> = combineLatest([
-    // starts from a given link list
-    of(LINKS),
-    // depends on user status change
-    this.auth.userStatus$.pipe(map(status => status.is_logged)),
-    // depends on route change
-    this.router.events.pipe(map( event => this.router.url )),
-  ]).pipe( map(([links, is_logged, router_url]) => {
-    return links
-      // discard private links if not logged
-      .filter( link => !link.private || is_logged)
+  private router = inject(Router);
+  private auth = inject(AuthService);
+
+  private isLogged = toSignal(this.auth.userStatus$.pipe(map(status => status.is_logged)));
+
+  links = computed( () =>
+     // discard private links if not logged
+     LINKS
+      .filter( link => !link.private || this.isLogged() )
       .map( link => {
         // disable current link
-        link.disabled = router_url === link.url;
+        link.disabled = this.router.url === link.url;
         // debug
         // console.debug(`${link.label} disable = ${link.disabled}`);
         return link;
-    });
-  }));
-
-  constructor(private router: Router, private auth: AuthService) { }
+    })
+  );
 }

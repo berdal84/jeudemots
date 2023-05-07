@@ -1,5 +1,11 @@
 import { Routes } from '@angular/router';
-import { isLogged } from './guards/is-logged.guard';
+import { LoginComponent } from '@components/login/login.component';
+import { AdvisesComponent } from '@components/advises/advises.component';
+import { ContributeComponent } from '@components/contribute/contribute.component';
+import { Error404Component } from '@components/error404/error404.component';
+import { ListComponent } from '@components/list/list.component';
+import { MoreComponent } from '@components/more/more.component';
+import { SlideshowComponent } from '@components/slideshow/slideshow.component';
 
 export const routes: Routes = [
     {
@@ -9,54 +15,34 @@ export const routes: Routes = [
     },
     {
         path: 'home',
-        loadComponent: () => import('./components/slideshow/slideshow.component').then(m => m.SlideshowComponent)
+        component: SlideshowComponent
     },
     {
         path: 'list',
-        loadComponent: () => import('./components/list/list.component').then(m => m.ListComponent)
+        component: ListComponent
     },
     {
         path: 'advises',
-        loadComponent: () => import('./components/advises/advises.component').then(m => m.AdvisesComponent)
+        component: AdvisesComponent
     },
     {
         path: 'more',
-        loadComponent: () => import('./components/more/more.component').then(m => m.MoreComponent)
+        component: MoreComponent
     },
     {
         path: 'contribute',
-        loadComponent: () => import('./components/contribute/contribute.component').then(m => m.ContributeComponent)
+        component: ContributeComponent
     },
     {
         path: 'login',
-        loadComponent: () => import('./components/admin/login/login.component').then(m => m.LoginComponent),
+        component: LoginComponent,
     },
     {
-        path: 'dashboard',
-        loadComponent: () => import('./components/admin/dashboard/dashboard.component').then(m => m.DashboardComponent),
-        canActivate: [isLogged],
-        canActivateChild: [isLogged],                                
-        children: [
-            {
-                path: 'backup',
-                loadComponent: () => import('./components/admin/backup/backup.component').then(m => m.BackupComponent),
-            },
-            {
-                path: 'restore',
-                loadComponent: () => import('./components/admin/restore/restore.component').then(m => m.RestoreComponent),
-            },
-            {
-                path: 'install',
-                loadComponent: () => import('./components/admin/install/install.component').then(m => m.InstallComponent),
-            },
-            {
-                path: 'uninstall',
-                loadComponent: () => import('./components/admin/uninstall/uninstall.component').then(m => m.UninstallComponent),
-            }
-        ]
+        path: 'admin',
+        loadChildren: () => import('./components/admin/admin.routes').then(m => m.routes),                             
     },
     {
         path: '**',
-        loadComponent: () => import('./components/error404/error404.component').then(m => m.Error404Component)
+        component: Error404Component
     },
 ];

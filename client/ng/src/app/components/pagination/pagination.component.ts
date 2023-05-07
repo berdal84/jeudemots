@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,} from "@angular/core";
-import {PageBtn} from "./pagination.models";
+import { Component, EventEmitter, Input, Output, signal, computed, OnChanges, SimpleChanges } from "@angular/core";
+import { PageBtn } from "./pagination.models";
 import { NgFor } from "@angular/common";
 
 @Component({
@@ -33,15 +33,15 @@ import { NgFor } from "@angular/common";
   template: `
     <div>
       <button
-        *ngFor="let page of pages"
-        [disabled]="page.id == pageIndex"
-        (click)="handlePageClick(page.id)" [title]="page.tooltip"
+        *ngFor="let item of items()"
+        [disabled]="item.id == pageIndex"
+        (click)="handlePageClick(item.id)" [title]="item.tooltip"
       >
-        {{ page.label }}
+        {{ item.label }}
       </button>
     </div>`,
 })
-export class PaginationComponent implements OnInit, OnChanges {
+export class PaginationComponent implements OnChanges  {
   @Input()
   count: number = 0;
 
@@ -51,24 +51,19 @@ export class PaginationComponent implements OnInit, OnChanges {
   @Output()
   pageChange = new EventEmitter<number>();
 
-  pages: Array<PageBtn> = [];
-
-  ngOnInit(): void {
-    this.refreshPages();
-  }
+  items = signal([] as PageBtn[]);
 
   ngOnChanges(changes: SimpleChanges): void {
-    if( changes.count || changes.pageIndex ) this.refreshPages();
-  }
-
-  private refreshPages() {
-    this.pages = new Array<PageBtn>(this.count);
-    for (let index = 0; index < this.count; index++) {
-      this.pages[index] = {
-        id: index,
-        label: `${index + 1}`,
-        tooltip: `Se rendre sur la page ${index}`
-      };
+    if( changes.count ) {
+      const pages = new Array<PageBtn>(this.count);
+      for (let index = 0; index < this.count; index++) {
+        pages[index] = {
+          id: index,
+          label: `${index + 1}`,
+          tooltip: `Se rendre sur la page ${index}`
+        };
+      }
+      this.items.set(pages);
     }
   }
 

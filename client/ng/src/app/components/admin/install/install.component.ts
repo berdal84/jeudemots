@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { APIService } from '@components/backend/api/api.service';
+import { FormStatus } from 'src/app/models/form-status';
 
 @Component({
   selector: 'app-install',
@@ -14,21 +15,18 @@ import { APIService } from '@components/backend/api/api.service';
   styleUrls: ['./install.component.css']
 })
 export class InstallComponent {
-  status: 'idle' | 'pending' | 'ok' | 'ko';
+  private api = inject(APIService);
+  status = signal<FormStatus>('idle');
   form = new FormGroup({
     agree: new FormControl(
-    false,
-    {
-      validators: [Validators.required],
-      updateOn: 'change',
-      nonNullable: false
-    })});
-  displayErrors: boolean;
-
-  constructor(private api: APIService) {
-    this.displayErrors  = false;
-    this.status         = 'idle';
-  }
+      false,
+      {
+        validators: [Validators.required],
+        updateOn: 'change',
+        nonNullable: false
+      }
+    )
+  });
 
   /**
    * Return true if form is invalid, false otherwise.
@@ -40,35 +38,30 @@ export class InstallComponent {
   /**
    * Submit form content only if form is valid
    */
-  async onSubmit()
-  {
-    this.displayErrors = this.form.invalid;
-    if ( !this.form.invalid)
-    {
-      this.status = 'pending';
-      const response = await this.api.install();
-      if ( response.ok ) {
-        this.form.reset();
-        this.status = 'ok';
-      } else {
-        this.status = 'ko';
-      }
+  async onSubmit() {
+    if ( this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }    
+    
+    this.status.set('pending');
+    const response = await this.api.install();
+    if ( response.ok ) {
+      this.form.reset();
+      this.status.set('ok');
+    } else {
+      this.status.set('ko');
     }
+    
   }
 
   /**
    * Reset form
    */
   onReset() {
-    this.status = 'idle';
+    this.status.set('idle');
     this.form.reset();
   }
 
-  /**
-   * Shortcut to this.contributeForm.controls
-   */
-  get controls() {
-    return this.form.controls;
-  }
-
+  get agree() { return this.form.controls.agree }
 }

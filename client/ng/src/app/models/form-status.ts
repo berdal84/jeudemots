@@ -1,0 +1,1 @@
+export type FormStatus = "idle" | "pending" | "ok" | "ko";

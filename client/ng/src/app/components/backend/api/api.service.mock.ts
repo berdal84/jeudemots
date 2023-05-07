@@ -1,14 +1,15 @@
-import { ReplaySubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Credentials, Joke, Page, Response } from 'jeudemots-shared';
-import { PAGE_MOCK } from '../../../mocks/page.mock';
+import { PAGE_MOCK } from '@mocks/page.mock';
 import { APIService } from '@components/backend/api/api.service';
+import { NULL_PAGE } from '@constants';
 
 /**
  * A JokeService mock that always return a valid set of jokes
  */
 export class APIServiceMock implements Pick<APIService, 'readPage' | 'create' | 'page$'>  {
 
-    page$ = new ReplaySubject<Page>();
+    page$ = new BehaviorSubject<Page>(NULL_PAGE);
 
     constructor() {
         this.page$.next(PAGE_MOCK);

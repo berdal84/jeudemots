@@ -1,7 +1,8 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from "@angular/forms";
 import { APIService } from "@components/backend/api/api.service";
+import { FormStatus } from "@models/form-status";
 
 @Component({
   selector: "app-uninstall",
@@ -14,54 +15,33 @@ import { APIService } from "@components/backend/api/api.service";
   styleUrls: ["./uninstall.component.css"],
 })
 export class UninstallComponent {
-  displayErrors: boolean = false;
-  status: "idle" | "pending" | "ok" | "ko" = "idle";
-
+  private api = inject(APIService);
+  status = signal<FormStatus>("idle");
   form = new FormGroup({
     agree: new FormControl<boolean | null>(null, {
       validators: [Validators.required],
       updateOn: "change",
     }),
   });
+  get agree() { return this.form.controls.agree}
+  
+  async handleSubmit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+    };
 
-  private api = inject(APIService);
-
-  /**
-   * Return true if form is invalid, false otherwise.
-   */
-  get invalid() {
-    return this.form.invalid;
-  }
-
-  /**
-   * Submit form content only if form is valid
-   */
-  async onSubmit() {
-    this.displayErrors = this.form.invalid;
-    if (this.form.invalid) return;
-
-    this.status = "pending";
+    this.status.set("pending");
     const result = await this.api.uninstall();
     if (result.ok) {
       this.form.reset();
-      this.status = "ok";
+      this.status.set("ok");
     } else {
-      this.status = "ko";
+      this.status.set("ko");
     }
   }
 
-  /**
-   * Reset form
-   */
-  onReset() {
-    this.status = "idle";
+  handleReset() {
+    this.status.set("idle");
     this.form.reset();
-  }
-
-  /**
-   * Shortcut to this.contributeForm.controls
-   */
-  get controls() {
-    return this.form.controls;
   }
 }

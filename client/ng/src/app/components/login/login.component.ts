@@ -1,9 +1,10 @@
-import { Component } from "@angular/core";
+import { Component, signal } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { Credentials } from "jeudemots-shared";
 import { AuthService } from "@components/backend/auth/auth.service";
 import { CommonModule } from "@angular/common";
+import { FormStatus } from "src/app/models/form-status";
 
 @Component({
   selector: "app-login",
@@ -17,7 +18,7 @@ import { CommonModule } from "@angular/common";
   styleUrls: ["./login.component.css"],
 })
 export class LoginComponent {
-  status: "idle" | "pending" | "ok" | "ko" = "idle";
+  status = signal<FormStatus>("idle");
   form = new FormGroup({
     username: new FormControl("", {
       nonNullable: true,
@@ -28,42 +29,37 @@ export class LoginComponent {
       validators: [Validators.required],
     }),
   });
-  submitted = false;
 
   constructor(
     private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {
-    if (this.auth.isLogged()) this.router.navigate(["/dashboard"]);
+    if (this.auth.isLogged()) this.router.navigate(["/admin"]);
   }
 
-  async submit() {
-    if (!this.form.valid) return;
+  get password() { return this.form.controls.password }
+  get username() { return this.form.controls.username }
 
-    this.status = "pending";
-    const credentials: Credentials = {
-      ...this.form.getRawValue(),
-    };
-    const response = await this.auth.login(credentials);
+  async submit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.status.set("pending");
+    const response = await this.auth.login(this.form.getRawValue());
 
     if (response.ok) {
       const route =
-        this.route.snapshot.queryParams["redirect"] || "/dashboard";
+        this.route.snapshot.queryParams["redirect"] || "/admin";
       if (!(await this.router.navigate([route]))) {
         console.error("Unable to navigate!");
       }
-      this.status = "ok";
+      this.status.set("ok");
     } else {
-      this.status = "ko";
+      this.status.set("ko");
     }
-    this.reset();
-  }
-
-  reset() {
     this.form.reset();
-    this.form.markAsPristine();
-    this.form.markAsUntouched();
-    this.form.updateValueAndValidity();
   }
 }
