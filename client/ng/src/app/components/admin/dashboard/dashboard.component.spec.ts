@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DashboardComponent } from './dashboard.component';
+import { BackendTestingModule } from '@components/backend/backend-testing.module';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+
+const fakeActivatedRoute = {
+  snapshot: { data: {} }
+} as ActivatedRoute;
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -8,7 +13,14 @@ describe('DashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DashboardComponent ]
+      providers: [{
+        provide: ActivatedRoute,
+        useValue: fakeActivatedRoute
+      }],
+      imports: [
+        DashboardComponent,
+        BackendTestingModule
+      ]
     })
     .compileComponents();
   });

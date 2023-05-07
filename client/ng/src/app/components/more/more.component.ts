@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-more',
+  standalone: true,
   template: `
     <h3>A propos...</h3>
     <section class="indent">

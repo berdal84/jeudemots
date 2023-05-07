@@ -1,9 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BackendService } from '@services/backend.service';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { APIService } from '@components/backend/api/api.service';
 
 @Component({
   selector: 'app-install',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './install.component.html',
   styleUrls: ['./install.component.css']
 })
@@ -19,7 +25,7 @@ export class InstallComponent {
     })});
   displayErrors: boolean;
 
-  constructor(private jokeService: BackendService) {
+  constructor(private api: APIService) {
     this.displayErrors  = false;
     this.status         = 'idle';
   }
@@ -40,7 +46,7 @@ export class InstallComponent {
     if ( !this.form.invalid)
     {
       this.status = 'pending';
-      const response = await this.jokeService.install();
+      const response = await this.api.install();
       if ( response.ok ) {
         this.form.reset();
         this.status = 'ok';

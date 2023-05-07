@@ -16,7 +16,10 @@
     ],
     "paths": {
       "@models": ["./src/app/models"],
-      "@services*": ["./src/app/services/*"]
+      "@services*": ["./src/app/services*"],
+      "@constants": ["./src/app/constants"],
+      "@components*": ["./src/app/components*"],
+      "@mocks*": ["./src/app/mocks*"],      
     },
     "lib": [
       "es2018",

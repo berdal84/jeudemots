@@ -1,9 +1,15 @@
-import { Component } from "@angular/core";
-import { FormGroup, Validators, FormControl } from "@angular/forms";
-import { BackendService } from "@services/backend.service";
+import { CommonModule } from "@angular/common";
+import { Component, inject } from "@angular/core";
+import { FormGroup, Validators, FormControl, ReactiveFormsModule } from "@angular/forms";
+import { APIService } from "@components/backend/api/api.service";
 
 @Component({
   selector: "app-restore",
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: "./restore.component.html",
   styleUrls: ["./restore.component.css"],
 })
@@ -23,7 +29,7 @@ export class RestoreComponent {
     fileSrc: new FormControl<File | null>(null),
   });
 
-  constructor(private backend: BackendService) {}
+  private api = inject(APIService);
 
   /**
    * Return true if form is invalid, false otherwise.
@@ -55,7 +61,7 @@ export class RestoreComponent {
     const formData = new FormData();
     formData.append("file", file);
 
-    const result = await this.backend.restore(formData);
+    const result = await this.api.restore(formData);
     if (result.ok) {
       this.form.reset();
       this.status = "ok";

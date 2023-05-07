@@ -1,11 +1,18 @@
 import { Component } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { Credentials } from "jeudemots-shared";
-import { AuthService } from "@servicesauth.service";
+import { AuthService } from "@components/backend/auth/auth.service";
+import { CommonModule } from "@angular/common";
 
 @Component({
   selector: "app-login",
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    RouterModule,
+    CommonModule,
+  ],
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.css"],
 })
@@ -28,7 +35,7 @@ export class LoginComponent {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    if (this.auth.isLogged()) this.router.navigate(["admin/dashboard"]);
+    if (this.auth.isLogged()) this.router.navigate(["/dashboard"]);
   }
 
   async submit() {
@@ -42,7 +49,7 @@ export class LoginComponent {
 
     if (response.ok) {
       const route =
-        this.route.snapshot.queryParams["redirect"] || "admin/dashboard";
+        this.route.snapshot.queryParams["redirect"] || "/dashboard";
       if (!(await this.router.navigate([route]))) {
         console.error("Unable to navigate!");
       }

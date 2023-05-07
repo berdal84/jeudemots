@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { BackendService} from './backend.service';
 import { Credentials, Response } from 'jeudemots-shared';
+import { APIService } from '../api/api.service';
 
 export interface AuthStatus {
   username: string | null;
@@ -19,19 +19,21 @@ export class AuthService {
     is_logged: false,
   });
 
-  constructor( private backend: BackendService ) {}
+  constructor( private api: APIService ) {}
 
   async login(credentials: Credentials): Promise<Response> {
-    const response = await this.backend.login(credentials);
+    const response = await this.api.login(credentials);
     this.userStatus$.next( {
       username: credentials.username,
       is_logged: response.ok
     })
+    console.debug(this.userStatus$.value);
     return response;
   }
 
   async logout(): Promise<Response> {
-    const response = await this.backend.logout();
+    const response = await this.api.logout();
+    console.debug(this.userStatus$.value);
     this.userStatus$.next( {
       username: null,
       is_logged: response.ok
@@ -40,6 +42,7 @@ export class AuthService {
   }
 
   isLogged(): boolean {
-    return this.userStatus$.getValue().is_logged;
+    console.debug(this.userStatus$.value);
+    return this.userStatus$.value.is_logged;
   }
 }

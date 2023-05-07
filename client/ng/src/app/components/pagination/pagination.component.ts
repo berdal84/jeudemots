@@ -1,7 +1,12 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,} from "@angular/core";
 import {PageBtn} from "./pagination.models";
+import { NgFor } from "@angular/common";
 
 @Component({
+  standalone: true,
+  imports: [
+    NgFor,
+  ],
   selector: "app-pagination",
   styles: [
     `

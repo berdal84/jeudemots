@@ -1,8 +1,9 @@
 import { Page } from "jeudemots-shared";
+import {NULL_JOKE} from "./null-joke";
 
 export const NULL_PAGE: Page = {
-  count: 0,
+  count: 1,
   id: 0,
-  jokes: [],
+  jokes: [NULL_JOKE],
   size: 10
 };

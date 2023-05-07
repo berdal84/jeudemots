@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-advises',
+  standalone: true,
+  imports: [],
   styles: [`
     #quote {
       display: flex;

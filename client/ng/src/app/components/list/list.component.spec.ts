@@ -1,12 +1,8 @@
-import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { BackendServiceMock } from 'src/app/mocks/backend-service.mock';
-import { JokeFilterPipe } from 'src/app/pipes/jokefilter.pipe';
-import { BackendService } from '../../services/backend.service';
-
 import { ListComponent } from './list.component';
+import { BrowserTestingModule } from '@angular/platform-browser/testing';
+import { BackendTestingModule } from '@components/backend/backend-testing.module';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -14,20 +10,11 @@ describe('ListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ListComponent,
-        JokeFilterPipe
-      ],
       imports: [
-        BrowserModule,
-        FormsModule
-      ],
-      providers: [
-        {
-          provide: BackendService,
-          useClass: BackendServiceMock
-        }
-      ]
+        ListComponent,
+        BackendTestingModule,
+        BrowserTestingModule,
+      ]      
     })
     .compileComponents();
   }));

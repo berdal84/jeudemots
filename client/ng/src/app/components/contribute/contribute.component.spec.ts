@@ -1,9 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-import { BackendServiceMock } from 'src/app/mocks/backend-service.mock';
-import { BackendService, Status } from '../../services/backend.service';
 import { ContributeComponent } from './contribute.component';
+import { BackendTestingModule } from '@components/backend/backend-testing.module';
 
 describe('ContributeComponent', () => {
   let component: ContributeComponent;
@@ -11,19 +8,9 @@ describe('ContributeComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ContributeComponent
-      ],
       imports: [
-        BrowserModule,
-        FormsModule,
-        ReactiveFormsModule,
-      ],
-      providers: [
-        {
-          provide: BackendService,
-          useClass: BackendServiceMock
-        }
+        ContributeComponent,
+        BackendTestingModule,
       ]
     })
     .compileComponents();
@@ -39,20 +26,18 @@ describe('ContributeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should send a joke when form is valid', () => {
+  it('should send a joke when form is valid', async () => {
 
     // fill form
-    const f = component.form;
-    f.get('category').setValue('Unit test');
-    f.get('email').setValue('test@unit.fr');
-    f.get('text').setValue('This is a unit test.');
-    f.get('author').setValue('developer');
-    f.get('acceptTerms').setValue(true);
-
-    expect(f.invalid).toBeFalsy();
-
-    expect(component.status).not.toBe(Status.SUCCESS);
-    component.onSubmit();
-    expect(component.status).toBe(Status.SUCCESS);
+    component.form.setValue({
+      category: 'Unit test',
+      text: 'This is a unit test.',
+      author: 'developer',
+      acceptTerms: true,
+    });
+    expect(component.form.invalid).toBeFalsy();
+    expect(component.status).not.toBe('ok');
+    await component.onSubmit();
+    expect(component.status).toBe('ok');
   });
 });
