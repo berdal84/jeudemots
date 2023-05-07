@@ -2,6 +2,7 @@
   "name": "jeudemots",
   "version": "0.2.1",
   "scripts": {
+    "test": "npm --prefix ./client/ng test",
     "install": "npm i --prefix ./client/shared && npm i --prefix ./client/react-js && npm i --prefix ./client/ng && npm i --prefix ./client/vue",
     "pack": "bash ./pack.sh",
     "build": "npm run build-client && npm run build-server",
