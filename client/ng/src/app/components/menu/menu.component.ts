@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { EventType, Router, RouterModule } from '@angular/router';
+import { filter, map } from 'rxjs/operators';
 import { LINKS } from './menu.data';
 import { AuthService } from '@components/backend/auth/auth.service';
 import { CommonModule } from '@angular/common';
@@ -20,7 +20,10 @@ export class MenuComponent {
 
   private router = inject(Router);
   private auth = inject(AuthService);
-
+  private routerUrl = toSignal(this.router.events.pipe(
+    filter((event) => event.type === EventType.NavigationEnd ),
+    map(() =>  this.router.url))
+  );
   private isLogged = toSignal(this.auth.userStatus$.pipe(map(status => status.is_logged)));
 
   links = computed( () =>
@@ -29,7 +32,7 @@ export class MenuComponent {
       .filter( link => !link.private || this.isLogged() )
       .map( link => {
         // disable current link
-        link.disabled = this.router.url === link.url;
+        link.disabled = this.routerUrl() === link.url;
         // debug
         // console.debug(`${link.label} disable = ${link.disabled}`);
         return link;
