@@ -42,7 +42,7 @@ fi
 
 mkdir -p ${REACT_OUTPUT_DIR}
 echo "-- Copying Client (React) ...";
-if( cp -vr client/react-js/build/* ${REACT_OUTPUT_DIR} )
+if( cp -vr client/react/build/* ${REACT_OUTPUT_DIR} )
 then
     echo "-- Client (React) OK";
 else

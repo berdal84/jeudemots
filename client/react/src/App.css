@@ -1,13 +1,15 @@
 .App {
   text-align: center;
-    display: flex;
-    flex-direction: row;
-    min-height: 100vh;
-    background-color: var(--bg-light);
-    flex-wrap: nowrap;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  background-color: var(--bg-light);
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  gap: 20px;
 }
 
 .App .logo {
@@ -23,7 +25,7 @@
   color: white;
 }
 
-.Joke {
+.JokeCard {
   flex: 0.6 0;
   padding: 20px;
 }
@@ -37,11 +39,10 @@
   opacity: 0.75
 }
 
-.App footer > p  {
+.App footer>p {
   margin: 5px;
 }
 
 .spacer {
   flex: 30px;
 }
-

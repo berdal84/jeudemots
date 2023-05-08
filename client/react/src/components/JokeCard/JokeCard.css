@@ -1,5 +1,5 @@
 
-.Joke {
+.JokeCard {
     display: flex;
     justify-content: center;
     color: var(--text-light);
@@ -23,6 +23,11 @@ div.text {
     border: solid var(--bg-light) 5px;
     min-height: 7.5em;
     transition: height 1s ease-out;    
+}
+
+p.text {
+    font-size: 2em;
+    text-align: left;
 }
 
 h1.text {
