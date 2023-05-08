@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
 import { APIService } from '@components/backend/api/api.service';
 import { map } from 'rxjs/operators';
 import { environment } from "src/environments/environment";
@@ -8,7 +8,6 @@ import * as NavBar from "./navbar.types";
 import { NULL_PAGE } from "@constants";
 import { EggTimer } from "./egg-timer";
 import { toSignal } from '@angular/core/rxjs-interop';
-import { effect } from '@angular/core';
 
 const config = environment.slideshow;
 
@@ -22,7 +21,7 @@ const config = environment.slideshow;
   templateUrl: './slideshow.component.html',
   styleUrls: ['./slideshow.component.css'],
 })
-export class SlideshowComponent implements OnInit {
+export class SlideshowComponent implements OnInit, OnDestroy {
 
   private api      = inject(APIService);
   private eggTimer = new EggTimer();
@@ -45,21 +44,18 @@ export class SlideshowComponent implements OnInit {
     return config.minimumTimePerJoke * ( 1 + jokeLength * config.perCharCostFactor);
   });
 
-  constructor() {
-    effect( (onCleanUp) => {
-      // Load next page when eggTimer is timeout
-      const nextPageSubscribtion = this.eggTimer.timeout$.subscribe( async () => {
-        const nextId = (this.page().id + 1) % this.page().count; // loop
-        await this.api.setPage(nextId);
-        this.eggTimer.start(this.timeForCurrentJoke());
-      })
-
-      onCleanUp(nextPageSubscribtion.unsubscribe);
-    })
-  }
+  nextPageSubscribtion = this.eggTimer.timeout$.subscribe( async () => {
+    const nextId = (this.page().id + 1) % this.page().count; // loop
+    await this.api.setPage(nextId);
+    this.eggTimer.start(this.timeForCurrentJoke());
+  });
 
   ngOnInit() {
     return this.api.readPage({id: 0, size: 1});
+  }
+
+  ngOnDestroy(): void {
+    this.nextPageSubscribtion.unsubscribe();
   }
 
   async handleNavBarClick(type: NavBar.ButtonType) {

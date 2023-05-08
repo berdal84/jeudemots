@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, effect, inject, signal } from "@angular/core";
+import { Component, OnDestroy, OnInit, computed, inject, signal } from "@angular/core";
 import { interval } from "rxjs";
 import { Joke } from "jeudemots-shared";
 import { debounce, filter, map, tap } from "rxjs/operators";
@@ -22,7 +22,7 @@ import { toSignal } from "@angular/core/rxjs-interop";
     ReactiveFormsModule,
   ]
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnDestroy {
   private auth = inject(AuthService);
   private api = inject(APIService);
 
@@ -40,34 +40,32 @@ export class ListComponent implements OnInit {
   });
   readonly editedJokes = new Set<number>();
 
-  constructor() {
-    effect((onCleanUp) => {
-      
-      // Search when user is typing
-      const searchSubscribtion = this.form.valueChanges.pipe(
-        // clear status
-        tap(() => this.status.set('')),
-        map(changes => changes.filter ?? ''),
-        // ensure text is larger than 2 chars or is empty
-        filter(newFilter => newFilter.length > 2 || newFilter.length === 0),
-        debounce(() => interval(200)),
-        tap(newFilter => {
-          this.searching.set(true);
-          this.status.set('Recherche en cours ...');
-          this.api
-            .readPage({ id: 0, size: 10, filter: newFilter })
-            .finally(() => {
-              this.searching.set(false);
-            });
-        })
-      ).subscribe();
-
-      onCleanUp(searchSubscribtion.unsubscribe);
-    });
-  }
+  searchSubscribtion = this.form.valueChanges.pipe(
+      // clear status
+      tap(() => this.status.set('')),
+      map(changes => changes.filter ?? ''),
+      // ensure text is larger than 2 chars or is empty
+      filter(newFilter => newFilter.length > 2 || newFilter.length === 0),
+      debounce(() => interval(200)),
+      tap(newFilter => {
+        this.searching.set(true);
+        this.status.set('Recherche en cours ...');
+        this.api
+          .readPage({ id: 0, size: 10, filter: newFilter })
+          .then((response) => {
+            this.searching.set(false);
+            this.status.set(`${response.data?.count ?? 0} résultat(s)`)
+          });
+      })
+    ).subscribe();
 
   ngOnInit() {
+    this.status.set('');
     return this.api.readPage({ id: 0, size: 10});
+  }
+
+  ngOnDestroy(): void {
+      this.searchSubscribtion.unsubscribe();
   }
 
   private refreshPage() {
