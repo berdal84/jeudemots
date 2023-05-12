@@ -8,7 +8,7 @@
   
   Header::access_control_allow_origin(...ACCESS_CONTROL_ALLOW_ORIGIN);
   header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-  header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+  header("Access-Control-Allow-Methods: POST, GET, DELETE, OPTIONS");
   header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
   switch( $_SERVER['REQUEST_METHOD'] )
@@ -24,6 +24,11 @@
       Response::success("Logged");
 
     case 'GET':
+      if(User::is_logged())
+        Response::success("Session found");
+      Response::failure("No session found");
+
+    case 'DELETE':
       if( !User::logout() )
       {
         http_response_code(500);

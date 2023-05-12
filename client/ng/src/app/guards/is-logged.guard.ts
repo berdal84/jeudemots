@@ -3,11 +3,11 @@ import { CanActivateChildFn, ActivatedRouteSnapshot, RouterStateSnapshot, Router
 import { AuthService } from '@components/backend/auth/auth.service';
 
 export const isLogged: CanActivateChildFn =
-    (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+    async (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
       const auth = inject(AuthService)
       const router = inject(Router);
 
-      if( auth.isLogged() ) return true;
+      if( await auth.isLogged() ) return true;
 
       return router.navigate(['/login'])
     };

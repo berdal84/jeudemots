@@ -24,7 +24,7 @@ export class MenuComponent {
     filter((event) => event.type === EventType.NavigationEnd ),
     map(() =>  this.router.url))
   );
-  private isLogged = toSignal(this.auth.userStatus$.pipe(map(status => status.is_logged)));
+  private isLogged = toSignal(this.auth.isConnected$);
 
   links = computed( () =>
      // discard private links if not logged

@@ -1,7 +1,7 @@
 import {Injectable, inject} from '@angular/core';
 import {Joke, Page} from 'jeudemots-shared';
 import {HttpClient} from '@angular/common/http';
-import {ReplaySubject, of, firstValueFrom, BehaviorSubject} from 'rxjs';
+import {of, firstValueFrom, BehaviorSubject} from 'rxjs';
 import {catchError, first, retry} from 'rxjs/operators';
 import {environment} from 'src/environments/environment';
 import {Response, Credentials} from 'jeudemots-shared';
@@ -96,8 +96,12 @@ export class APIService {
     return this._request<Response>('POST', api.path.auth, {body: safeCredentials});
   }
 
-  logout(): Promise<Response> {
+  isLogged(): Promise<Response> {
     return this._request<Response>('GET', api.path.auth);
+  }
+
+  logout(): Promise<Response> {
+    return this._request<Response>('DELETE', api.path.auth);
   }
 
   /**

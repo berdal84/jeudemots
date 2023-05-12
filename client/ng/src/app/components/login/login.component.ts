@@ -1,7 +1,6 @@
 import { Component, signal } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
-import { Credentials } from "jeudemots-shared";
 import { AuthService } from "@components/backend/auth/auth.service";
 import { CommonModule } from "@angular/common";
 import { FormStatus } from "src/app/models/form-status";
@@ -35,7 +34,7 @@ export class LoginComponent {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    if (this.auth.isLogged()) this.router.navigate(["/admin"]);
+    this.auth.isLogged().then( isLogged => isLogged && this.router.navigate(["/admin"] ));
   }
 
   get password() { return this.form.controls.password }

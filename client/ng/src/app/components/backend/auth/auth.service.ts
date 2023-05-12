@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { Credentials, Response } from 'jeudemots-shared';
 import { APIService } from '../api/api.service';
 
-export interface AuthStatus {
-  username: string | null;
-  is_logged: boolean;
+export enum AuthStatus {
+  Disconnected,
+  Connected,
 }
 
 @Injectable({
@@ -14,19 +14,13 @@ export interface AuthStatus {
 export class AuthService {
 
   /** Current user status */
-  readonly userStatus$ = new BehaviorSubject<AuthStatus>({
-    username: null,
-    is_logged: false,
-  });
-
+  readonly userStatus$ = new BehaviorSubject<AuthStatus>(AuthStatus.Disconnected);
+  readonly isConnected$ = this.userStatus$.pipe(map(status => status === AuthStatus.Connected))
   constructor( private api: APIService ) {}
 
   async login(credentials: Credentials): Promise<Response> {
     const response = await this.api.login(credentials);
-    this.userStatus$.next( {
-      username: credentials.username,
-      is_logged: response.ok
-    })
+    this.userStatus$.next(AuthStatus.Connected)
     console.debug(this.userStatus$.value);
     return response;
   }
@@ -34,15 +28,13 @@ export class AuthService {
   async logout(): Promise<Response> {
     const response = await this.api.logout();
     console.debug(this.userStatus$.value);
-    this.userStatus$.next( {
-      username: null,
-      is_logged: response.ok
-    })
+    this.userStatus$.next(AuthStatus.Disconnected)
     return response;
   }
 
-  isLogged(): boolean {
+  async isLogged(): Promise<boolean> {
     console.debug(this.userStatus$.value);
-    return this.userStatus$.value.is_logged;
+    if(this.userStatus$.value == AuthStatus.Connected) return true;
+    return (await this.api.isLogged()).ok;
   }
 }

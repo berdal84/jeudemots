@@ -5,7 +5,7 @@ import { debounce, filter, map, tap } from "rxjs/operators";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NULL_PAGE } from "src/app/constants/null-page";
 import { APIService } from "@components/backend/api/api.service";
-import { AuthService } from "@components/backend/auth/auth.service";
+import { AuthService, AuthStatus } from "@components/backend/auth/auth.service";
 import { PaginationComponent } from "@components/pagination/pagination.component";
 import { CommonModule } from "@angular/common";
 import { toSignal } from "@angular/core/rxjs-interop";
@@ -33,7 +33,7 @@ export class ListComponent implements OnInit, OnDestroy {
     const {count, size} = this.page();
     return Math.ceil(count / size)
   });
-  isLogged = toSignal(this.auth.userStatus$.pipe( map(status => status.is_logged )));
+  isLogged = toSignal(this.auth.isConnected$);
 
   readonly form = new FormGroup({
     filter: new FormControl<string>('', { nonNullable: true}),
