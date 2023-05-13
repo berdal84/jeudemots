@@ -7,15 +7,23 @@
 </div>
 
 <ng-container *ngSwitch="status()">
-    <!-- Global error message (with a joke inside) -->
+
+    <!-- Pending -->
+      <div class="flex-row" *ngSwitchCase="'pending'">
+        <p class="flex-row invalid">Téléchargement du fichier ...</p>
+    </div>
+
+    <!-- Error -->
     <div class="flex-row" *ngSwitchCase="'ko'">
         <p class="flex-row invalid">Oh... Un problème a eu lieu pendant le transfert.</p>
     </div>
 
-    <!-- Global confirmation message (with a joke inside) -->
+    <!-- Success -->
     <div class="flex-row" *ngSwitchCase="'ok'">
         <p class="valid">La base de données a été sauvegardée, téléchargez le fichier
             <a class="btn btn-clear" [href]="downloadJsonHref" download="backup.json">backup.json</a>
         </p>
     </div>
+
+
 </ng-container>
