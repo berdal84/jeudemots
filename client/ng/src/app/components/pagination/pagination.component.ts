@@ -21,12 +21,12 @@ import { NgFor } from "@angular/common";
         display: inline;
         margin: 2px;
         padding: 6px 8px;
-      }
 
-      button:not(:disabled) {
-        opacity: 0.75;
-        text-decoration: underline;
-        cursor: pointer;
+        &:not(:disabled) {
+          opacity: 0.75;
+          text-decoration: underline;
+          cursor: pointer;
+        }
       }
     `,
   ],

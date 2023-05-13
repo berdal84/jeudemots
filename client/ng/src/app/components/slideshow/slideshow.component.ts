@@ -19,7 +19,7 @@ const config = environment.slideshow;
     NavBarComponent,
   ],
   templateUrl: './slideshow.component.html',
-  styleUrls: ['./slideshow.component.css'],
+  styleUrls: ['./slideshow.component.scss'],
 })
 export class SlideshowComponent implements OnInit, OnDestroy {
 

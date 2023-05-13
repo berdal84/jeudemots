@@ -11,7 +11,7 @@ import { FormStatus } from 'src/app/models/form-status';
     CommonModule,
   ],
   templateUrl: './backup.component.html',
-  styleUrls: ['./backup.component.css']
+  styleUrls: ['./backup.component.scss']
 })
 export class BackupComponent {
   status = signal<FormStatus>('pending');

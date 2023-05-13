@@ -14,7 +14,7 @@ import { FormStatus } from "src/app/models/form-status";
     CommonModule,
   ],
   templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css"],
+  styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent {
   status = signal<FormStatus>('pending');

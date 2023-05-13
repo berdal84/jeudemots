@@ -12,7 +12,7 @@ import { FormStatus } from '@models/form-status';
     ReactiveFormsModule,
   ],
   templateUrl: "./restore.component.html",
-  styleUrls: ["./restore.component.css"],
+  styleUrls: ["./restore.component.scss"],
 })
 export class RestoreComponent {
   private api = inject(APIService);

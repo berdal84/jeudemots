@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
   standalone: true,
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
   imports: [
     MenuComponent,
     RouterModule,

@@ -14,7 +14,7 @@ import { toSignal } from "@angular/core/rxjs-interop";
   standalone: true,
   selector: "app-list",
   templateUrl: "./list.component.html",
-  styleUrls: ["./list.component.css"],
+  styleUrls: ["./list.component.scss"],
   imports: [
     CommonModule,
     FormsModule,

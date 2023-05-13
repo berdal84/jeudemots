@@ -12,7 +12,7 @@ import { FormStatus } from "@models/form-status";
     ReactiveFormsModule,
   ],
   templateUrl: "./uninstall.component.html",
-  styleUrls: ["./uninstall.component.css"],
+  styleUrls: ["./uninstall.component.scss"],
 })
 export class UninstallComponent {
   private api = inject(APIService);

@@ -12,7 +12,7 @@ import { FormStatus } from 'src/app/models/form-status';
     ReactiveFormsModule,
   ],
   templateUrl: './install.component.html',
-  styleUrls: ['./install.component.css']
+  styleUrls: ['./install.component.scss']
 })
 export class InstallComponent {
   private api = inject(APIService);

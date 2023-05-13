@@ -44,14 +44,14 @@ button {
 	margin: 2px;
 	background: linear-gradient(#fff, #ddd);
 	text-shadow: 1px 1px rgba(255, 255, 255, 0.9);
-}
 
-button:active {
-	border: 1px solid orange;
-}
+  &:active {
+    border: 1px solid orange;
+  }
 
-button:hover {
-	box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.3);
+  &:hover {
+    box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.3);
+  }
 }
 
 table {
@@ -61,14 +61,14 @@ table {
 
 tr {
 	border: 0px;
-}
 
-tr:nth-child(even) {
-	background-color: #DDD
-}
+  &:nth-child(even) {
+    background-color: #DDD
+  }
 
-tr:nth-child(odd) {
-	background-color: #EEE
+  &:nth-child(odd) {
+    background-color: #EEE
+  }
 }
 
 td {

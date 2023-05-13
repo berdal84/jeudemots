@@ -55,10 +55,10 @@ input:active, input:focus {
   transition-duration: 1s;
   margin-left: 10px;
   opacity: 0.5;
-}
 
-.status.searching {
-  transition-delay: 0s;
-  transition-duration: 0.1s;
-  opacity: 1;
+  &.searching {
+    transition-delay: 0s;
+    transition-duration: 0.1s;
+    opacity: 1;
+  }
 }

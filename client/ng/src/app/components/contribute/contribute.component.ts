@@ -14,7 +14,7 @@ import { FormStatus } from "src/app/models/form-status";
     ReactiveFormsModule,
   ],
   templateUrl: "./contribute.component.html",
-  styleUrls: ["./contribute.component.css"],
+  styleUrls: ["./contribute.component.scss"],
 })
 export class ContributeComponent {
   status = signal<FormStatus>('pending');
