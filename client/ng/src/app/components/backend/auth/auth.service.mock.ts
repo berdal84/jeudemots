@@ -1,14 +1,12 @@
 import { AuthService, AuthStatus } from "@components/backend/auth/auth.service";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 
-export class AuthServiceMock implements Pick<AuthService, 'isLogged' | 'userStatus$'> {
+export class AuthServiceMock implements Pick<AuthService, 'checkIfConnectedOnBackend' | 'isConnected$' | 'userStatus$'> {
 
-    userStatus$ = new BehaviorSubject<AuthStatus>({
-        username: 'mock',
-        is_logged: false,
-    });
+    userStatus$ = new BehaviorSubject<AuthStatus>(AuthStatus.Connected);
+    isConnected$   = new BehaviorSubject<boolean>(true);
 
-    isLogged(): boolean {
-        return this.userStatus$.value.is_logged;
+    async checkIfConnectedOnBackend(): Promise<boolean> {
+        return this.userStatus$.value === AuthStatus.Connected;
     }
 }

@@ -32,9 +32,7 @@ export class AuthService {
     return response;
   }
 
-  async isLogged(): Promise<boolean> {
-    console.debug(this.userStatus$.value);
-    if(this.userStatus$.value == AuthStatus.Connected) return true;
+  async checkIfConnectedOnBackend(): Promise<boolean> {
     return (await this.api.isLogged()).ok;
   }
 }

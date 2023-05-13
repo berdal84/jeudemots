@@ -7,7 +7,7 @@ export const isLogged: CanActivateChildFn =
       const auth = inject(AuthService)
       const router = inject(Router);
 
-      if( await auth.isLogged() ) return true;
+      if( await auth.checkIfConnectedOnBackend() ) return true;
 
       return router.navigate(['/login'])
     };

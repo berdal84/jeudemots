@@ -34,7 +34,7 @@ export class LoginComponent {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.auth.isLogged().then( isLogged => isLogged && this.router.navigate(["/admin"] ));
+    this.auth.checkIfConnectedOnBackend().then( isLogged => isLogged && this.router.navigate(["/admin"] ));
   }
 
   get password() { return this.form.controls.password }
