@@ -3,7 +3,7 @@
 </p>
 
 <div class="flex-row">
-    <button *ngIf="!status" (click)="handleSubmit()" >Sauvegarder</button>
+    <button *ngIf="status() === 'idle'" (click)="handleSubmit()" >Sauvegarder</button>
 </div>
 
 <ng-container *ngSwitch="status()">
