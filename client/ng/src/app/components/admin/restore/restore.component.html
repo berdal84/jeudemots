@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <ng-container *ngSwitch="status()">
+    <ng-container [ngSwitch]="status()">
 
         <!-- Pending -->
           <div class="flex-row" *ngSwitchCase="'pending'">

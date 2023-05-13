@@ -6,7 +6,7 @@
     <button *ngIf="status() === 'pending'" (click)="handleSubmit()" >Sauvegarder</button>
 </div>
 
-<ng-container *ngSwitch="status()">
+<ng-container [ngSwitch]="status()">
 
     <!-- Processing -->
     <div class="flex-row" *ngSwitchCase="'processing'">

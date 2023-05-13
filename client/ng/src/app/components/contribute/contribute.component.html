@@ -86,7 +86,7 @@
     </div>
   </div>
 
-  <ng-container *ngSwitch="status()">
+  <ng-container [ngSwitch]="status()">
 
     <!-- processing message -->
     <div class="flex-row" *ngSwitchCase="'processing'">
