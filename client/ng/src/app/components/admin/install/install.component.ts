@@ -21,7 +21,7 @@ export class InstallComponent {
     agree: new FormControl(
       false,
       {
-        validators: [Validators.required],
+        validators: [Validators.requiredTrue],
         updateOn: 'change',
         nonNullable: false
       }
@@ -42,8 +42,8 @@ export class InstallComponent {
     if ( this.form.invalid) {
       this.form.markAllAsTouched();
       return;
-    }    
-    
+    }
+
     this.status.set('pending');
     const response = await this.api.install();
     if ( response.ok ) {
@@ -52,7 +52,7 @@ export class InstallComponent {
     } else {
       this.status.set('ko');
     }
-    
+
   }
 
   /**
