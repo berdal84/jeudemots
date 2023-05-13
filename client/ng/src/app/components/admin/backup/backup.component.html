@@ -21,7 +21,7 @@
     <!-- Success -->
     <div class="flex-row" *ngSwitchCase="'success'">
         <p class="valid">La base de données a été sauvegardée, téléchargez le fichier
-            <a class="btn btn-clear" [href]="downloadJsonHref" download="backup.json">backup.json</a>
+            <a class="btn btn-clear" [href]="downloadJsonHref()" download="backup.json">backup.json</a>
         </p>
     </div>
 
