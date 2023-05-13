@@ -19,12 +19,12 @@ export class UninstallComponent {
   status = signal<FormStatus>("idle");
   form = new FormGroup({
     agree: new FormControl<boolean | null>(null, {
-      validators: [Validators.required],
+      validators: [Validators.requiredTrue],
       updateOn: "change",
     }),
   });
   get agree() { return this.form.controls.agree}
-  
+
   async handleSubmit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
