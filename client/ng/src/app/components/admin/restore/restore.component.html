@@ -42,14 +42,14 @@
         <div class="flex-left"></div>
         <div class="flex-right">
             <button type="reset" (click)="handleReset()">Recommencer</button>
-            <button *ngIf="!status" >Restaurer</button>
+            <button [disabled]="status() !== 'pending'" >Restaurer</button>
         </div>
     </div>
 
     <ng-container [ngSwitch]="status()">
 
         <!-- Pending -->
-          <div class="flex-row" *ngSwitchCase="'pending'">
+          <div class="flex-row" *ngSwitchCase="'processing'">
             <p class="flex-row invalid">Restauration ...</p>
         </div>
 
