@@ -49,13 +49,18 @@
 
     <ng-container *ngSwitch="status()">
 
-        <!-- Global error message (with a joke inside) -->
+        <!-- Pending -->
+          <div class="flex-row" *ngSwitchCase="'pending'">
+            <p class="flex-row invalid">Téléchargement du fichier ...</p>
+        </div>
+
+        <!-- Error -->
         <div class="flex-row" *ngSwitchCase="'ko'">
             <div class="flex-left"></div>
             <p class="flex-right flex-row invalid">Oh... Un problème a eu lieu pendant le transfert.</p>
         </div>
 
-        <!-- Global confirmation message (with a joke inside) -->
+        <!-- Success -->
         <div class="flex-row" *ngSwitchCase="'ok'">
             <div class="flex-left"></div>
             <p class="flex-right flex-row valid">Expédition réussie! La base de donnée a bien été restaurée.</p>
