@@ -18,8 +18,7 @@
     </div>
     <div class="flex-row invalid" *ngIf="agree.touched && agree.errors">
         <label class="flex-left"></label>
-        <p class="flex-right flex-row">Lisez et cochez.
-        </p>
+        <p class="flex-right flex-row">Lisez avez attention et cochez pour accepter</p>
     </div>
     <div>
         <p style="font-size: 0.7em">*: requis.</p>
@@ -29,7 +28,7 @@
     <div class="flex-row">
         <div class="flex-left"></div>
         <div class="flex-right">
-            <button *ngIf="!status">Désinstaller</button>
+            <button [disabled]="status() !== 'pending'">Désinstaller</button>
         </div>
     </div>
 

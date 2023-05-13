@@ -14,7 +14,7 @@
             type="file"
             formControlName="file"
             (change)="handleFileChange($event)">
-            <div *ngIf="file.invalid && file.errors" class="invalid">
+            <div *ngIf="file.touched && file.errors" class="invalid">
                 <p *ngIf="file.errors.required">Fichier requis</p>
             </div>
         </div>
@@ -29,10 +29,9 @@
         </div>
 
     </div>
-    <div class="flex-row invalid" *ngIf="agree.invalid && agree.errors">
+    <div class="flex-row invalid" *ngIf="agree.touched && agree.errors">
         <label class="flex-left"></label>
-        <p class="flex-right flex-row">Lisez et cochez.
-        </p>
+        <p class="flex-right flex-row">Merci de lire avec attention et de cocher pour accepter</p>
     </div>
     <div>
         <p style="font-size: 0.7em">*: requis.</p>

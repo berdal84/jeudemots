@@ -16,7 +16,7 @@
         </div>
 
     </div>
-    <div class="flex-row invalid" *ngIf="agree.invalid && agree.errors">
+    <div class="flex-row invalid" *ngIf="agree.touched && agree.errors">
         <label class="flex-left"></label>
         <p class="flex-right flex-row">Lisez et cochez.
         </p>
@@ -29,7 +29,7 @@
     <div class="flex-row">
         <div class="flex-left"></div>
         <div class="flex-right">
-            <button *ngIf="status() ==='pending'" >Installer</button>
+            <button [disabled]="status() !=='pending'" >Installer</button>
         </div>
     </div>
 
