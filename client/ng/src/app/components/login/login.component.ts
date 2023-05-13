@@ -17,7 +17,7 @@ import { FormStatus } from "src/app/models/form-status";
   styleUrls: ["./login.component.css"],
 })
 export class LoginComponent {
-  status = signal<FormStatus>("idle");
+  status = signal<FormStatus>('pending');
   form = new FormGroup({
     username: new FormControl("", {
       nonNullable: true,
@@ -55,9 +55,9 @@ export class LoginComponent {
       if (!(await this.router.navigate([route]))) {
         console.error("Unable to navigate!");
       }
-      this.status.set("ok");
+      this.status.set('success');
     } else {
-      this.status.set("ko");
+      this.status.set('error');
     }
     this.form.reset();
   }

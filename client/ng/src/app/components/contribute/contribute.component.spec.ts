@@ -36,8 +36,8 @@ describe('ContributeComponent', () => {
       acceptTerms: true,
     });
     expect(component.form.invalid).toBeFalsy();
-    expect(component.status()).not.toBe('ok');
+    expect(component.status()).not.toBe('success');
     await component.onSubmit();
-    expect(component.status()).toBe('ok');
+    expect(component.status()).toBe('success');
   });
 });

@@ -16,7 +16,7 @@ import { FormStatus } from 'src/app/models/form-status';
 })
 export class InstallComponent {
   private api = inject(APIService);
-  status = signal<FormStatus>('idle');
+  status = signal<FormStatus>('pending');
   form = new FormGroup({
     agree: new FormControl(
       false,
@@ -44,13 +44,13 @@ export class InstallComponent {
       return;
     }
 
-    this.status.set('pending');
+    this.status.set('processing');
     const response = await this.api.install();
     if ( response.ok ) {
       this.form.reset();
-      this.status.set('ok');
+      this.status.set('success');
     } else {
-      this.status.set('ko');
+      this.status.set('error');
     }
 
   }
@@ -59,7 +59,7 @@ export class InstallComponent {
    * Reset form
    */
   onReset() {
-    this.status.set('idle');
+    this.status.set('pending');
     this.form.reset();
   }
 

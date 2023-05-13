@@ -3,23 +3,23 @@
 </p>
 
 <div class="flex-row">
-    <button *ngIf="status() === 'idle'" (click)="handleSubmit()" >Sauvegarder</button>
+    <button *ngIf="status() === 'pending'" (click)="handleSubmit()" >Sauvegarder</button>
 </div>
 
 <ng-container *ngSwitch="status()">
 
-    <!-- Pending -->
-      <div class="flex-row" *ngSwitchCase="'pending'">
-        <p class="flex-row invalid">Téléchargement du fichier ...</p>
+    <!-- Processing -->
+    <div class="flex-row" *ngSwitchCase="'processing'">
+        <p class="flex-row">Sauvegarde ...</p>
     </div>
 
     <!-- Error -->
-    <div class="flex-row" *ngSwitchCase="'ko'">
+    <div class="flex-row" *ngSwitchCase="'error'">
         <p class="flex-row invalid">Oh... Un problème a eu lieu pendant le transfert.</p>
     </div>
 
     <!-- Success -->
-    <div class="flex-row" *ngSwitchCase="'ok'">
+    <div class="flex-row" *ngSwitchCase="'success'">
         <p class="valid">La base de données a été sauvegardée, téléchargez le fichier
             <a class="btn btn-clear" [href]="downloadJsonHref" download="backup.json">backup.json</a>
         </p>

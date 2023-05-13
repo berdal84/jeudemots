@@ -16,7 +16,7 @@ import { FormStatus } from '@models/form-status';
 })
 export class RestoreComponent {
   private api = inject(APIService);
-  status = signal<FormStatus>('idle');
+  status = signal<FormStatus>('pending');
   form = new FormGroup({
     file: new FormControl<string | null>(null, {
       validators: [Validators.required],
@@ -50,21 +50,21 @@ export class RestoreComponent {
       return;
     };
 
-    this.status.set("pending");
+    this.status.set('processing');
     const formData = new FormData();
     formData.append("file", file);
 
     const result = await this.api.restore(formData);
     if (result.ok) {
       this.form.reset();
-      this.status.set("ok");
+      this.status.set('success');
     } else {
-      this.status.set("ko");
+      this.status.set('error');
     }
   }
 
   handleReset() {
-    this.status.set('idle');
+    this.status.set('pending');
     this.form.reset();
   }
 

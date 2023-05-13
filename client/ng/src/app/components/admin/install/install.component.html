@@ -29,21 +29,29 @@
     <div class="flex-row">
         <div class="flex-left"></div>
         <div class="flex-right">
-            <button *ngIf="status() ==='idle'" >Installer</button>
+            <button *ngIf="status() ==='pending'" >Installer</button>
         </div>
     </div>
 
     <ng-container *ngSwitch="status()">
+
+        <!-- Processing -->
+        <div class="flex-row" *ngSwitchCase="'processing'">
+          <div class="flex-left"></div>
+          <p class="flex-right flex-row">Installation ...</p>
+        </div>
+
         <!-- Error -->
-        <div class="flex-row" *ngSwitchCase="'ko'">
+        <div class="flex-row" *ngSwitchCase="'error'">
             <div class="flex-left"></div>
             <p class="flex-right flex-row invalid">Oh... Un problème a eu lieu pendant l'installation.</p>
         </div>
 
         <!-- Confirmation -->
-        <div class="flex-row" *ngSwitchCase="'ok'">
+        <div class="flex-row" *ngSwitchCase="'success'">
             <div class="flex-left"></div>
             <p class="flex-right valid">L'installation s'est bien déroulée.</p>
         </div>
+
     </ng-container>
 </form>

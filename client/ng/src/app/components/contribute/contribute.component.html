@@ -82,14 +82,22 @@
     <div class="flex-left"></div>
     <div class="flex-right">
       <button type="reset" (click)="onReset()">Recommencer</button>
-      <button *ngIf="status() === 'idle'">Soumettre</button>
+      <button type="submit" [disabled]="status() !== 'pending'">Soumettre</button>
     </div>
   </div>
 
   <ng-container *ngSwitch="status()">
 
+    <!-- processing message -->
+    <div class="flex-row" *ngSwitchCase="'processing'">
+      <div class="flex-left"></div>
+      <p class="flex-right flex-row">
+        Transfert ...
+      </p>
+    </div>
+
     <!-- error message -->
-    <div class="flex-row" *ngSwitchCase="'ko'">
+    <div class="flex-row" *ngSwitchCase="'error'">
       <div class="flex-left"></div>
       <p class="flex-right flex-row invalid">
         Oh... Un problème a eu lieu pendant le transfert.
@@ -97,7 +105,7 @@
     </div>
 
     <!-- confirmation message -->
-    <div class="flex-row" *ngSwitchCase="'ok'">
+    <div class="flex-row" *ngSwitchCase="'success'">
       <div class="flex-left"></div>
       <p class="flex-right flex-row valid">
         Expédition réussie! Votre blague est en attente de validation. Merci ;)

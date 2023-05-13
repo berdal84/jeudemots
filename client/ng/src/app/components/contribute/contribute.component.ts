@@ -17,7 +17,7 @@ import { FormStatus } from "src/app/models/form-status";
   styleUrls: ["./contribute.component.css"],
 })
 export class ContributeComponent {
-  status = signal("idle" as FormStatus);
+  status = signal<FormStatus>('pending');
   displayErrors = signal(false);
   email = environment.supportEmail;
 
@@ -80,9 +80,9 @@ export class ContributeComponent {
     const response = await this.api.create(joke);
     if (response.ok) {
       this.form.reset();
-      this.status.set("ok");
+      this.status.set('success');
     } else {
-      this.status.set("ko");
+      this.status.set('error');
     }
   }
 
@@ -90,7 +90,7 @@ export class ContributeComponent {
    * Reset form
    */
   onReset() {
-    this.status.set("idle");
+    this.status.set('pending');
     this.form.reset();
   }
 

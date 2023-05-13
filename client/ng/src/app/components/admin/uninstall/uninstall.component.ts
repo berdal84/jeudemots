@@ -16,7 +16,7 @@ import { FormStatus } from "@models/form-status";
 })
 export class UninstallComponent {
   private api = inject(APIService);
-  status = signal<FormStatus>("idle");
+  status = signal<FormStatus>('pending');
   form = new FormGroup({
     agree: new FormControl<boolean | null>(null, {
       validators: [Validators.requiredTrue],
@@ -30,18 +30,18 @@ export class UninstallComponent {
       this.form.markAllAsTouched();
     };
 
-    this.status.set("pending");
+    this.status.set('processing');
     const result = await this.api.uninstall();
     if (result.ok) {
       this.form.reset();
-      this.status.set("ok");
+      this.status.set('success');
     } else {
-      this.status.set("ko");
+      this.status.set('error');
     }
   }
 
   handleReset() {
-    this.status.set("idle");
+    this.status.set('pending');
     this.form.reset();
   }
 }

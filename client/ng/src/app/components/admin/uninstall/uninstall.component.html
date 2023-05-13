@@ -35,14 +35,20 @@
 
     <ng-container *ngSwitch="status()">
 
+        <!-- Processing-->
+        <div class="flex-row" *ngSwitchCase="'processing'">
+          <div class="flex-left"></div>
+          <p class="flex-right flex-row invalid">Désinstallation ...</p>
+        </div>
+
         <!-- Error-->
-        <div class="flex-row" *ngSwitchCase="'ko'">
+        <div class="flex-row" *ngSwitchCase="'error'">
             <div class="flex-left"></div>
             <p class="flex-right flex-row invalid">Oh... Un problème a eu lieu pendant la désinstallation.</p>
         </div>
 
         <!-- Success -->
-        <div class="flex-row" *ngSwitchCase="'ok'">
+        <div class="flex-row" *ngSwitchCase="'success'">
             <div class="flex-left"></div>
             <p class="flex-right flex-row valid">La désinstallation s'est bien déroulée.</p>
         </div>

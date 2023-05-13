@@ -51,17 +51,17 @@
 
         <!-- Pending -->
           <div class="flex-row" *ngSwitchCase="'pending'">
-            <p class="flex-row invalid">Téléchargement du fichier ...</p>
+            <p class="flex-row invalid">Restauration ...</p>
         </div>
 
         <!-- Error -->
-        <div class="flex-row" *ngSwitchCase="'ko'">
+        <div class="flex-row" *ngSwitchCase="'error'">
             <div class="flex-left"></div>
             <p class="flex-right flex-row invalid">Oh... Un problème a eu lieu pendant le transfert.</p>
         </div>
 
         <!-- Success -->
-        <div class="flex-row" *ngSwitchCase="'ok'">
+        <div class="flex-row" *ngSwitchCase="'success'">
             <div class="flex-left"></div>
             <p class="flex-right flex-row valid">Expédition réussie! La base de donnée a bien été restaurée.</p>
         </div>
