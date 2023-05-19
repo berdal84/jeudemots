@@ -19,11 +19,11 @@ export class AuthService {
   refreshTimeout:  number = 0;
   constructor( private api: APIService ) {}
 
-  async login(credentials: Credentials): Promise<Response> {
+  async login(credentials: Credentials) {
     const response = await this.api.login(credentials);
     if( response.ok ) {
       this.userStatus$.next(AuthStatus.Connected);
-      this.scheduleRefreshSession();
+      this.scheduleRefreshSession(response.data.lifetime * 1000 * 0.9); // refresh at 90%
     } else {
       this.userStatus$.next(AuthStatus.Disconnected);
     }
@@ -41,13 +41,13 @@ export class AuthService {
     return this.userStatus$.getValue() === AuthStatus.Connected;
   }
 
-  private scheduleRefreshSession(delay = 1000 * 4 * 60) { // refresh every 4min
-    setTimeout( () => this.refreshSession(), delay)
+  private scheduleRefreshSession(delayInMs: number) {
+    setTimeout( () => this.refreshSession(delayInMs), delayInMs)
   }
 
-  private async refreshSession() {   
+  private async refreshSession(delayInMs: number) {   
     const response = await this.api.refreshSession();
     if( !response.ok ) this.userStatus$.next(AuthStatus.Disconnected);
-    else this.scheduleRefreshSession()
+    else this.scheduleRefreshSession(delayInMs)
   }
 }

@@ -11,6 +11,12 @@ import * as sha256 from 'sha256';
 
 const { api } = environment;
 
+type SessionStatus = {
+  lifetime: number;
+  created_at: number;
+  is_admin: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -88,7 +94,7 @@ export class APIService {
     return this.readPage({id, size});
   }
 
-  login(credentials: Credentials): Promise<Response<{created_at: number}>> {
+  login(credentials: Credentials): Promise<Response<SessionStatus>> {
     const safeCredentials: Credentials = {
       username: credentials.username,
       password: sha256(credentials.password)
