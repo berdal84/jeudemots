@@ -6,7 +6,7 @@ export class AuthServiceMock implements Pick<AuthService, 'checkIfConnectedOnBac
     userStatus$ = new BehaviorSubject<AuthStatus>(AuthStatus.Connected);
     isConnected$   = new BehaviorSubject<boolean>(true);
 
-    async checkIfConnectedOnBackend(): Promise<boolean> {
+    async isConnected(): Promise<boolean> {
         return this.userStatus$.value === AuthStatus.Connected;
     }
 }

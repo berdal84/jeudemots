@@ -16,12 +16,17 @@ export class AuthService {
   /** Current user status */
   readonly userStatus$ = new BehaviorSubject<AuthStatus>(AuthStatus.Disconnected);
   readonly isConnected$ = this.userStatus$.pipe(map(status => status === AuthStatus.Connected))
+  refreshTimeout:  number = 0;
   constructor( private api: APIService ) {}
 
   async login(credentials: Credentials): Promise<Response> {
     const response = await this.api.login(credentials);
-    this.userStatus$.next(AuthStatus.Connected)
-    console.debug(this.userStatus$.value);
+    if( response.ok ) {
+      this.userStatus$.next(AuthStatus.Connected);
+      this.scheduleRefreshSession();
+    } else {
+      this.userStatus$.next(AuthStatus.Disconnected);
+    }
     return response;
   }
 
@@ -32,7 +37,17 @@ export class AuthService {
     return response;
   }
 
-  async checkIfConnectedOnBackend(): Promise<boolean> {
-    return (await this.api.isLogged()).ok;
+  isConnected(): boolean {
+    return this.userStatus$.getValue() === AuthStatus.Connected;
+  }
+
+  private scheduleRefreshSession(delay = 1000 * 4 * 60) { // refresh every 4min
+    setTimeout( () => this.refreshSession(), delay)
+  }
+
+  private async refreshSession() {   
+    const response = await this.api.refreshSession();
+    if( !response.ok ) this.userStatus$.next(AuthStatus.Disconnected);
+    else this.scheduleRefreshSession()
   }
 }

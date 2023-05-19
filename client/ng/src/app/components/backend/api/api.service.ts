@@ -88,7 +88,7 @@ export class APIService {
     return this.readPage({id, size});
   }
 
-  login(credentials: Credentials): Promise<Response> {
+  login(credentials: Credentials): Promise<Response<{created_at: number}>> {
     const safeCredentials: Credentials = {
       username: credentials.username,
       password: sha256(credentials.password)
@@ -96,12 +96,12 @@ export class APIService {
     return this._request<Response>('POST', api.path.auth, {body: safeCredentials});
   }
 
-  isLogged(): Promise<Response> {
-    return this._request<Response>('GET', api.path.auth);
-  }
-
   logout(): Promise<Response> {
     return this._request<Response>('DELETE', api.path.auth);
+  }
+
+  refreshSession(): Promise<Response> {
+    return this._request<Response>('GET', api.path.auth);
   }
 
   /**
