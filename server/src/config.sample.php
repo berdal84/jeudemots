@@ -24,6 +24,7 @@ define('ADMIN_PASS', '');
 define('ADMIN_EMAIL', '');
 define('ACCESS_CONTROL_ALLOW_ORIGIN', array('domain.com', 'alternative-domain.com') );
 define('COOKIE_DOMAIN', '');
+define('COOKIE_LIFETIME', 60*30);
 define('DEBUG', false);
 
 ini_set('session.use_strict_mode', 1); // see https://www.php.net/manual/en/features.session.security.management.php#features.session.security.management.non-adaptive-session

@@ -3,7 +3,7 @@
 require_once __DIR__.'/joke.php';
 require_once __DIR__.'/page.php';
 require_once __DIR__.'/db.php';
-require_once __DIR__.'/user.php';
+require_once __DIR__.'/authentication.php';
 
 class JokeCRUD {
     const filter_separator = ' ';
@@ -32,7 +32,7 @@ class JokeCRUD {
 
       $where_clause = "";
 
-      if( !User::is_logged())
+      if( !Authentication::is_logged())
       {
           $where_clause = "WHERE `visible` = 1";
       }

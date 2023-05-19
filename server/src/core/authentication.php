@@ -3,15 +3,34 @@
 require_once __DIR__.'/../config.php';
 require_once __DIR__.'/response.php';
 
-class User
+class Authentication
 {
   static public function session_start(): bool
   {
     session_set_cookie_params([
-      'lifetime' => 3600,
+      'lifetime' => COOKIE_LIFETIME,
       'domain' => COOKIE_DOMAIN,
     ]);
-    return session_start();
+
+    if( !session_start() ) return false;
+    
+    if (isset($_SESSION['created_at']) &&
+        time() - $_SESSION['created_at'] > COOKIE_LIFETIME)
+    {
+        session_regenerate_id(true); // invalidate old session ID
+    }
+    $_SESSION['created_at'] = time();
+    $_SESSION['expire_at'] = $_SESSION['created_at'] + COOKIE_LIFETIME;
+    return true;
+  }
+
+  static public function info(): stdClass
+  {
+    $info = new stdClass();
+    $info->created_at = $_SESSION['created_at'];
+    $info->expire_at  = $_SESSION['expire_at'];
+    $info->is_admin   = $_SESSION['is_admin'];
+    return $info;
   }
 
   static public function login(string $username, string $password): bool

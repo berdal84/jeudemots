@@ -5,7 +5,7 @@
 
 require_once 'core/joke-crud.php';
 require_once 'core/url-params.php';
-require_once('./core/header.php');
+require_once 'core/header.php';
 
 Header::access_control_allow_origin(...ACCESS_CONTROL_ALLOW_ORIGIN);
 header("Access-Control-Allow-Methods: OPTIONS, GET");

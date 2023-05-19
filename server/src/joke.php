@@ -3,11 +3,11 @@
 require_once('core/joke-crud.php');
 require_once('core/response.php');
 require_once('core/url-params.php');
-require_once('core/user.php');
+require_once('core/authentication.php');
 require_once('core/mail.php');
 require_once('core/header.php');
 
-User::session_start();
+Authentication::session_start();
 
 Header::access_control_allow_origin(...ACCESS_CONTROL_ALLOW_ORIGIN);
 header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
@@ -59,7 +59,7 @@ switch( $_SERVER['REQUEST_METHOD'] )
         Response::success($joke);
 
     case 'PATCH':
-        User::exit_if_not_logged();
+        Authentication::exit_if_not_logged();
         $rawData  = file_get_contents('php://input');
         $data     = json_decode($rawData);
         $joke     = Joke::fromObject($data);
@@ -72,7 +72,7 @@ switch( $_SERVER['REQUEST_METHOD'] )
         Response::success($joke);
 
     case 'DELETE':
-        User::exit_if_not_logged();
+        Authentication::exit_if_not_logged();
         $id = UrlParams::requireInt('id');
         if( !JokeCRUD::delete($id) )
         {
