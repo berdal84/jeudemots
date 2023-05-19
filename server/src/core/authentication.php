@@ -20,7 +20,7 @@ class Authentication
         session_regenerate_id(true); // invalidate old session ID
     }
     $_SESSION['created_at'] = time();
-    $_SESSION['expire_at'] = $_SESSION['created_at'] + COOKIE_LIFETIME;
+    $_SESSION['lifetime'] = COOKIE_LIFETIME;
     return true;
   }
 
@@ -28,7 +28,7 @@ class Authentication
   {
     $info = new stdClass();
     $info->created_at = $_SESSION['created_at'];
-    $info->expire_at  = $_SESSION['expire_at'];
+    $info->lifetime   = $_SESSION['lifetime'];
     $info->is_admin   = $_SESSION['is_admin'];
     return $info;
   }

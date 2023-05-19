@@ -11,7 +11,7 @@ Header::access_control_allow_origin(...ACCESS_CONTROL_ALLOW_ORIGIN);
 header("Access-Control-Allow-Methods: OPTIONS, GET");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
-User::session_start();
+Authentication::session_start();
 
 $id     = UrlParams::requireInt('id');
 $size   = UrlParams::getInt('size', 10);

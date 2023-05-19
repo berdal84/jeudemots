@@ -2,7 +2,7 @@
 
 require_once('core/db.php');
 require_once('core/response.php');
-require_once('core/Authenticationentication.php');
+require_once('core/authentication.php');
 require_once('core/url-params.php');
 require_once('core/header.php');
 

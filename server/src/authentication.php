@@ -1,5 +1,5 @@
 <?php
-  require_once('core/auth.php');
+  require_once('core/authentication.php');
   require_once('core/response.php');
   require_once('core/header.php');
 
@@ -20,7 +20,7 @@
         http_response_code(401);
         Response::failure("The couple username/password does not match with any valid account");
       }
-      Response::success("Logged", Authentication::info());
+      Response::success(Authentication::info());
 
     case 'GET':
       if(Authentication::is_logged())
