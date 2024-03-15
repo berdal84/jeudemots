@@ -30,6 +30,19 @@ WIP:
 
 ## Development
 
+### Prerequisites
+
+Install the following dependencies:
+```
+sudo apt install nodejs npm php libapache2-mod-php php-mysql php-cli
+```
+
+And install the project
+
+```
+npm install
+```
+
 ### `npm run build`
 
 Launches the build of the subprojects (server, angular/react frontends). Produce a `./build` subfolder in each
