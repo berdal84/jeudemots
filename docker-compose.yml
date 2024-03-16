@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+
+  # TODO: Frontend - serve the Angular app
+  # frontend:
+  #  image: nginx:stable
+  #  depends_on:
+  #    - api
+  #  ports:
+  #    - 80:80
+
+  # API - run PHP app
+  api:
+    image: php:7.2-apache
+    depends_on:
+      - db
+    volumes:
+      - ./server/src:/var/www/html:ro
+    ports:
+      - 8000:80
+
+  # Database - store jokes in a MySQL db
+  db:
+    image: mariadb:10.3
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 'devonly'
+
+  # Database Admin Panel 
+  phpmyadmin:
+    image: phpmyadmin:5
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: 'db'
+      PMA_USER: 'root'
+      PMA_PASSWORD: 'devonly'
+    ports:
+      - 8080:80 # internal
+
+
