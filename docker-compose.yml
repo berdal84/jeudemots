@@ -5,15 +5,17 @@ services:
   frontend:
     image: nginx:stable
     depends_on:
-      - backend
+      - api
     ports:
       - 80:80
 
-  # Backend - run PHP app
-  backend:
-    image: nginx:stable
+  # API - run PHP app
+  api:
+    image: php:7.2-apache
     depends_on:
       - db
+    volumes:
+      - ./server/src:/var/www/html:ro
     ports:
       - 8000:80
 
