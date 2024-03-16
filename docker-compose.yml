@@ -1,13 +1,13 @@
 version: '3.8'
 services:
 
-  # Frontend - serve the Angular app
-  frontend:
-    image: nginx:stable
-    depends_on:
-      - api
-    ports:
-      - 80:80
+  # TODO: Frontend - serve the Angular app
+  # frontend:
+  #  image: nginx:stable
+  #  depends_on:
+  #    - api
+  #  ports:
+  #    - 80:80
 
   # API - run PHP app
   api:

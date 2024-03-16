@@ -2,7 +2,7 @@ import {Environment} from './environment.model';
 
 export const environmentBase = {
   api: {
-    baseUrl: 'https://jeudemots.42borgata.com/api',
+    baseUrl: '127.0.0.1:8000',
     path: {
       auth: '/authentication.php',
       mail: '/mail.php',
