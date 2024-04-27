@@ -70,7 +70,7 @@ class Authentication
 
   static public function exit_if_not_logged()
   {
-    if( !User::is_logged() )
+    if( !Authentication::is_logged() )
     {
       http_response_code(403);
       Response::failure("Forbidden");
