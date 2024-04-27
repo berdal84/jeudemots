@@ -2,7 +2,7 @@ import {Environment} from './environment.model';
 
 export const environmentBase = {
   api: {
-    baseUrl: 'http://127.0.0.1:8000',
+    baseUrl: 'http://127.0.0.1:8000/v1',
     path: {
       auth: '/authentication.php',
       mail: '/mail.php',

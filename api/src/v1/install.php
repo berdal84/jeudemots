@@ -1,8 +1,8 @@
 <?php
 
-require_once('lib/db.php');
-require_once('lib/response.php');
-require_once('lib/header.php');
+require_once('../lib/db.php');
+require_once('../lib/response.php');
+require_once('../lib/header.php');
 
 Header::access_control_allow_origin(...ACCESS_CONTROL_ALLOW_ORIGIN);
 header("Access-Control-Allow-Methods: GET, OPTIONS");
