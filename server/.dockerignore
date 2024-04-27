@@ -1,0 +1,3 @@
+# Avoids to include any config file other than config.sample.php
+config*
+!config.sample.php

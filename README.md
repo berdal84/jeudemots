@@ -6,18 +6,76 @@
 
 ## Introduction
 
-This is a client-server solution to host jokes using Angular and PHP/MySQL. Two alternative React/Vue clients are work in progress. The project is deployed at [https://jeudemots.42borgata.com](https://jeudemots.42borgata.com),
+_Jeu De Mots_ is a web application to host jokes developed with Angular and PHP.
+
+Try it: [https://jeudemots.42borgata.com](https://jeudemots.42borgata.com)
 
 <div align="center">
   <img width="100%" height="100%" src="./screenshot.png" />
   <p>Angular Frontend | Slideshow capture<p/>
 </div>
 
+## How to use ?
+
+### Prerequisites
+
+_Prerequisites: nodejs/npm and docker are **required**._
+
+### Install
+
+To install the project, run* the following command
+
+```
+./install.sh
+```
+
+> *Check script content to see what's happening before to run it. First execution might take a while. You might also need to make the file executable with `chmod +x install.sh`.
+
+### How to run ? (locally)
+
+Be sure you installed first.
+
+Then, run* the following command:
+
+```
+./dev-ng.sh
+```
+
+Follow the instructions to browse to the home page.
+
+> *Check content prior to run.
+> 
+> This script will make sure the - local - backend services are up, and will run the angular dev server.
+>
+> **First Launch**: Database needs to be initialized. Sign in to the admin page (add `/admin`to the
+URL), and go to the installation section and click on install. Then, you can optionally restore a previously backed up file from this place.
+
+### How to build ?
+
+Then, run* the following command:
+
+```
+./build.sh
+```
+
+> *Check file content before to run. This script will build the backend dockers and frontend packages.
+
+### How to create a package ?
+
+Then, run* the following command:
+
+```
+./pack.sh
+```
+
+> *Check file content before to run. This script will copy all the built files into `./dist` folder. 
+
+
 ## Project files
 
-This repository contains source code for different parts of the project:
+Source code is split in two main folders:
 
-- `server`: backend PHP sources files
+- `server`: backend PHP sources and config files.
 - `client/ng`: main Angular frontend sources
 
 WIP:
@@ -27,38 +85,6 @@ WIP:
 - `client/vue`: alternative Vue frontend sources (deployed
   at [https://jeudemots.42borgata.com/vue](https://jeudemots.42borgata.com/vue))
 - `client/shared`: shared code and resources.
-
-## Development
-
-### Prerequisites
-
-Install the following dependencies:
-```
-sudo apt install nodejs npm php libapache2-mod-php php-mysql php-cli
-```
-
-And install the project
-
-```
-npm install
-```
-
-### `npm run build`
-
-Launches the build of the subprojects (server, angular/react frontends). Produce a `./build` subfolder in each
-subprojectfolder (see `in client/`).
-
-*note: the first time, before launching the command, you need to duplicate `server/config.sample.php`,
-rename it to `config.prod.php` and replace the data inside the file with your credentials (depends on your server
-config). If not, the server build will fail.*
-
-### `npm run pack`
-
-Copy the last build files from all subprojects to a global `./dist` folder. This folder will contain the files you need
-to copy to your web server to get the application to work.
-
-*note: The first time you will need to install the database. To do that, sign in to the admin page (add `/admin`to the
-URL), go to the installation section and click on install. Then, you can optionally restore a previously backed up file.*
 
 ## History
 

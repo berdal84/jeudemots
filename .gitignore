@@ -40,7 +40,3 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-
-# should never be commited
-config*.php
-!config.sample.php

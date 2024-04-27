@@ -15,14 +15,17 @@ services:
 #
   api:
     container_name: jeudemots-api
-    image: php:7.2-apache
-    command: | # TODO: convert that to a Dockerfile
-      /bin/sh -c 'docker-php-ext-install mysqli &&
-                  exec docker-php-entrypoint apache2-foreground'
+    build:
+      context: ./server
+    develop:
+      watch:
+        - path: ./server
+          action: rebuild
+    volumes:
+      # Override default config file
+      - ./server/config.local.php:/var/www/html/config.php:ro
     depends_on:
       - db
-    volumes:
-      - ./server/src:/var/www/html:ro
     ports:
       - 8000:80
     networks: ['backend']

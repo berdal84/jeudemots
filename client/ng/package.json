@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration production --output-path build",
-    "watch": "ng build --watch --output-path build",
+    "build": "ng build --configuration production",
+    "watch": "ng build --watch",
     "test": "ng test",
     "test:cov": "ng test --codeCoverage=true --progress=true",
     "lint": "ng lint",
