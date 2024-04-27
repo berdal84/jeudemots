@@ -151,7 +151,7 @@ export class APIService {
   }
 
   /**
-   * Read a page from server
+   * Read a page from api
    * @param id a page index
    * @param size a page size (item count per page)
    */

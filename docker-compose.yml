@@ -16,13 +16,13 @@ services:
   api:
     container_name: jeudemots-api
     build:
-      context: ./server
+      context: ./api
     develop:
       watch:
-        - path: ./server
+        - path: ./api
           action: rebuild
     volumes:
-      - ./server/src/config.dev.php:/var/www/html/config.php:ro
+      - ./api/src/config.dev.php:/var/www/html/config.php:ro
     depends_on:
       - db
     ports:

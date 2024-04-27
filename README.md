@@ -75,7 +75,7 @@ Then, run* the following command:
 
 Source code is split in two main folders:
 
-- `server`: backend PHP sources and config files.
+- `api`: backend PHP sources and config files.
 - `client/ng`: main Angular frontend sources
 
 WIP:

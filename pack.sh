@@ -25,7 +25,7 @@ rm -rf ${OUTPUT_DIR}
 
 # Server
 mkdir -p ${SERVER_OUTPUT_DIR}
-cp -vr server/src/* ${SERVER_OUTPUT_DIR} && echo "Server OK" || (echo "Unable to copy Server files!" && exit )
+cp -vr api/src/* ${SERVER_OUTPUT_DIR} && echo "Server OK" || (echo "Unable to copy Server files!" && exit )
 
 # Client Angular
 
