@@ -1,10 +1,10 @@
 <?php
 
-require_once('core/db.php');
-require_once('core/response.php');
-require_once('core/authentication.php');
-require_once('core/url-params.php');
-require_once('core/header.php');
+require_once('../lib/db.php');
+require_once('../lib/response.php');
+require_once('../lib/authentication.php');
+require_once('../lib/url-params.php');
+require_once('../lib/header.php');
 
 Header::access_control_allow_origin(...ACCESS_CONTROL_ALLOW_ORIGIN);
 header("Access-Control-Allow-Methods: GET, POST, PATCH, OPTIONS");

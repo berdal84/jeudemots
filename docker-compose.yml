@@ -22,8 +22,7 @@ services:
         - path: ./server
           action: rebuild
     volumes:
-      # Override default config file
-      - ./server/config.local.php:/var/www/html/config.php:ro
+      - ./server/src/config.dev.php:/var/www/html/config.php:ro
     depends_on:
       - db
     ports:
@@ -34,11 +33,20 @@ services:
 #
   db:
     container_name: jeudemots-db
-    image: mariadb:10.3
+    build:
+      context: db
+    develop:
+      watch:
+        - path: ./db
+          action: rebuild
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: 'devonly'
     networks: ['backend']
+    environment:
+        MYSQL_ROOT_USER: root
+        MYSQL_ROOT_PASSWORD: devonly
+        MYSQL_DATABASE: jokes
+        MYSQL_USER: root
+        MYSQL_PASSWORD: devonly
 #
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 #

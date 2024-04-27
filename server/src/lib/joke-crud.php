@@ -239,56 +239,6 @@ SQL;
 
       return $success;
     }
-
-    public static function uninstall(): bool
-    {
-        $success = false;
-
-        $query = "DROP TABLE jokes";
-
-        //echo("\n".$query."\n");
-        $mysqli = DB::connect();
-
-        if( $mysqli->query($query) )
-        {
-            $success = true;
-        }
-        $mysqli->close();
-        return $success;
-    }
-
-    public static function install(): bool
-    {
-        $success = false;
-
-        $query = <<<SQL
-            CREATE TABLE `jokes` (
-                `id`       int(11)      NOT NULL,
-                `category` varchar(64)  NOT NULL,
-                `text`     text         NOT NULL,
-                `author`   varchar(64)  NOT NULL,
-                `date`     date         DEFAULT NULL,
-                `visible`  tinyint(1)   NOT NULL
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-            ALTER TABLE `jokes` ADD PRIMARY KEY (`id`);
-            ALTER TABLE `jokes` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-SQL;
-
-        //echo("\n".$query."\n");
-        $mysqli = DB::connect();
-
-        if( $mysqli->multi_query($query) )
-        {
-            $success = true;
-        }
-        else
-        {
-            echo("First install? If not, uninstall first.\n");
-        }
-        $mysqli->close();
-        return $success;
-    }
 }
 
 ?>

@@ -1,3 +1,4 @@
 # No config should be committed except the sample
 config*.php
+!config.dev.php
 !config.sample.php

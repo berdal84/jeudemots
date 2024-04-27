@@ -3,9 +3,9 @@
     Get a set of N jokes
 */
 
-require_once 'core/joke-crud.php';
-require_once 'core/url-params.php';
-require_once 'core/header.php';
+require_once '../lib/joke-crud.php';
+require_once '../lib/url-params.php';
+require_once '../lib/header.php';
 
 Header::access_control_allow_origin(...ACCESS_CONTROL_ALLOW_ORIGIN);
 header("Access-Control-Allow-Methods: OPTIONS, GET");

@@ -5,10 +5,13 @@ WORKDIR /var/www/html
 RUN docker-php-ext-install mysqli
 
 # Copy sources
-COPY src .
-COPY config.sample.php config.php
+COPY src/api/ ./api
+COPY src/lib ./lib
+COPY src/sql ./sql
+COPY src/install.php ./
+COPY src/config.sample.php ./config.php
 
-# Allow to override files
+# Allow to override configuration file
 VOLUME [ "./config.php" ]
 
 # Override entry point

@@ -1,7 +1,7 @@
 <?php
-  require_once('core/authentication.php');
-  require_once('core/response.php');
-  require_once('core/header.php');
+  require_once('../lib/authentication.php');
+  require_once('../lib/response.php');
+  require_once('../lib/header.php');
 
   Authentication::session_start();
   

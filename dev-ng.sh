@@ -5,9 +5,12 @@ exitWithError() {
     exit 1;
 }
 
+echo "Dev session running .."
+sleep 1
+
 docker compose --profile backend up -d || exitWithError
 cd client/ng
 npm run start || exitWithError
 docker compose stop
 
-exho "Dev session is over"
+echo "Dev session is over"
