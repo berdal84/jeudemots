@@ -1,33 +1,46 @@
-version: '3.8'
+name: jeudemots
 services:
-
-  # TODO: Frontend - serve the Angular app
+#
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#
+  # TODO
   # frontend:
   #  image: nginx:stable
   #  depends_on:
   #    - api
   #  ports:
   #    - 80:80
-
-  # API - run PHP app
+#
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#
   api:
+    container_name: jeudemots-api
     image: php:7.2-apache
+    command: | # TODO: convert that to a Dockerfile
+      /bin/sh -c 'docker-php-ext-install mysqli &&
+                  exec docker-php-entrypoint apache2-foreground'
     depends_on:
       - db
     volumes:
       - ./server/src:/var/www/html:ro
     ports:
       - 8000:80
-
-  # Database - store jokes in a MySQL db
+    networks: ['backend']
+#
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#
   db:
+    container_name: jeudemots-db
     image: mariadb:10.3
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 'devonly'
-
-  # Database Admin Panel 
+    networks: ['backend']
+#
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#
   phpmyadmin:
+    container_name: jeudemots-phpmyadmin
     image: phpmyadmin:5
     depends_on:
       - db
@@ -36,6 +49,14 @@ services:
       PMA_USER: 'root'
       PMA_PASSWORD: 'devonly'
     ports:
-      - 8080:80 # internal
-
+      - 8080:80
+    networks: ['backend', 'frontend']
+#
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#
+networks:
+  frontend:
+    name: jeudemots-frontend
+  backend:
+    name: jeudemots-backend
 
