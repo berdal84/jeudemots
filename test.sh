@@ -5,4 +5,4 @@ exitWithError() {
     exit 1;
 }
 
-cd client/ng && npm run test || exitWithError
+cd client/ng && npm run test -- --no-watch --no-progress --browsers ChromeHeadlessCI || exitWithError
