@@ -6,21 +6,43 @@ require_once __DIR__.'/response.php';
 class Authentication
 {
   static public function session_start(): bool
-  {
-    session_set_cookie_params([
-      'lifetime' => COOKIE_LIFETIME,
-      'domain' => COOKIE_DOMAIN,
+  {    
+        
+    $lifetime = defined('COOKIE_LIFETIME') ? COOKIE_LIFETIME : 60*4; // 4 min by default
+    $domain = defined('COOKIE_DOMAIN') ? COOKIE_DOMAIN : '127.0.0.1';
+
+    $cookie_ok = session_set_cookie_params([
+      'lifetime' => $lifetime,
+      'domain' => $domain,
+      'path' => '/',
+      'httponly' => true,
     ]);
 
-    if( !session_start() ) return false;
-    
-    if (isset($_SESSION['created_at']) &&
-        time() - $_SESSION['created_at'] > COOKIE_LIFETIME)
+    // setcookie('test', 'value', 60*60, "/");
+
+    if ( !$cookie_ok )
     {
-        session_regenerate_id(true); // invalidate old session ID
+      die("cookie error");
     }
+
+    if( !session_start() )
+    {
+      return false;
+    }
+
+    //  Invalidate old cookies
+    $created_at = $_SESSION['created_at'];
+    if (isset($created_at))
+    {
+      $age = time() - $created_at;
+      if ( $age > $lifetime )
+      {
+        session_regenerate_id(true); 
+      }        
+    }
+
     $_SESSION['created_at'] = time();
-    $_SESSION['lifetime'] = COOKIE_LIFETIME;
+    $_SESSION['lifetime'] = $lifetime;
     return true;
   }
 

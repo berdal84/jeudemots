@@ -1,15 +1,8 @@
 <?php
-  require_once('../lib/authentication.php');
-  require_once('../lib/response.php');
-  require_once('../lib/header.php');
+  require_once('../lib/app.php');
 
-  Authentication::session_start();
+  App::start();
   
-  Header::access_control_allow_origin(...ACCESS_CONTROL_ALLOW_ORIGIN);
-  header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-  header("Access-Control-Allow-Methods: POST, GET, DELETE, OPTIONS");
-  header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-
   switch( $_SERVER['REQUEST_METHOD'] )
   {
     case 'POST':

@@ -1,21 +1,11 @@
 <?php
 
-require_once('../lib/joke-crud.php');
-require_once('../lib/response.php');
-require_once('../lib/url-params.php');
-require_once('../lib/authentication.php');
-require_once('../lib/mail.php');
-require_once('../lib/header.php');
-
-Authentication::session_start();
-
-Header::access_control_allow_origin(...ACCESS_CONTROL_ALLOW_ORIGIN);
-header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+require_once('../lib/app.php');
 
 switch( $_SERVER['REQUEST_METHOD'] )
 {
     case 'GET':
+        App::start();
         $id   = UrlParams::requireInt('id');
         $joke = JokeCRUD::read($id);
         if( $joke === NULL)
@@ -26,6 +16,7 @@ switch( $_SERVER['REQUEST_METHOD'] )
         Response::success($joke);
 
     case 'POST':
+        App::start();
        // get raw data (text)
         $raw_data = file_get_contents('php://input');
         if (!$raw_data)
@@ -51,15 +42,12 @@ switch( $_SERVER['REQUEST_METHOD'] )
             http_response_code(500);
             Response::failure("Unable to create the joke!");
         }
-        if( !Mail::sendJokeToModerator($joke))
-        {
-            http_response_code(500);
-            Response::failure("Your joke has been inserted in the database, but we were unable to notify the moderator");
-        }
+        
+        Mail::sendJokeToModerator($joke);
         Response::success($joke);
 
     case 'PATCH':
-        Authentication::exit_if_not_logged();
+        App::start_if_logged();
         $rawData  = file_get_contents('php://input');
         $data     = json_decode($rawData);
         $joke     = Joke::fromObject($data);
@@ -72,7 +60,7 @@ switch( $_SERVER['REQUEST_METHOD'] )
         Response::success($joke);
 
     case 'DELETE':
-        Authentication::exit_if_not_logged();
+        App::start_if_logged();
         $id = UrlParams::requireInt('id');
         if( !JokeCRUD::delete($id) )
         {
@@ -82,6 +70,7 @@ switch( $_SERVER['REQUEST_METHOD'] )
         Response::success('joke '.$id.' deleted');
         
     default:
+        App::start();
         Response::failure('Method not handled');
 }
 

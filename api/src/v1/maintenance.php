@@ -1,17 +1,8 @@
 <?php
 
-require_once('../lib/db.php');
-require_once('../lib/response.php');
-require_once('../lib/authentication.php');
-require_once('../lib/url-params.php');
-require_once('../lib/header.php');
+require_once('../lib/app.php');
 
-Header::access_control_allow_origin(...ACCESS_CONTROL_ALLOW_ORIGIN);
-header("Access-Control-Allow-Methods: GET, POST, PATCH, OPTIONS");
-header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-
-Authentication::session_start();
-Authentication::exit_if_not_logged();
+App::start_if_logged();
 
 $action = UrlParams::getString('action');
 
