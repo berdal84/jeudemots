@@ -11,65 +11,42 @@ _Jeu De Mots_ is a web application to host jokes developed with Angular and PHP.
 Try it: [https://jeudemots.42borgata.com](https://jeudemots.42borgata.com)
 
 <div align="center">
-  <img width="100%" height="100%" src="./screenshot.png" />
+  <img width="100%" height="100%" src="./docs/screenshot.png" />
   <p>Angular Frontend | Slideshow capture<p/>
 </div>
 
-## How to use ?
+## Quick start
 
 ### Prerequisites
 
-_Prerequisites: nodejs/npm and docker are **required**._
+_Prerequisites: docker is **required**._
 
-### Install
+### Launch
 
-To install the project, run* the following command
-
-```
-./install.sh
-```
-
-> *Check script content to see what's happening before to run it. First execution might take a while. You might also need to make the file executable with `chmod +x install.sh`.
-
-### How to run ? (locally)
-
-Be sure you installed first.
-
-Then, run* the following command:
+Run the following command to build and launch the app:
 
 ```
-./dev-ng.sh
+docker compose up -d
 ```
 
-Follow the instructions to browse to the home page.
+Browse `https://localhost:4200/`
 
-> *Check content prior to run.
-> 
-> This script will make sure the - local - backend services are up, and will run the angular dev server.
->
-> **First Launch**: Database needs to be initialized. Sign in to the admin page (add `/admin`to the
-URL), and go to the installation section and click on install. Then, you can optionally restore a previously backed up file from this place.
+### Post-launch (do once)
 
-### How to build ?
+Browse `https://localhost:4200/#/login` and login with the following credentials:
+- user: `root`
+- pass: `devonly`
 
-Then, run* the following command:
+<div align="center">
+  <img height=300 src="./docs/login-page.png" />
+</div>
 
-```
-./build.sh
-```
+Once logged, install the app by following the instructions of the `install` section.
 
-> *Check file content before to run. This script will build the backend dockers and frontend packages.
-
-### How to create a package ?
-
-Then, run* the following command:
-
-```
-./pack.sh
-```
-
-> *Check file content before to run. This script will copy all the built files into `./dist` folder. 
-
+<div align="center">
+  <img width="100%" height="100%" src="./docs/install-page.png" />
+  <img height=100 src="./docs/install-confirmation.png" />
+</div>
 
 ## Project files
 
