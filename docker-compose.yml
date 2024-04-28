@@ -1,0 +1,77 @@
+name: jeudemots
+services:
+#
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#
+  ui:
+    container_name: jeudemots-ui
+    build:
+      context: ui
+    develop:
+      watch:
+        - path: ./ui
+          action: rebuild
+    ports:
+      - 4200:4200
+    networks: ['frontend']
+#
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#
+  api:
+    container_name: jeudemots-api
+    build:
+      context: ./api
+    develop:
+      watch:
+        - path: ./api
+          action: rebuild
+    volumes:
+      - ./api/src/config.dev.php:/var/www/html/config.php:ro
+    depends_on:
+      - db
+    ports:
+      - 8000:80
+    networks: ['backend']
+#
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#
+  db:
+    container_name: jeudemots-db
+    build:
+      context: db
+    develop:
+      watch:
+        - path: ./db
+          action: rebuild
+    restart: always
+    networks: ['backend']
+    environment:
+        MYSQL_ROOT_USER: admin
+        MYSQL_ROOT_PASSWORD: admin
+        MYSQL_DATABASE: jokes
+        MYSQL_USER: admin
+        MYSQL_PASSWORD: admin
+#
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#
+  phpmyadmin:
+    container_name: jeudemots-phpmyadmin
+    image: phpmyadmin:5
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: 'db'
+      PMA_USER: 'admin'
+      PMA_PASSWORD: 'admin'
+    ports:
+      - 8080:80
+    networks: ['backend', 'frontend']
+#
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#
+networks:
+  frontend:
+    name: jeudemots-frontend
+  backend:
+    name: jeudemots-backend
+

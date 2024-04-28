@@ -1,64 +1,65 @@
-# Jeu de mots
+# Jeu De Mots
 
-<a href="https://github.com/berdal84/jeudemots-ng/actions?query=workflow Node.js CI" title="ng build">
-<img src="https://github.com/berdal84/jeudemots-ng/workflows/Node.js CI/badge.svg" />
-</a>
+[![ui](https://github.com/berdal84/jeudemots/actions/workflows/ui.yml/badge.svg?branch=master&event=status)](https://github.com/berdal84/jeudemots/actions/workflows/ui.yml)
+[![api](https://github.com/berdal84/jeudemots/actions/workflows/api.yml/badge.svg?branch=master&event=status)](https://github.com/berdal84/jeudemots/actions/workflows/api.yml)
+[![db](https://github.com/berdal84/jeudemots/actions/workflows/db.yml/badge.svg?branch=master&event=status)](https://github.com/berdal84/jeudemots/actions/workflows/db.yml)
 
 ## Introduction
 
-This is a client-server solution to host jokes using Angular and PHP/MySQL. Two alternative React/Vue clients are work in progress. The project is deployed at [https://jeudemots.42borgata.com](https://jeudemots.42borgata.com),
+_Jeu De Mots_ is a web application to host jokes developed with Angular and PHP.
+
+Try it: [https://jeudemots.42borgata.com](https://jeudemots.42borgata.com)
 
 <div align="center">
-  <img width="100%" height="100%" src="./screenshot.png" />
+  <img width="100%" height="100%" src="./docs/screenshot.png" />
   <p>Angular Frontend | Slideshow capture<p/>
+</div>
+
+## Quick start
+
+### Prerequisites
+
+_Prerequisites: docker is **required**._
+
+### Launch
+
+Run the following command to build and launch the app:
+
+```
+docker compose up -d
+```
+
+Browse `https://localhost:4200/`
+
+### Post-launch (do once)
+
+Browse `https://localhost:4200/#/login` and login with the following credentials:
+- username/pass: `admin`/`admin`
+
+<div align="center">
+  <img height=300 src="./docs/login-page.png" />
+</div>
+
+Once logged, install the app by following the instructions of the `install` section.
+
+<div align="center">
+  <img width="100%" height="100%" src="./docs/install-page.png" />
+  <img height=100 src="./docs/install-confirmation.png" />
 </div>
 
 ## Project files
 
-This repository contains source code for different parts of the project:
+Quick summary of the project's folder hierarchy:
 
-- `server`: backend PHP sources files
-- `client/ng`: main Angular frontend sources
+- `./ui/ng`: Angular sources
+- `./ui/shared`: shared code and resources
+- `./ui/react`: WIP alternative React sources (deployed
+  at [here](https://jeudemots.42borgata.com/react))
+- `./ui/vue`: WIP alternative Vue frontend (deployed
+  at [here](https://jeudemots.42borgata.com/vue))
+- `./api`: api source
+- `./db`: database sources
 
-WIP:
-
-- `client/react-js`: alternative React frontend sources (deployed
-  at [https://jeudemots.42borgata.com/react](https://jeudemots.42borgata.com/react))
-- `client/vue`: alternative Vue frontend sources (deployed
-  at [https://jeudemots.42borgata.com/vue](https://jeudemots.42borgata.com/vue))
-- `client/shared`: shared code and resources.
-
-## Development
-
-### Prerequisites
-
-Install the following dependencies:
-```
-sudo apt install nodejs npm php libapache2-mod-php php-mysql php-cli
-```
-
-And install the project
-
-```
-npm install
-```
-
-### `npm run build`
-
-Launches the build of the subprojects (server, angular/react frontends). Produce a `./build` subfolder in each
-subprojectfolder (see `in client/`).
-
-*note: the first time, before launching the command, you need to duplicate `server/config.sample.php`,
-rename it to `config.prod.php` and replace the data inside the file with your credentials (depends on your server
-config). If not, the server build will fail.*
-
-### `npm run pack`
-
-Copy the last build files from all subprojects to a global `./dist` folder. This folder will contain the files you need
-to copy to your web server to get the application to work.
-
-*note: The first time you will need to install the database. To do that, sign in to the admin page (add `/admin`to the
-URL), go to the installation section and click on install. Then, you can optionally restore a previously backed up file.*
 
 ## History
 
