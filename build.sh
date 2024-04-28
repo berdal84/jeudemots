@@ -8,19 +8,19 @@ exitWithError() {
 echo "Build .. (will start soon)"
 sleep 1
 
-cd client/shared
+cd ui/shared
 npm run build || exitWithError
 cd -
 
-cd client/ng
+cd ui/ng
 npm run build || exitWithError
 cd -
 
-cd client/react
+cd ui/react
 npm run build || exitWithError
 cd -
 
-cd client/vue
+cd ui/vue
 npm run build || exit
 cd -
 

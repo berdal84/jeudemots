@@ -6,10 +6,10 @@ services:
   ui:
     container_name: jeudemots-ui
     build:
-      context: client
+      context: ui
     develop:
       watch:
-        - path: ./client
+        - path: ./ui
           action: rebuild
     ports:
       - 4200:4200

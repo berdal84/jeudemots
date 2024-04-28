@@ -8,19 +8,19 @@ exitWithError() {
 echo "Install .. (will start soon)"
 sleep 1
 
-cd client/shared
+cd ui/shared
 npm i || exitWithError
 cd -
 
-cd client/ng
+cd ui/ng
 npm i || exitWithError
 cd -
 
-cd client/react
+cd ui/react
 npm i || exitWithError
 cd -
 
-cd client/vue
+cd ui/vue
 npm i || exit
 cd -
 

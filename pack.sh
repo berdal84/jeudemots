@@ -31,7 +31,7 @@ cp -vr api/src/* ${SERVER_OUTPUT_DIR} && echo "Server OK" || (echo "Unable to co
 
 mkdir -p ${NG_OUTPUT_DIR}
 echo "-- Copying Client (Angular) ...";
-if( cp -vr client/ng/build/* ${NG_OUTPUT_DIR} )
+if( cp -vr ui/ng/build/* ${NG_OUTPUT_DIR} )
 then
     echo "-- Client (Angular) OK";
 else
@@ -42,7 +42,7 @@ fi
 
 mkdir -p ${REACT_OUTPUT_DIR}
 echo "-- Copying Client (React) ...";
-if( cp -vr client/react/build/* ${REACT_OUTPUT_DIR} )
+if( cp -vr ui/react/build/* ${REACT_OUTPUT_DIR} )
 then
     echo "-- Client (React) OK";
 else
@@ -53,7 +53,7 @@ fi
 
 mkdir -p ${VUE_OUTPUT_DIR}
 echo "-- Copying Client (Vue) ...";
-if( cp -vr client/vue/build/* ${VUE_OUTPUT_DIR} )
+if( cp -vr ui/vue/build/* ${VUE_OUTPUT_DIR} )
 then
     echo "-- Client (Vue) OK";
 else
