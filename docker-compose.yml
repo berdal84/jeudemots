@@ -46,11 +46,11 @@ services:
     restart: always
     networks: ['backend']
     environment:
-        MYSQL_ROOT_USER: root
-        MYSQL_ROOT_PASSWORD: devonly
+        MYSQL_ROOT_USER: admin
+        MYSQL_ROOT_PASSWORD: admin
         MYSQL_DATABASE: jokes
-        MYSQL_USER: root
-        MYSQL_PASSWORD: devonly
+        MYSQL_USER: admin
+        MYSQL_PASSWORD: admin
 #
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 #
@@ -61,8 +61,8 @@ services:
       - db
     environment:
       PMA_HOST: 'db'
-      PMA_USER: 'root'
-      PMA_PASSWORD: 'devonly'
+      PMA_USER: 'admin'
+      PMA_PASSWORD: 'admin'
     ports:
       - 8080:80
     networks: ['backend', 'frontend']

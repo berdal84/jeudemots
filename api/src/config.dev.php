@@ -2,11 +2,11 @@
 
 define('DB_HOST', 'db');
 define('DB_NAME', 'jokes');
-define('DB_USER', 'root');
-define('DB_PASS', 'devonly');
+define('DB_USER', 'admin');
+define('DB_PASS', 'admin');
 
-define('ADMIN_USER', 'root');
-define('ADMIN_PASS', hash('sha256', 'devonly'));
+define('ADMIN_USER', 'admin');
+define('ADMIN_PASS', hash('sha256', 'admin'));
 define('ADMIN_EMAIL', '');
 define('ACCESS_CONTROL_ALLOW_ORIGIN', '*' );
 #define('COOKIE_DOMAIN', 'my.domain.com');

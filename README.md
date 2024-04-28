@@ -34,8 +34,7 @@ Browse `https://localhost:4200/`
 ### Post-launch (do once)
 
 Browse `https://localhost:4200/#/login` and login with the following credentials:
-- user: `root`
-- pass: `devonly`
+- username/pass: `admin`/`admin`
 
 <div align="center">
   <img height=300 src="./docs/login-page.png" />
