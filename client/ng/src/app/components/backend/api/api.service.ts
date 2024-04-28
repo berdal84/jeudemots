@@ -1,6 +1,6 @@
 import {Injectable, inject} from '@angular/core';
 import {Joke, Page} from 'jeudemots-shared';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {of, firstValueFrom, BehaviorSubject} from 'rxjs';
 import {catchError, first, retry} from 'rxjs/operators';
 import {environment} from 'src/environments/environment';
@@ -33,15 +33,24 @@ export class APIService {
   private async _request<TResponse extends Response>(
     method: 'GET' | 'POST' | 'DELETE' | 'PATCH',
     path: string,
-    headers?: {
-      params?: Record<string, number | string>,
-      body?: any
-    }): Promise<TResponse> {
+    options?: {
+      body?: any;
+      headers?: HttpHeaders | {
+          [header: string]: string | string[];
+      };
+      params?: HttpParams | {
+          [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean>;
+      };
+      reportProgress?: boolean;
+      withCredentials?: boolean;
+    }
+    ): Promise<TResponse>
+  {
     const full_url = `${api.baseUrl}${path}`;
 
     return firstValueFrom( this.httpClient
-      .request<TResponse>(method, full_url, headers)
-      .pipe(
+      .request<TResponse>(method, full_url, { ...options, withCredentials: true },
+      ).pipe(
         retry(3),
         catchError(() => of({
           ok: false,
@@ -146,8 +155,10 @@ export class APIService {
    * @param joke the joke to insert
    * @returns a joke with a unique id
    */
-  create(joke: Joke): Promise<Response<Joke>> {
-    return this._request<Response<Joke>>('POST', api.path.joke, {body: joke});
+  async create(joke: Joke): Promise<Response<Joke>> {
+    const response = await this._request<Response<Joke>>('POST', api.path.joke, {body: joke});
+    if (response.ok) this.cache.clear();
+    return response;
   }
 
   /**
