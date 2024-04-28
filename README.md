@@ -50,18 +50,17 @@ Once logged, install the app by following the instructions of the `install` sect
 
 ## Project files
 
-Source code is split in two main folders:
+Quick summary of the project's folder hierarchy:
 
-- `api`: backend PHP sources and config files.
-- `ui/ng`: main Angular frontend sources
+- `./ui/ng`: Angular sources
+- `./ui/shared`: shared code and resources
+- `./ui/react`: WIP alternative React sources (deployed
+  at [here](https://jeudemots.42borgata.com/react))
+- `./ui/vue`: WIP alternative Vue frontend (deployed
+  at [here](https://jeudemots.42borgata.com/vue))
+- `./api`: api source
+- `./db`: database sources
 
-WIP:
-
-- `ui/react-js`: alternative React frontend sources (deployed
-  at [https://jeudemots.42borgata.com/react](https://jeudemots.42borgata.com/react))
-- `ui/vue`: alternative Vue frontend sources (deployed
-  at [https://jeudemots.42borgata.com/vue](https://jeudemots.42borgata.com/vue))
-- `ui/shared`: shared code and resources.
 
 ## History
 
