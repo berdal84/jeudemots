@@ -3,13 +3,17 @@ services:
 #
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 #
-  # TODO
-  # frontend:
-  #  image: nginx:stable
-  #  depends_on:
-  #    - api
-  #  ports:
-  #    - 80:80
+  ui:
+    container_name: jeudemots-ui
+    build:
+      context: client
+    develop:
+      watch:
+        - path: ./client
+          action: rebuild
+    ports:
+      - 4200:4200
+    networks: ['frontend']
 #
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 #
