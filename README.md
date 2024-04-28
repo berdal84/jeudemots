@@ -1,8 +1,8 @@
 # Jeu De Mots
 
-[![ui](https://github.com/berdal84/jeudemots/actions/workflows/ui.yml/badge.svg?branch=master&event=status)](https://github.com/berdal84/jeudemots/actions/workflows/ui.yml)
-[![api](https://github.com/berdal84/jeudemots/actions/workflows/api.yml/badge.svg?branch=master&event=status)](https://github.com/berdal84/jeudemots/actions/workflows/api.yml)
-[![db](https://github.com/berdal84/jeudemots/actions/workflows/db.yml/badge.svg?branch=master&event=status)](https://github.com/berdal84/jeudemots/actions/workflows/db.yml)
+[![ui](https://github.com/berdal84/jeudemots/actions/workflows/ui.yml/badge.svg)](https://github.com/berdal84/jeudemots/actions/workflows/ui.yml)
+[![api](https://github.com/berdal84/jeudemots/actions/workflows/api.yml/badge.svg)](https://github.com/berdal84/jeudemots/actions/workflows/api.yml)
+[![db](https://github.com/berdal84/jeudemots/actions/workflows/db.yml/badge.svg)](https://github.com/berdal84/jeudemots/actions/workflows/db.yml)
 
 ## Introduction
 
