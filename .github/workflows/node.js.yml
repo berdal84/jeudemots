@@ -28,3 +28,4 @@ jobs:
     - run: ./install.sh
     - run: ./build.sh
     - run: ./test.sh
+    # TODO: build dockers too
