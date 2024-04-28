@@ -1,8 +1,8 @@
 # Jeu de mots
 
-<a href="https://github.com/berdal84/jeudemots-ng/actions?query=workflow Node.js CI" title="ng build">
-<img src="https://github.com/berdal84/jeudemots-ng/workflows/Node.js CI/badge.svg" />
-</a>
+[![ui](https://github.com/berdal84/jeudemots/actions/workflows/ui.yml/badge.svg?branch=master&event=status)](https://github.com/berdal84/jeudemots/actions/workflows/ui.yml)
+[![api](https://github.com/berdal84/jeudemots/actions/workflows/api.yml/badge.svg?branch=master&event=status)](https://github.com/berdal84/jeudemots/actions/workflows/api.yml)
+[![db](https://github.com/berdal84/jeudemots/actions/workflows/db.yml/badge.svg?branch=master&event=status)](https://github.com/berdal84/jeudemots/actions/workflows/db.yml)
 
 ## Introduction
 
