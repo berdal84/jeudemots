@@ -5,4 +5,6 @@ exitWithError() {
     exit 1;
 }
 
-cd ui/ng && npm run test -- --no-watch --no-progress --browsers ChromeHeadlessCI || exitWithError
+docker compose up ui -d;
+docker compose exec -it ui sh -c "npm run test -- --no-watch --no-progress --browsers ChromeHeadlessCI" || exitWithError
+docker compose stop;
