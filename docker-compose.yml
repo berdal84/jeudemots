@@ -43,7 +43,7 @@ services:
       watch:
         - path: ./db
           action: rebuild
-    restart: always
+    restart: on-failure
     networks: ['backend']
     environment:
         MYSQL_ROOT_USER: admin
